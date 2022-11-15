@@ -1,4 +1,14 @@
-﻿/**
+﻿/*
+ * @Author: Derek Xu
+ * @Date: 2022-11-14 19:17:23
+ * @LastEditors: Derek Xu
+ * @LastEditTime: 2022-11-15 13:39:45
+ * @FilePath: \xuct-calendar-antd-pc\config\routes.ts
+ * @Description:
+ *
+ * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
+ */
+/**
  * @name umi 的路由配置
  * @description 只支持 path,component,routes,redirect,wrappers,title 的配置
  * @param path  path 只支持两种占位符配置，第一种是动态参数 :id 的形式，第二种是 * 通配符，通配符只能出现路由字符串的最后。
@@ -16,15 +26,15 @@ export default [
       {
         name: 'login',
         path: '/user/login',
-        component: './User/Login',
-      },
-    ],
+        component: './User/Login'
+      }
+    ]
   },
   {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
-    component: './Welcome',
+    component: './Welcome'
   },
   {
     path: '/admin',
@@ -34,28 +44,22 @@ export default [
     routes: [
       {
         path: '/admin',
-        redirect: '/admin/sub-page',
+        redirect: '/admin/sub-page'
       },
       {
         path: '/admin/sub-page',
         name: 'sub-page',
-        component: './Admin',
-      },
-    ],
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
+        component: './Admin'
+      }
+    ]
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/welcome'
   },
   {
     path: '*',
     layout: false,
-    component: './404',
-  },
-];
+    component: './404'
+  }
+]
