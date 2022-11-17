@@ -2,14 +2,14 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 23:21:42
+ * @LastEditTime: 2022-11-17 08:49:31
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { notification } from 'antd'
 import { RequestConfig, history, getIntl } from 'umi'
-import { SECURITY_OAUTH2_IGNORE_URL } from './constants/url'
+import { SECURITY_OAUTH2_IGNORE_URL } from '@/constants/url'
 import sessionStore from '@/cache'
 import defaultSettings from '../config/defaultSettings'
 import { Settings as LayoutSettings } from '@ant-design/pro-components'

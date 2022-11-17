@@ -28,7 +28,15 @@
     "typings/**/*",
     "config/**/*",
     ".eslintrc.js",
-    ".prettierrc.js",
+    ".prettierrc.js"
   ],
-  "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "scripts",
+    "src/.umi/*",
+    "webpack",
+    "jest"
+  ]
 }
