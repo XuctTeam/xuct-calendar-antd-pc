@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 09:25:58
+ * @LastEditTime: 2022-11-17 16:54:53
  * @FilePath: \xuct-calendar-antd-pc\config\routes.ts
  * @Description:
  *
@@ -31,9 +31,16 @@ export default [
     ]
   },
   {
-    path: '/',
-    redirect: '/welcome'
+    path: '/home',
+    name: 'home',
+    component: './Home'
   },
+
+  {
+    path: '/',
+    redirect: '/home'
+  },
+
   {
     path: '*',
     layout: false,

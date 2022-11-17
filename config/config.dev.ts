@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 14:55:59
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 09:17:09
+ * @LastEditTime: 2022-11-17 13:12:02
  * @FilePath: \xuct-calendar-antd-pc\config\config.dev.ts
  * @Description:
  *
@@ -17,6 +17,6 @@ import { defineConfig } from 'umi'
 export default defineConfig({
   define: {
     APP_CLIENT: 'YXBwOmFwcA==',
-    API_URL: 'https://s3.nsloop.com:22990' // API地址
+    API_URL: '/rest' // API地址
   }
 })

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 08:49:31
+ * @LastEditTime: 2022-11-17 15:22:52
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -13,8 +13,9 @@ import { SECURITY_OAUTH2_IGNORE_URL } from '@/constants/url'
 import sessionStore from '@/cache'
 import defaultSettings from '../config/defaultSettings'
 import { Settings as LayoutSettings } from '@ant-design/pro-components'
+import { userInfo } from '@/services/user'
 
-const isDev = process.env.NODE_ENV === 'development'
+//const isDev = process.env.NODE_ENV === 'development'
 const loginPath = '/user/login'
 
 /**
@@ -22,17 +23,16 @@ const loginPath = '/user/login'
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>
-  currentUser?: API.CurrentUser
+  currentUser?: USER.CurrentUser
   loading?: boolean
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>
+  fetchUserInfo?: () => Promise<USER.CurrentUser | undefined>
 }> {
   const fetchUserInfo = async () => {
     try {
-      // const msg = await queryCurrentUser({
-      //   skipErrorHandler: true
-      // })
-      //return msg.data
+      const currentUser = await userInfo({ skipErrorHandler: true })
+      return currentUser
     } catch (error) {
+      console.log(error)
       history.push(loginPath)
     }
     return undefined
@@ -43,12 +43,12 @@ export async function getInitialState(): Promise<{
     return {
       fetchUserInfo,
       currentUser,
-      settings: defaultSettings,
+      settings: defaultSettings
     }
   }
   return {
     fetchUserInfo,
-    settings: defaultSettings,
+    settings: defaultSettings
   }
 }
 
@@ -60,36 +60,34 @@ export async function getInitialState(): Promise<{
 
 /** 请求拦截 */
 const requestInterceptor = (url: any, options: any): any => {
-  const match = SECURITY_OAUTH2_IGNORE_URL.some(
-    (item) => url.indexOf(item) > -1,
-  )
+  const match = SECURITY_OAUTH2_IGNORE_URL.some((item) => url.indexOf(item) > -1)
   if (!match) {
     /* 非登录接口都要通过token请求 */
     if (!url.includes('/oauth2/token')) {
-      options.headers['Authorization'] = sessionStore.getItem('accessToken')
+      options.headers['Authorization'] = sessionStore.getItem('access_token')
     } else {
       options.headers['Authorization'] = 'Basic ' + `${APP_CLIENT}`
     }
   }
   return {
     url: url,
-    options: { ...options },
+    options: { ...options }
   }
 }
 /** 响应拦截 */
 const responseInterceptors = (response: any): any => {
-  debugger
-  if (response.status !== 200) {
-    switch (response.status) {
-      case 401:
-        notification.warn({
-          message: '登录超时，请重新登陆!',
-        })
-        history.push('/login')
-        break
-    }
+  const { config, data } = response
+  const { url } = config
+  if (url && url.includes('/oauth2/token')) return response
+  if (!data) return response
+  const { code, message } = data
+  if (code !== 200) {
+    notification.warn({
+      message: 'message',
+      description: message
+    })
   }
-  return response
+  return data
 }
 /** 异常处理程序 */
 const codeMessage: any = {
@@ -100,7 +98,7 @@ const codeMessage: any = {
   500: 'code.message.service.error',
   502: 'code.message.getway.error',
   503: 'code.message.server.maintain',
-  504: 'code.message.gateway.timeout',
+  504: 'code.message.gateway.timeout'
 }
 
 const errorThrower = (res: any) => {
@@ -108,34 +106,37 @@ const errorThrower = (res: any) => {
 }
 
 const errorHandler = (error: any, opts: any) => {
-  if (opts?.skipErrorHandler) return
+  if (opts?.skipErrorHandler) throw error
   const { response, config } = error
   if (response && response.status) {
-    let { message } = response?.data
-    if (!message) {
-      const initMsgCode = codeMessage[response.status]
-      message = initMsgCode
-        ? getIntl().formatMessage({ id: initMsgCode })
-        : response.statusText
-    }
+    const { url } = config
     const { status } = response
+    let message
+    if (url && url.includes('/oauth2/token')) {
+      if (status === 401) {
+        message = response?.data.message
+      } else {
+        message = getIntl().formatMessage({ id: codeMessage[status] })
+      }
+    } else {
+      const initMsgCode = codeMessage[response.status]
+      message = initMsgCode ? getIntl().formatMessage({ id: initMsgCode }) : response.statusText
+    }
     notification.error({
-      message:
-        getIntl().formatMessage({ id: 'code.message.error' }) +
-        ` ${status}: ${config?.url}`,
-      description: message,
+      message: getIntl().formatMessage({ id: 'code.message.error' }) + ` ${status}: ${config?.url}`,
+      description: message
     })
   } else if (!response) {
     notification.error({
       description: getIntl().formatMessage({
-        id: 'code.message.network.eror.describe',
+        id: 'code.message.network.eror.describe'
       }),
-      message: getIntl().formatMessage({ id: 'code.message.network.eror' }),
+      message: getIntl().formatMessage({ id: 'code.message.network.eror' })
     })
   } else {
     // 发送请求时出了点问题
     notification.error({
-      message: getIntl().formatMessage({ id: 'code.message.network.eror' }),
+      message: getIntl().formatMessage({ id: 'code.message.network.eror' })
     })
   }
   return response
@@ -150,9 +151,9 @@ export const request: RequestConfig = {
   // 自定义端口规范(可以对后端返回的数据格式按照我们的需求进行处理)
   errorConfig: {
     errorThrower: errorThrower,
-    errorHandler: errorHandler,
+    errorHandler: errorHandler
   },
   //请求错误处理
   requestInterceptors: [requestInterceptor], //请求拦截
-  responseInterceptors: [responseInterceptors], //响应拦截
+  responseInterceptors: [responseInterceptors] //响应拦截
 }

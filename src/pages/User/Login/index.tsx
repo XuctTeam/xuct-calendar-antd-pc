@@ -2,24 +2,24 @@
  * @Description:
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:40:11
- * @LastEditTime: 2022-06-20 16:45:29
+ * @LastEditTime: 2022-11-17 15:18:49
  * @LastEditors: Derek Xu
  */
-import Footer from '@/components/Footer'
-import { usernameLogin, sendLoginSmsCode } from '@/services/calendar/login'
-import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
-import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
-import { FormattedMessage, history, SelectLang, useDispatch, useIntl, useModel } from 'umi'
 import { message, Tabs } from 'antd'
 import React, { useState } from 'react'
 import { flushSync } from 'react-dom'
+import Footer from '@/components/Footer'
+import { usernameLogin, sendLoginSmsCode } from '@/services/login'
+import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
+import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
+import { FormattedMessage, history, SelectLang, useDispatch, useIntl, useModel } from 'umi'
 import sessionStore from '@/cache'
+import { AUTHORIZATION } from '@/constants'
 import styles from './index.less'
 
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account')
   const { initialState, setInitialState } = useModel('@@initialState')
-  const dispatch = useDispatch()
 
   const intl = useIntl()
 
@@ -33,20 +33,19 @@ const Login: React.FC = () => {
         }))
       })
     }
+    return userInfo
   }
 
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       // 登录
       const msg = await usernameLogin({ ...values, type })
-      sessionStore.setItem('access_token', msg.access_token)
-      sessionStore.setItem('refresh_token', msg.refresh_token)
-      const defaultLoginSuccessMessage = intl.formatMessage({
-        id: 'pages.login.success',
-        defaultMessage: '登录成功！'
-      })
+      sessionStore.setItem('access_token', AUTHORIZATION.concat(msg.access_token))
+      sessionStore.setItem('refresh_token', AUTHORIZATION.concat(msg.refresh_token))
+      const userInfo = await fetchUserInfo()
+      if (!userInfo) return
+      const defaultLoginSuccessMessage = intl.formatMessage({ id: 'pages.login.success' })
       message.success(defaultLoginSuccessMessage)
-      await fetchUserInfo()
       const urlParams = new URL(window.location.href).searchParams
       history.push(urlParams.get('redirect') || '/')
     } catch (error) {

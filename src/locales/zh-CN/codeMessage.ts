@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 09:29:20
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 10:58:56
+ * @LastEditTime: 2022-11-17 14:36:29
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\codeMessage.ts
  * @Description:
  *
@@ -11,7 +11,7 @@
 export default {
   'code.message.error': '错误信息',
   'code.message.bad.request': '业务系统错误',
-  'code.message.unauthorized': '用户名或密码错误',
+  'code.message.unauthorized': '访问权限错误',
   'code.message.request.params.error': '请求参数错误',
   'code.message.not.found': '请求参数错误',
   'code.message.service.error': '服务器异常',

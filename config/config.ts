@@ -2,13 +2,14 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:29:30
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 09:34:47
+ * @LastEditTime: 2022-11-17 15:32:55
  * @FilePath: \xuct-calendar-antd-pc\config\config.ts
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { defineConfig } from 'umi'
 import routes from './routes'
+import proxy from './proxy'
 
 export default defineConfig({
   /**
@@ -36,7 +37,7 @@ export default defineConfig({
 
   antd: {
     //dark: true,
-    compact: true
+    //compact: true
   },
 
   initialState: {},
@@ -53,6 +54,14 @@ export default defineConfig({
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true
   },
+  /**
+   * @name 代理配置
+   * @description 可以让你的本地服务器代理到你的服务器上，这样你就可以访问服务器的数据了
+   * @see 要注意以下 代理只能在本地开发时使用，build 之后就无法使用了。
+   * @doc 代理介绍 https://umijs.org/docs/guides/proxy
+   * @doc 代理配置 https://umijs.org/docs/api/config#proxy
+   */
+  proxy: proxy['dev'],
 
   plugins: [
     '@umijs/plugins/dist/dva',
