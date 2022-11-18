@@ -2,8 +2,8 @@
   "private": true,
   "author": "徐涛 <jianhao2010303@163.com>",
   "scripts": {
-    "dev": "umi dev",
     "build": "umi build",
+    "dev": "umi dev",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "cross-env UMI_ENV=dev umi dev"
@@ -11,9 +11,17 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.3.33",
+    "@types/faker": "^6.6.9",
+    "@types/lodash": "^4.14.189",
+    "@types/luxon": "^3.1.0",
     "@types/qs": "^6.9.7",
     "antd": "^4.24.2",
     "crypto-js": "^4.1.1",
+    "faker": "^6.6.6",
+    "kalend": "^0.17.3",
+    "lodash": "^4.17.21",
+    "luxon": "^3.1.0",
+    "moment": "^2.29.4",
     "qs": "^6.11.0",
     "umi": "^4.0.30"
   },

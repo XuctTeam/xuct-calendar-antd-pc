@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 15:22:52
+ * @LastEditTime: 2022-11-18 08:37:03
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -33,6 +33,9 @@ export async function getInitialState(): Promise<{
       return currentUser
     } catch (error) {
       console.log(error)
+      //清除登录缓存
+      sessionStore.removeItem('access_token')
+      sessionStore.removeItem('refresh_token')
       history.push(loginPath)
     }
     return undefined

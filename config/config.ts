@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:29:30
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 15:32:55
+ * @LastEditTime: 2022-11-18 10:32:39
  * @FilePath: \xuct-calendar-antd-pc\config\config.ts
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -62,6 +62,8 @@ export default defineConfig({
    * @doc 代理配置 https://umijs.org/docs/api/config#proxy
    */
   proxy: proxy['dev'],
+
+  autoCSSModules: true,
 
   plugins: [
     '@umijs/plugins/dist/dva',

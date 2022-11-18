@@ -2,15 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 09:29:52
+ * @LastEditTime: 2022-11-18 16:20:17
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import component from './zh-CN/component'
 import globalHeader from './zh-CN/globalHeader'
-import menu from './zh-CN/menu'
 import pages from './zh-CN/pages'
 import pwa from './zh-CN/pwa'
 import settingDrawer from './zh-CN/settingDrawer'
@@ -28,10 +26,8 @@ export default {
   'app.welcome.link.block-list': '基于 block 开发，快速构建标准页面',
   ...pages,
   ...globalHeader,
-  ...menu,
   ...settingDrawer,
   ...settings,
   ...pwa,
-  ...component,
   ...codeMessage
 }

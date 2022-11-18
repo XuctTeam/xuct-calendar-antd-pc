@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 09:05:04
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 09:13:29
+ * @LastEditTime: 2022-11-18 08:34:44
  * @FilePath: \xuct-calendar-antd-pc\src\cache\index.ts
  * @Description:
  *
@@ -17,5 +17,8 @@ export default {
   },
   setItem: (key: string, value: any) => {
     window.sessionStorage.setItem(prefix.concat(key), value)
+  },
+  removeItem(key: string) {
+    window.sessionStorage.removeItem(prefix.concat(key))
   }
 }
