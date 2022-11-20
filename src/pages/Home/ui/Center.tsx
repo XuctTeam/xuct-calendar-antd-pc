@@ -2,63 +2,30 @@
  * @Author: Derek Xu
  * @Date: 2022-11-18 08:58:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-18 18:24:57
+ * @LastEditTime: 2022-11-20 22:20:28
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\ui\Center.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-
+import { useState, useEffect, useRef } from 'react'
 import { Button, Calendar } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import type { CalendarMode } from 'antd/es/calendar/generateCalendar'
-import { Moment } from 'moment'
 import { FormattedMessage, getLocale } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
-import Kalend, { CalendarEvent, CalendarView, OnEventDragFinish } from 'kalend' // import component
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+
 import styles from './center.less'
-import 'kalend/dist/styles/index.css' // import styles
-
-import { generateDemoEvents } from '@/utils/helper'
-
-type OnNewEventClickData = {
-  event: CalendarEvent
-  day: Date
-  hour: number
-  startAt: string
-  endAt: string
-  view: string
-}
-
-// 必须引入的样式文件
 
 const Center = () => {
-  // const onPanelChange = (value: Moment, mode: CalendarMode) => {
-  //   console.log(value.format('YYYY-MM-DD'), mode)
-  // }
+  const [centerHeight, setCenterHeight] = useState<number>(300)
+  const calenarRef = useRef<any>()
 
-  const onPageChange = (data: any) => {
-    console.log('pageChange')
-    console.log(data)
-  }
-
-  const onNewEventClick = (data: any) => {
-    // do something
-    console.log(data)
-  }
-
-  const onSelectView = (data: any) => {
-    debugger
-    console.log(333333333)
-    console.log(data)
-  }
-
-  const onEventDragFinish: OnEventDragFinish = (prevEvent: CalendarEvent, updatedEvent: CalendarEvent, events: any) => {
-    // if you want just update whole state, you can just set events
-    //setState(events);
-    // OR you can handle logic for updating inside your app with access to "updatedEvent" and "prevEvent"
-    console.log(2222222222)
-  }
+  useEffect(() => {
+    setCenterHeight(calenarRef.current.offsetHeight - 20)
+  }, [])
 
   return (
     <Content className={styles.center}>
@@ -69,24 +36,29 @@ const Center = () => {
         <Calendar fullscreen={false} />
         <>{}</>
       </div>
-      <div className={styles.right}>
-        <Kalend
-          onEventClick={() => {
-            console.log(1111)
-          }}
-          onNewEventClick={onNewEventClick}
-          events={generateDemoEvents()}
-          initialDate={new Date().toISOString()}
-          initialView={CalendarView.WEEK}
-          disabledViews={[CalendarView.DAY]}
-          onSelectView={onSelectView}
-          //selectedView={selectedView}
-          onPageChange={onPageChange}
-          timeFormat={'24'}
-          weekDayStart={'Monday'}
-          calendarIDsHidden={['work']}
-          language={getLocale() === 'en-US' ? 'en' : 'zh'}
-        />
+      <div className={styles.right} ref={calenarRef}>
+        <div className={styles.calendar}>
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin]}
+            height={centerHeight}
+            headerToolbar={{
+              // 上一年，上一月，下一月，下一年 今天(逗号为紧相邻，空格为有间隙，不写哪个就不展示哪个按钮)
+              left: 'prevYear,prev,next,nextYear today',
+              // 默认显示当前年月
+              center: 'title',
+              // 右侧月 周 天切换按钮
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            }}
+            locale='zh-cn'
+            themeSystem='bootstrap'
+            buttonText={{
+              today: '今天',
+              month: '月',
+              week: '周',
+              day: '天'
+            }}
+          />
+        </div>
       </div>
     </Content>
   )
