@@ -6,7 +6,7 @@
     "dev": "umi dev",
     "postinstall": "umi setup",
     "setup": "umi setup",
-    "start": "cross-env UMI_ENV=dev umi dev"
+    "start": "cross-env UMI_ENV=dev COMPRESS=none umi dev"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -14,15 +14,20 @@
     "@fullcalendar/bootstrap5": "^5.11.3",
     "@fullcalendar/core": "^5.11.3",
     "@fullcalendar/daygrid": "^5.11.3",
+    "@fullcalendar/interaction": "^5.11.3",
+    "@fullcalendar/moment": "^5.11.3",
     "@fullcalendar/react": "^5.11.3",
     "@fullcalendar/timegrid": "^5.11.3",
     "@types/lodash": "^4.14.189",
     "@types/qs": "^6.9.7",
+    "@types/querystringify": "^2.0.0",
     "antd": "^4.24.2",
     "crypto-js": "^4.1.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "qs": "^6.11.0",
+    "querystring": "^0.2.1",
+    "solarlunar-es": "^1.0.9",
     "umi": "^4.0.32"
   },
   "devDependencies": {
@@ -32,9 +37,7 @@
     "@umijs/plugin-request": "^2.9.0",
     "@umijs/plugins": "^4.0.30",
     "cross-env": "^7.0.3",
-    "prettier": "^2",
-    "prettier-plugin-organize-imports": "^2",
-    "prettier-plugin-packagejson": "^2",
+    "prettier": "2.7.1",
     "typescript": "^4.1.2"
   },
   "__npminstall_done": false

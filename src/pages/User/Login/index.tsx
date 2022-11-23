@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:40:11
- * @LastEditTime: 2022-11-17 15:18:49
+ * @LastEditTime: 2022-11-23 16:10:32
  * @LastEditors: Derek Xu
  */
 import { message, Tabs } from 'antd'
@@ -12,7 +12,7 @@ import Footer from '@/components/Footer'
 import { usernameLogin, sendLoginSmsCode } from '@/services/login'
 import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
-import { FormattedMessage, history, SelectLang, useDispatch, useIntl, useModel } from 'umi'
+import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi'
 import sessionStore from '@/cache'
 import { AUTHORIZATION } from '@/constants'
 import styles from './index.less'
@@ -46,8 +46,10 @@ const Login: React.FC = () => {
       if (!userInfo) return
       const defaultLoginSuccessMessage = intl.formatMessage({ id: 'pages.login.success' })
       message.success(defaultLoginSuccessMessage)
-      const urlParams = new URL(window.location.href).searchParams
-      history.push(urlParams.get('redirect') || '/')
+      window.setTimeout(() => {
+        const urlParams = new URL(window.location.href).searchParams
+        history.push(urlParams.get('redirect') || '/')
+      }, 1500)
     } catch (error) {
       console.log(error)
     }

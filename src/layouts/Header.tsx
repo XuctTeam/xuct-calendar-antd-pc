@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-18 11:16:09
+ * @LastEditTime: 2022-11-21 09:05:40
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\ui\Header.tsx
  * @Description:
  *
@@ -12,7 +12,7 @@ import { FC } from 'react'
 import { Header } from 'antd/lib/layout/layout'
 import { message, Space } from 'antd'
 import NoticeIcon from '@/components/NoticeIcon/NoticeIcon'
-import AvatarDropdown from '@/components/HeaderDropdown/AvatarDropdown'
+import AvatarDropdown from '@/layouts/AvatarDropdown'
 import styles from './header.less'
 import { SelectLang } from 'umi'
 

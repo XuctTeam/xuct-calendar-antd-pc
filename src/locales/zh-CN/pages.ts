@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-18 16:21:17
+ * @LastEditTime: 2022-11-22 17:46:12
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -32,6 +32,8 @@ export default {
   'pages.login.submit': '登录',
   'pages.login.loginWith': '其他登录方式 :',
   'pages.login.registerAccount': '注册账户',
-  'pages.welcome.link': '欢迎使用',
-  'pages.component.button.add': '创建日程'
+  'pages.component.button.add': '创建日程',
+  'page.calendar.manager.title': '日历管理',
+  'page.calendar.manager.button': '新增',
+  'pages.calendar.today.button': '今日'
 }

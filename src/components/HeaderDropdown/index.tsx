@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 17:48:57
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-18 17:56:51
+ * @LastEditTime: 2022-11-23 11:06:01
  * @FilePath: \xuct-calendar-antd-pc\src\components\HeaderDropdown\index.tsx
  * @Description:
  *
@@ -16,13 +16,11 @@ import styles from './index.less'
 
 export type HeaderDropdownProps = {
   overlayClassName?: string
-  menu: React.ReactNode | (() => React.ReactNode) | any
+  overlay: React.ReactNode | (() => React.ReactNode) | any
   placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight' | 'bottomCenter'
-} & Omit<DropDownProps, 'menu'>
+} & Omit<DropDownProps, 'overlay'>
 
 const HeaderDropdown: React.FC<HeaderDropdownProps> = ({ overlayClassName: cls, ...restProps }) => {
-  console.log(444444444)
-  console.log(restProps)
   return <Dropdown overlayClassName={classNames(styles.container, cls)} getPopupContainer={(target) => target.parentElement || document.body} {...restProps} />
 }
 

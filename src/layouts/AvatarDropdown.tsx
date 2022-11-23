@@ -6,8 +6,8 @@ import { stringify } from 'querystring'
 import type { MenuInfo } from 'rc-menu/lib/interface'
 import React, { useCallback } from 'react'
 import { flushSync } from 'react-dom'
-import HeaderDropdown from '../HeaderDropdown'
 import styles from './index.less'
+import HeaderDropdown from '@/components/HeaderDropdown'
 
 export type GlobalHeaderRightProps = {
   menu?: boolean
@@ -45,7 +45,12 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
         loginOut()
         return
       }
-      history.push(`/account/${key}`)
+      if (key === 'center') {
+        history.push({
+          pathname: '/account'
+        })
+        return
+      }
     },
     [setInitialState]
   )
@@ -100,10 +105,10 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   const menuHeaderDropdown = <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick} items={menuItems} />
 
   return (
-    <HeaderDropdown menu={menuHeaderDropdown}>
+    <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
         <Avatar size='small' className={styles.avatar} src={currentUser.member.avatar} alt='avatar' />
-        <span className={`${styles.name} anticon`}>{currentUser.member.name}</span>
+        <span className={`${styles.name} anticon`}>欢迎您：{currentUser.member.name}</span>
       </span>
     </HeaderDropdown>
   )
