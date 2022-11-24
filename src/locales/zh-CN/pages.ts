@@ -2,14 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 20:35:50
+ * @LastEditTime: 2022-11-24 11:02:00
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 export default {
-  'pages.loading.title': '加载中...',
   'pages.layouts.userLayout.title': '让您与他们的工作更有效、更轻松',
   'pages.login.accountLogin.tab': '账户密码登录',
   'pages.login.accountLogin.errorMessage': '错误的用户名和密码(admin/ant.design)',
@@ -34,8 +33,10 @@ export default {
   'pages.login.loginWith': '其他登录方式 :',
   'pages.login.registerAccount': '注册账户',
 
+  'pages.loading.title': '加载中...',
   'pages.modal.commit.title': '提示',
   'pages.logout.content': '确定退出登录吗？',
+  'pages.modify.passowrd.success': '修改成功，请用新密码登录',
   'pages.menu.user.account': '个人中心',
 
   'pages.component.button.add': '创建日程',

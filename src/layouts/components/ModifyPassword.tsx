@@ -2,69 +2,90 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 16:52:13
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 16:57:57
- * @FilePath: \xuct-calendar-antd-pc\src\layouts\ModifyPassword.tsx
+ * @LastEditTime: 2022-11-24 11:29:28
+ * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\ModifyPassword.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { ModalForm, ProForm, ProFormDateRangePicker, ProFormSelect, ProFormText } from '@ant-design/pro-components'
+import { ModalForm, ProFormInstance, ProFormText } from '@ant-design/pro-components'
 import { message } from 'antd'
+import { getIntl } from 'umi'
+import { checkPassowrd } from '@/utils'
+import { useRef } from 'react'
+import { updatePassword } from '@/services/user'
 
 interface IPageOption {
   modalVisit: boolean
   setModalVisit: (visit: boolean) => void
+  quitLogin: () => void
 }
 
 const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
-  const { modalVisit, setModalVisit } = props
+  const { modalVisit, setModalVisit, quitLogin } = props
+  const formRef = useRef<ProFormInstance>()
+
+  const isPasswordValidate = (value: any, callback: any, ty: number) => {
+    if (!value) {
+      return callback(getIntl().formatMessage({ id: 'pages.modify.password.require' }))
+    }
+    const result = checkPassowrd(value)
+    if (!result) {
+      return callback(getIntl().formatMessage({ id: 'pages.modify.password.format' }))
+    }
+    if (ty === 1) {
+      const password = formRef?.current?.getFieldValue('password')
+      if (value !== password) {
+        return callback(getIntl().formatMessage({ id: 'pages.modify.confirm.password.notequal' }))
+      }
+    }
+    return callback()
+  }
+
   return (
     <>
       <ModalForm
-        title='新建表单'
+        formRef={formRef}
+        title={getIntl().formatMessage({ id: 'pages.modify.passowrd.title' })}
         open={modalVisit}
-        onFinish={async () => {
-          message.success('提交成功')
+        onFinish={async (data: any) => {
+          const { password } = data
+          await updatePassword(password)
+          message.warning(getIntl().formatMessage({ id: 'pages.modify.passowrd.success' }))
+          formRef?.current?.resetFields()
+          window.setTimeout(() => {
+            quitLogin()
+          }, 3000)
           return true
         }}
         onOpenChange={setModalVisit}
       >
-        <ProForm.Group>
-          <ProFormText width='md' name='name' label='签约客户名称' tooltip='最长为 24 位' placeholder='请输入名称' />
-
-          <ProFormText width='md' name='company' label='我方公司名称' placeholder='请输入名称' />
-        </ProForm.Group>
-        <ProForm.Group>
-          <ProFormText width='md' name='contract' label='合同名称' placeholder='请输入名称' />
-          <ProFormDateRangePicker name='contractTime' label='合同生效时间' />
-        </ProForm.Group>
-        <ProForm.Group>
-          <ProFormSelect
-            options={[
-              {
-                value: 'chapter',
-                label: '盖章后生效'
+        <ProFormText
+          width='sm'
+          name='password'
+          label='密码'
+          rules={[
+            {
+              required: true,
+              validator(rule, value, callback) {
+                isPasswordValidate(value, callback, 0)
               }
-            ]}
-            width='xs'
-            name='useMode'
-            label='合同约定生效方式'
-          />
-          <ProFormSelect
-            width='xs'
-            options={[
-              {
-                value: 'time',
-                label: '履行完终止'
+            }
+          ]}
+        />
+        <ProFormText
+          width='sm'
+          name='confirm_password'
+          label='确认密码'
+          rules={[
+            {
+              required: true,
+              validator(rule, value, callback) {
+                isPasswordValidate(value, callback, 1)
               }
-            ]}
-            name='unusedMode'
-            label='合同约定失效效方式'
-          />
-        </ProForm.Group>
-        <ProFormText width='sm' name='id' label='主合同编号' />
-        <ProFormText name='project' disabled label='项目名称' initialValue='xxxx项目' />
-        <ProFormText width='xs' name='mangerName' disabled label='商务经理' initialValue='启途' />
+            }
+          ]}
+        />
       </ModalForm>
     </>
   )

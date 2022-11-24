@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 11:37:01
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 11:52:42
+ * @LastEditTime: 2022-11-24 10:31:37
  * @FilePath: \xuct-calendar-antd-pc\src\utils\index.ts
  * @Description:
  *
@@ -79,4 +79,32 @@ const base64_encode = (str: string) => {
     string += base64EncodeChars.charAt(c3 & 0x3f)
   }
   return string
+}
+
+/**
+ * 正则判断电话号码
+ * @param phone
+ * @returns
+ */
+export const checkMobile = (phone: string): boolean => {
+  return /^1[3|4|5|8][0-9]\d{4,8}$/.test(phone)
+}
+
+/**
+ * 正则验证邮箱
+ * @param email
+ * @returns
+ */
+export const checkEmail = (email: string): boolean => {
+  return /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/.test(email)
+}
+
+/**
+ * 正则校验密码
+ *
+ * @param password
+ * @returns
+ */
+export const checkPassowrd = (password: string): boolean => {
+  return /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}$/.test(password)
 }

@@ -79,12 +79,12 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
-        _logout()
+        quiteLogin()
       }
     })
   }
 
-  const _logout = async () => {
+  const quitLogin = async () => {
     setLoading(true)
     try {
       await logout()
@@ -122,7 +122,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
           <span className={`${styles.name}`}>欢迎您：{currentUser.member.name}</span>
         </span>
       </HeaderDropdown>
-      <ModifyPassword modalVisit={modalVisit} setModalVisit={setModalVisit} />
+      <ModifyPassword modalVisit={modalVisit} setModalVisit={setModalVisit} quitLogin={quitLogin} />
     </>
   )
 }

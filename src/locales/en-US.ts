@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 20:27:29
+ * @LastEditTime: 2022-11-24 10:38:26
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US.ts
  * @Description:
  *
@@ -12,8 +12,8 @@ import component from './en-US/component'
 import globalHeader from './en-US/globalHeader'
 import pages from './en-US/pages'
 import pwa from './en-US/pwa'
-import settingDrawer from './en-US/settingDrawer'
 import codeMessage from './zh-CN/codeMessage'
+import form from './en-US/form'
 
 export default {
   'navBar.lang': 'Languages',
@@ -25,9 +25,9 @@ export default {
   'app.welcome.link.fetch-blocks': 'Get all block',
   'app.welcome.link.block-list': 'Quickly build standard, pages based on `block` development',
   ...globalHeader,
-  ...settingDrawer,
   ...pwa,
   ...component,
+  ...form,
   ...pages,
   ...codeMessage
 }

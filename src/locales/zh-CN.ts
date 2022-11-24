@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 18:23:15
+ * @LastEditTime: 2022-11-24 10:37:57
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN.ts
  * @Description:
  *
@@ -11,8 +11,8 @@
 import globalHeader from './zh-CN/globalHeader'
 import pages from './zh-CN/pages'
 import pwa from './zh-CN/pwa'
-import settingDrawer from './zh-CN/settingDrawer'
 import codeMessage from './zh-CN/codeMessage'
+import form from './zh-CN/form'
 
 export default {
   'navBar.lang': '语言',
@@ -25,7 +25,7 @@ export default {
   'app.welcome.link.block-list': '基于 block 开发，快速构建标准页面',
   ...pages,
   ...globalHeader,
-  ...settingDrawer,
+  ...form,
   ...pwa,
   ...codeMessage
 }

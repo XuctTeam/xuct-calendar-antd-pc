@@ -2,14 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 20:36:00
+ * @LastEditTime: 2022-11-24 11:02:37
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 export default {
-  'pages.loading.title': 'Loading...',
   'pages.layouts.userLayout.title': 'Ant Design is the most influential web design specification in Xihu district',
   'pages.login.accountLogin.tab': 'Account Login',
   'pages.login.accountLogin.errorMessage': 'Incorrect username/password(admin/ant.design)',
@@ -34,8 +33,10 @@ export default {
   'pages.login.loginWith': 'Login with :',
   'pages.login.registerAccount': 'Register Account',
 
+  'pages.loading.title': 'Loading...',
   'pages.modal.commit.title': 'Confirm',
   'pages.logout.content': 'Are you sure logout？',
+  'pages.modify.passowrd.success': 'Modify success, Please use New pass login!',
   'pages.menu.user.account': 'Person Center',
 
   'pages.component.button.add': 'Add Component',
