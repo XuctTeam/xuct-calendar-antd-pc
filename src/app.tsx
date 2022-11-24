@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-18 08:37:03
+ * @LastEditTime: 2022-11-23 21:44:17
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -14,9 +14,17 @@ import sessionStore from '@/cache'
 import defaultSettings from '../config/defaultSettings'
 import { Settings as LayoutSettings } from '@ant-design/pro-components'
 import { userInfo } from '@/services/user'
+import 'antd/dist/reset.css'
 
 //const isDev = process.env.NODE_ENV === 'development'
 const loginPath = '/user/login'
+
+/**
+ * v5.0日期类国际化
+ */
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+dayjs.locale('zh-cn')
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -85,7 +93,7 @@ const responseInterceptors = (response: any): any => {
   if (!data) return response
   const { code, message } = data
   if (code !== 200) {
-    notification.warn({
+    notification.warning({
       message: 'message',
       description: message
     })
@@ -96,6 +104,7 @@ const responseInterceptors = (response: any): any => {
 const codeMessage: any = {
   400: 'code.message.bad.request',
   401: 'code.message.unauthorized',
+  424: 'code.message.token.expire',
   428: 'code.message.request.params.error',
   404: 'code.message.not.found',
   500: 'code.message.service.error',
@@ -149,7 +158,7 @@ const errorHandler = (error: any, opts: any) => {
 export const request: RequestConfig = {
   timeout: 3000, //请求超时时间
   baseURL: `${API_URL}`,
-  // prefix: process.env.NODE_ENV === "production" ? config.baseurl :'api/', // 统一的请求前缀
+  // prefix: process.env.NODE_ENV === "production" ? config.baseurl :'notification/', // 统一的请求前缀
 
   // 自定义端口规范(可以对后端返回的数据格式按照我们的需求进行处理)
   errorConfig: {

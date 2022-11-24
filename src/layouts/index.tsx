@@ -2,31 +2,28 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-22 09:28:28
+ * @LastEditTime: 2022-11-23 22:56:51
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\index.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { FC } from 'react'
-import { Outlet, useModel, history, Navigate } from 'umi'
-import Header from './Header'
+import { Outlet } from 'umi'
+import { Header, Loading } from '@/layouts/components'
 import { Layout as PageLoayout } from 'antd'
 import styles from './index.less'
+import { useState } from 'react'
 
-const loginPath = '/user/login'
-
-const Layout: FC = () => {
-  const { initialState } = useModel('@@initialState')
-  const { location } = history
-
-  if (!initialState?.currentUser && location.pathname !== loginPath) return <Navigate to='/user/login' />
-
+const Layout: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false)
   return (
-    <PageLoayout className={`${styles.layout}`}>
-      <Header />
-      <Outlet />
-    </PageLoayout>
+    <>
+      <PageLoayout className={`${styles.layout}`}>
+        <Header setLoading={setLoading} />
+        <Outlet />
+      </PageLoayout>
+      <Loading loading={loading}></Loading>
+    </>
   )
 }
 

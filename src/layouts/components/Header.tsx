@@ -2,21 +2,27 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-21 09:05:40
- * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\ui\Header.tsx
+ * @LastEditTime: 2022-11-24 09:36:23
+ * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\Header.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Header } from 'antd/lib/layout/layout'
 import { message, Space } from 'antd'
 import NoticeIcon from '@/components/NoticeIcon/NoticeIcon'
-import AvatarDropdown from '@/layouts/AvatarDropdown'
+import AvatarDropdown from './AvatarDropdown'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import styles from './header.less'
-import { SelectLang } from 'umi'
 
-const HeaderContainer: FC = () => {
+interface IPageOption {
+  setLoading: (loading: boolean) => void
+}
+
+const HeaderContainer: FC<IPageOption> = (props) => {
+  const { setLoading } = props
+  const [modalVisit, setModalVisit] = useState(false)
   const list = [
     {
       id: '000000001',
@@ -36,9 +42,17 @@ const HeaderContainer: FC = () => {
 
   return (
     <Header className={styles.header}>
-      <div>123123</div>
+      <div className={styles.left}>123123</div>
       <div className={styles.center}></div>
       <Space className={`${styles.right}`} size='middle'>
+        <span
+          className={styles.action}
+          onClick={() => {
+            window.open('https://pro.ant.design/docs/getting-started')
+          }}
+        >
+          <QuestionCircleOutlined />
+        </span>
         <NoticeIcon
           count={10}
           onItemClick={(item) => {
@@ -55,10 +69,7 @@ const HeaderContainer: FC = () => {
           <NoticeIcon.Tab tabKey='message' count={2} list={list} title='消息' emptyText='您已读完所有消息' showViewMore />
           <NoticeIcon.Tab tabKey='event' title='待办' emptyText='你已完成所有待办' count={2} list={list} showViewMore />
         </NoticeIcon>
-        <AvatarDropdown menu />
-        <div className={`${styles.lang}`} data-lang>
-          {SelectLang && <SelectLang />}
-        </div>
+        <AvatarDropdown menu modalVisit={modalVisit} setLoading={setLoading} setModalVisit={setModalVisit} />
       </Space>
     </Header>
   )

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 09:29:20
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 14:36:29
+ * @LastEditTime: 2022-11-23 20:26:58
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\codeMessage.ts
  * @Description:
  *
@@ -14,6 +14,7 @@ export default {
   'code.message.unauthorized': '访问权限错误',
   'code.message.request.params.error': '请求参数错误',
   'code.message.not.found': '请求参数错误',
+  'code.message.token.expire': '登录已过期',
   'code.message.service.error': '服务器异常',
   'code.message.getway.error': '网关错误',
   'code.message.server.maintain': '服务器暂时过载或维护。',

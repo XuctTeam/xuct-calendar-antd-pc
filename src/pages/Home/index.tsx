@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 10:02:17
+ * @LastEditTime: 2022-11-23 22:59:23
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -15,7 +15,7 @@ import { Button, Calendar } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { FormattedMessage, getLocale } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
-import moment from 'moment'
+import dayjs from 'dayjs'
 //import bootstrap5Plugin from '@fullcalendar/bootstrap5'
 import { ProCard } from '@ant-design/pro-components'
 import { ColoredCheckboxes, RightCalendar } from './components'
@@ -30,7 +30,6 @@ export default function HomePage() {
 
   useEffect(() => {
     setCenterHeight(calenarRefContent.current.offsetHeight - 20)
-    console.log(getLocale())
   }, [])
 
   // const select = (info: any) => {
@@ -40,7 +39,7 @@ export default function HomePage() {
 
   const fullCalendarDateClick = (info: any) => {
     console.log('dateClick')
-    setSelectDay(moment(info.date).format('YYYY-MM-DD'))
+    setSelectDay(dayjs(info.date).format('YYYY-MM-DD'))
   }
 
   const fullCalendarDayChage = (ty: any) => {
@@ -55,11 +54,11 @@ export default function HomePage() {
       case 2:
         api.today()
     }
-    const day = moment(api.getDate()).format('YYYY-MM-DD')
+    const day = dayjs(api.getDate()).format('YYYY-MM-DD')
     const selecteDay = selectDay
     setSelectDay(day)
     /** 判断是否是同一月 */
-    const sameMonth = moment(selecteDay).isSame(day, 'month')
+    const sameMonth = dayjs(selecteDay).isSame(day, 'month')
     if (sameMonth) return
   }
 
@@ -69,13 +68,13 @@ export default function HomePage() {
    */
   const antdCalendarSelect = (info: any) => {
     const api = calendarRef.current.getApi()
-    const day = moment(info).format('YYYY-MM-DD')
+    const day = dayjs(info).format('YYYY-MM-DD')
     const selecteDay = selectDay
     setSelectDay(day)
     api.gotoDate(day)
     api.select(day)
     /** 判断是否是同一月 */
-    const sameMonth = moment(selecteDay).isSame(day, 'month')
+    const sameMonth = dayjs(selecteDay).isSame(day, 'month')
     if (sameMonth) return
   }
 
@@ -86,7 +85,7 @@ export default function HomePage() {
           <FormattedMessage id='pages.component.button.add' />
         </Button>
         <ProCard hoverable bordered className={styles.calendar}>
-          <Calendar fullscreen={false} value={moment(selectDay)} onSelect={antdCalendarSelect} />
+          <Calendar fullscreen={false} value={dayjs(selectDay)} onSelect={antdCalendarSelect} />
         </ProCard>
 
         <ProCard
@@ -95,7 +94,7 @@ export default function HomePage() {
           bordered
           headerBordered
           className={styles.card}
-          extra={<Button type='primary' shape='round' icon={<PlusOutlined />} size='small' />}
+          extra={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />}
         >
           <div className={styles.body}>
             <ColoredCheckboxes color='#ee0a24' name='123'></ColoredCheckboxes>

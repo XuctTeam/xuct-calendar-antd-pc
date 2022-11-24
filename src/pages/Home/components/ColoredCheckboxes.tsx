@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:03
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 09:18:53
+ * @LastEditTime: 2022-11-23 22:32:03
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ColoredCheckboxes.tsx
  * @Description:
  *
@@ -86,7 +86,9 @@ const ColoredCheckboxes: FC<IPageOption> = (props) => {
         </Dropdown>
       </div>
       <div className={styles.checkbox}>
-        <Checkbox className={getColor()}>{name}</Checkbox>
+        <span className={getColor()}>
+          <Checkbox>{name}</Checkbox>
+        </span>
       </div>
     </div>
   )

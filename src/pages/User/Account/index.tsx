@@ -11,8 +11,8 @@
 import { ProCard } from '@ant-design/pro-components'
 import { EditOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Breadcrumb, Input, Tabs } from 'antd'
-import styles from './index.less'
 import { history } from 'umi'
+import styles from './index.less'
 
 const Account = () => {
   return (

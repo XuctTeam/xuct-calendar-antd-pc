@@ -2,8 +2,8 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 09:37:41
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 11:11:46
- * @FilePath: \xuct-calendar-antd-pc\src\services\calendar\login.ts
+ * @LastEditTime: 2022-11-23 18:28:57
+ * @FilePath: \xuct-calendar-antd-pc\src\services\login.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -34,6 +34,14 @@ export const sendLoginSmsCode = (phone: string) => {
     method: 'POST',
     data: { phone, type: 0 }
   })
+}
+
+/**
+ * 退出登录
+ * @returns
+ */
+export const logout = () => {
+  return request<API.Response>('/uaa/token/logout', { method: 'DELETE' })
 }
 
 const _loginByUsername = (body: API.LoginParams, options?: { [key: string]: any }) => {

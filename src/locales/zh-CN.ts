@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-18 16:20:17
+ * @LastEditTime: 2022-11-23 18:23:15
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN.ts
  * @Description:
  *
@@ -12,7 +12,6 @@ import globalHeader from './zh-CN/globalHeader'
 import pages from './zh-CN/pages'
 import pwa from './zh-CN/pwa'
 import settingDrawer from './zh-CN/settingDrawer'
-import settings from './zh-CN/settings'
 import codeMessage from './zh-CN/codeMessage'
 
 export default {
@@ -27,7 +26,6 @@ export default {
   ...pages,
   ...globalHeader,
   ...settingDrawer,
-  ...settings,
   ...pwa,
   ...codeMessage
 }
