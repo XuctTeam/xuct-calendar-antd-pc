@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 09:59:00
+ * @LastEditTime: 2022-11-25 17:04:49
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -13,7 +13,7 @@ import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { Button, Calendar } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import { FormattedMessage, getLocale } from 'umi'
+import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 //import bootstrap5Plugin from '@fullcalendar/bootstrap5'
@@ -21,16 +21,32 @@ import { ProCard } from '@ant-design/pro-components'
 import { ColoredCheckboxes, RightCalendar } from './components'
 import styles from './index.less'
 
-export default function HomePage() {
+const HomePage = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [centerHeight, setCenterHeight] = useState<number>(300)
   const calenarRefContent = useRef<any>()
   const calendarRef = React.createRef<any>()
   const [selectDay, setSelectDay] = useState<any>()
 
+  // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
+  const { dataView, lunarView } = useSelector(function (state: any) {
+    return state.system
+  })
   useEffect(() => {
+    /* 更新calendar高度 */
     setCenterHeight(calenarRefContent.current.offsetHeight - 20)
+    // 页面变化时获取浏览器窗口的大小
+    window.addEventListener('resize', resizeUpdate)
+    return () => {
+      // 组件销毁时移除监听事件
+      window.removeEventListener('resize', resizeUpdate)
+    }
   }, [])
+
+  const resizeUpdate = () => {
+    // 通过事件对象获取浏览器窗口的高度
+    setCenterHeight(calenarRefContent.current.offsetHeight - 20)
+  }
 
   // const select = (info: any) => {
   //   console.log('select')
@@ -108,6 +124,8 @@ export default function HomePage() {
             ref={calendarRef}
             selectDay={selectDay}
             centerHeight={centerHeight}
+            dataView={dataView}
+            lunarView={lunarView}
             fullCalendarDateClick={fullCalendarDateClick}
             fullCalendarDayChage={fullCalendarDayChage}
           ></RightCalendar>
@@ -116,3 +134,12 @@ export default function HomePage() {
     </Content>
   )
 }
+
+export default connect(
+  ({ system }: any) => {
+    return system
+  },
+  (dispatch: any) => {
+    return { dispatch }
+  }
+)(HomePage)

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 11:02:00
+ * @LastEditTime: 2022-11-25 17:40:13
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -37,10 +37,20 @@ export default {
   'pages.modal.commit.title': '提示',
   'pages.logout.content': '确定退出登录吗？',
   'pages.modify.passowrd.success': '修改成功，请用新密码登录',
-  'pages.menu.user.account': '个人中心',
+  'pages.person.center.menu': '个人中心',
+  'pages.person.center.upload.avatar': '上传头像',
+  'pages.person.center.userinfo': '我的信息',
+  'pages.person.center.info.detail': '详细信息',
+  'pages.person.center.setting': '设置',
+  'pages.person.center.system.setting': '系统设置',
+  'pages.person.center.lanuage.title': '语言',
+  'pages.person.center.week.start': '每周开始于',
+  'pages.person.center.week.monday': '周一',
+  'pages.person.center.week.sunday': '周日',
+  'pages.person.center.calednar.setting':'日历设置',
 
   'pages.component.button.add': '创建日程',
-  'page.calendar.manager.title': '日历管理',
+  'page.calendar.manager.title': '日历',
   'page.calendar.manager.button': '新增',
   'pages.calendar.today.button': '今日'
 }

@@ -9,8 +9,8 @@
     "start": "cross-env UMI_ENV=dev COMPRESS=none umi dev"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "@ant-design/pro-components": "^2.3.33",
+    "@ant-design/icons": "^4.8.0",
+    "@ant-design/pro-components": "^2.3.35",
     "@fullcalendar/bootstrap5": "^5.11.3",
     "@fullcalendar/core": "^5.11.3",
     "@fullcalendar/daygrid": "^5.11.3",

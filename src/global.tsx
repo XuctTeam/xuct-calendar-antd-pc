@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 10:17:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 10:18:34
+ * @LastEditTime: 2022-11-25 17:14:21
  * @FilePath: \xuct-calendar-antd-pc\src\global.tsx
  * @Description:
  *
@@ -68,7 +68,7 @@ if (pwa) {
       <Button
         type='primary'
         onClick={() => {
-          notification.close(key)
+          notification.destroy(key)
           reloadSW()
         }}
       >

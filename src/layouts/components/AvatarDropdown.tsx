@@ -79,7 +79,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
-        quiteLogin()
+        quitLogin()
       }
     })
   }

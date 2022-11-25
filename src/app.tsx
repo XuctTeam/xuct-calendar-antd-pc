@@ -2,29 +2,33 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 21:44:17
+ * @LastEditTime: 2022-11-25 17:27:15
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { notification } from 'antd'
-import { RequestConfig, history, getIntl } from 'umi'
+import { ConfigProvider, notification } from 'antd'
+import { RequestConfig, history, getIntl, getLocale } from 'umi'
 import { SECURITY_OAUTH2_IGNORE_URL } from '@/constants/url'
-import sessionStore from '@/cache'
+import store from '@/cache'
 import defaultSettings from '../config/defaultSettings'
 import { Settings as LayoutSettings } from '@ant-design/pro-components'
 import { userInfo } from '@/services/user'
 import 'antd/dist/reset.css'
-
-//const isDev = process.env.NODE_ENV === 'development'
-const loginPath = '/user/login'
 
 /**
  * v5.0日期类国际化
  */
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
-dayjs.locale('zh-cn')
+import 'dayjs/locale/en'
+import updateLocale from 'dayjs/plugin/updateLocale'
+import React from 'react'
+import { getDayJsLocal, isChinese } from './utils/calendar'
+dayjs.extend(updateLocale)
+
+//const isDev = process.env.NODE_ENV === 'development'
+const loginPath = '/user/login'
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -42,8 +46,8 @@ export async function getInitialState(): Promise<{
     } catch (error) {
       console.log(error)
       //清除登录缓存
-      sessionStore.removeItem('access_token')
-      sessionStore.removeItem('refresh_token')
+      store.removeItem('access_token')
+      store.removeItem('refresh_token')
       history.push(loginPath)
     }
     return undefined
@@ -63,19 +67,13 @@ export async function getInitialState(): Promise<{
   }
 }
 
-/**
- * @name request 配置，可以配置错误处理
- * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
- * @doc https://umijs.org/docs/max/request#配置
- */
-
 /** 请求拦截 */
 const requestInterceptor = (url: any, options: any): any => {
   const match = SECURITY_OAUTH2_IGNORE_URL.some((item) => url.indexOf(item) > -1)
   if (!match) {
     /* 非登录接口都要通过token请求 */
     if (!url.includes('/oauth2/token')) {
-      options.headers['Authorization'] = sessionStore.getItem('access_token')
+      options.headers['Authorization'] = store.getItem('access_token')
     } else {
       options.headers['Authorization'] = 'Basic ' + `${APP_CLIENT}`
     }
@@ -154,7 +152,11 @@ const errorHandler = (error: any, opts: any) => {
   return response
 }
 
-// request运行时配置
+/**
+ * @name request 配置，可以配置错误处理
+ * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
+ * @doc https://umijs.org/docs/max/request#配置
+ */
 export const request: RequestConfig = {
   timeout: 3000, //请求超时时间
   baseURL: `${API_URL}`,
@@ -168,4 +170,23 @@ export const request: RequestConfig = {
   //请求错误处理
   requestInterceptors: [requestInterceptor], //请求拦截
   responseInterceptors: [responseInterceptors] //响应拦截
+}
+
+/**
+ * @name rootContainer 配置
+ * 修改交给 react-dom 渲染时的根组件
+ * @doc https://umijs.org/docs/max/request#配置
+ */
+export const rootContainer = (container: any) => {
+  const dataView = store.localGetItem('data_view') || '0'
+  if (isChinese()) {
+    if (dataView === '0') {
+      dayjs.updateLocale(getDayJsLocal(), { weekStart: Number.parseInt(dataView) })
+    }
+  } else {
+    if (dataView === '1') {
+      dayjs.updateLocale(getDayJsLocal(), { weekStart: Number.parseInt(dataView) })
+    }
+  }
+  return React.createElement(ConfigProvider, null, container)
 }

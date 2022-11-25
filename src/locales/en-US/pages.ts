@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 11:02:37
+ * @LastEditTime: 2022-11-25 17:40:21
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -37,10 +37,20 @@ export default {
   'pages.modal.commit.title': 'Confirm',
   'pages.logout.content': 'Are you sure logout？',
   'pages.modify.passowrd.success': 'Modify success, Please use New pass login!',
-  'pages.menu.user.account': 'Person Center',
+  'pages.person.center.menu': 'Person Center',
+  'pages.person.center.upload.avatar': 'Upload Avatar',
+  'pages.person.center.userinfo': 'UserInfo',
+  'pages.person.center.info.detail': 'Detail',
+  'pages.person.center.setting': 'Settting',
+  'pages.person.center.system.setting': 'System Set',
+  'pages.person.center.lanuage.title': 'Lanuage',
+  'pages.person.center.week.start': 'The Week start of day',
+  'pages.person.center.week.monday': 'Mon',
+  'pages.person.center.week.sunday': 'Sun',
+  'pages.person.center.calednar.setting':'Calendar Set',
 
   'pages.component.button.add': 'Add Component',
-  'page.calendar.manager.title': 'Calendar Manager',
+  'page.calendar.manager.title': 'Calendar',
   'page.calendar.manager.button': 'Add',
   'pages.calendar.today.button': 'Today'
 }

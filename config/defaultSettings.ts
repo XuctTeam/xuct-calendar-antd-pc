@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 11:05:29
+ * @LastEditTime: 2022-11-25 17:13:57
  * @FilePath: \xuct-calendar-antd-pc\config\defaultSettings.ts
  * @Description:
  *
@@ -26,7 +26,7 @@ const Settings: LayoutSettings & {
   fixSiderbar: true,
   colorWeak: false,
   title: 'Ant Design Pro',
-  pwa: false,
+  pwa: true,
   logo: 'https://images.xuct.net.cn/group1/M00/00/00/CgAQDGNQu-mAclO8AAG2mZwIlII892_big.png',
   iconfontUrl: ''
 }

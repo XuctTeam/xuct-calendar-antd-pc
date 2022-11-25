@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 10:08:25
+ * @LastEditTime: 2022-11-25 18:34:10
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -14,19 +14,23 @@ import React from 'react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { lunarDay } from '@/utils/calendar'
+import { isChinese, lunarDay } from '@/utils/calendar'
 import zhCncale from '@fullcalendar/core/locales/zh-cn'
-import { getIntl, getLocale } from 'umi'
+import { getIntl } from 'umi'
+import { getEnglishWeek } from '@/utils/calendar'
+import dayjs from 'dayjs'
 
 interface IPageOption {
   centerHeight: number
   selectDay: string
+  dataView: string
+  lunarView: string
   fullCalendarDayChage: (ty: number) => void
   fullCalendarDateClick: (data: any) => void
 }
 
 const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
-  const { centerHeight, selectDay } = props
+  const { centerHeight, selectDay, dataView, lunarView } = props
   const { fullCalendarDayChage, fullCalendarDateClick } = props
   const calendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -39,24 +43,20 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
       right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
     views: {
-      //对应月视图
       dayGridMonth: {
-        displayEventTime: false, //是否显示时间
+        displayEventTime: false, //是否显示时间，
         dayCellContent(item: any) {
-          let _dateF = lunarDay(item.date)
-          return { html: `<p><label>${_dateF.cDay}</label><span>${_dateF.dayCn}</span></p>` }
+          return dayCellContent(item)
         }
       },
       timeGridWeek: {
         dayHeaderContent(item: any) {
-          let _dateF = lunarDay(item.date)
-          return { html: `<label>${_dateF.ncWeek}</label><br/><label>${_dateF.cDay}</label><span>${_dateF.dayCn}</span>` }
+          return dayHeaderContent(item)
         }
       },
       timeGridDay: {
         dayHeaderContent(item: any) {
-          let _dateF = lunarDay(item.date)
-          return { html: `<label>${_dateF.ncWeek}</label><br/><label>${_dateF.cDay}</label><span>${_dateF.dayCn}</span>` }
+          return dayHeaderContent(item)
         }
       }
     },
@@ -80,6 +80,22 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
     }
   }
 
+  const dayCellContent = (item: any) => {
+    let _dateF = lunarDay(item.date)
+    return {
+      html: lunarView === '1' ? `<p><label>${_dateF.cDay}</label><span>${_dateF.dayCn}</span></p>` : `<p><label>${_dateF.cDay}</label></p>`
+    }
+  }
+
+  const dayHeaderContent = (item: any) => {
+    if (lunarView === '0') {
+      const _dayjs = dayjs(item.date)
+      return { html: `<label>${_dayjs.date()}</label></br><span>${getEnglishWeek(_dayjs.day())}</span>` }
+    }
+    let _dateF = lunarDay(item.date)
+    return { html: `<label>${_dateF.cDay}</label><span>${_dateF.dayCn}</span><br/><label>${_dateF.ncWeek}</label>` }
+  }
+
   return (
     <FullCalendar
       ref={ref}
@@ -88,8 +104,9 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
       // select={select}
       dateClick={fullCalendarDateClick}
       initialDate={selectDay}
-      locale={getLocale() === 'zh-CN' ? zhCncale : ''}
+      locale={isChinese() ? zhCncale : ''}
       customButtons={getFullCustomButtons()}
+      firstDay={Number.parseInt(dataView)}
     />
   )
 })
