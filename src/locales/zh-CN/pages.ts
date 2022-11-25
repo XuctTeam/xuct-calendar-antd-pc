@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-25 17:40:13
+ * @LastEditTime: 2022-11-25 20:05:09
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -41,8 +41,14 @@ export default {
   'pages.person.center.upload.avatar': '上传头像',
   'pages.person.center.userinfo': '我的信息',
   'pages.person.center.info.detail': '详细信息',
+  'pages.person.center.name.label': '姓名',
+  'pages.person.center.username.label': '账号',
+  'pages.person.center.phone.label': '电话',
+  'pages.person.center.email.label': '邮箱',
+  'pages.person.center.wx.label': '微信',
   'pages.person.center.setting': '设置',
-  'pages.person.center.system.setting': '系统设置',
+  'pages.person.center.group.tab': '群组管理',
+  'pages.person.center.system.tab': '系统设置',
   'pages.person.center.lanuage.title': '语言',
   'pages.person.center.week.start': '每周开始于',
   'pages.person.center.week.monday': '周一',

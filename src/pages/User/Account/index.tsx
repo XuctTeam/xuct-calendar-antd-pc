@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 11:21:04
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 20:20:31
+ * @LastEditTime: 2022-11-25 20:05:28
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\index.tsx
  * @Description:
  *
@@ -12,7 +12,7 @@ import { ProCard } from '@ant-design/pro-components'
 import { EditOutlined, HomeOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Breadcrumb, Button, Input, message, Tabs, Upload, UploadProps } from 'antd'
 import { FormattedMessage, history, useModel } from 'umi'
-import { SystemSetting } from './components'
+import { GroupManager, SystemSetting } from './components'
 import styles from './index.less'
 
 const Account = () => {
@@ -73,34 +73,44 @@ const Account = () => {
                 <UserOutlined /> <span>{<FormattedMessage id='pages.person.center.info.detail' />}</span>
               </div>
               <div className={styles.cell}>
-                <span>姓名</span>
+                <span>
+                  <FormattedMessage id='pages.person.center.name.label' />
+                </span>
                 <div className={styles.input}>
                   <Input placeholder='Basic usage' value={currentUser?.member.name} />
                   <EditOutlined />
                 </div>
               </div>
               <div className={styles.cell}>
-                <span>账号</span>
+                <span>
+                  <FormattedMessage id='pages.person.center.username.label' />
+                </span>
                 <div className={styles.input}>
                   <Input placeholder='Basic usage' value={11} disabled />
                 </div>
               </div>
               <div className={styles.cell}>
-                <span>电话</span>
+                <span>
+                  <FormattedMessage id='pages.person.center.phone.label' />
+                </span>
                 <div className={styles.input}>
                   <Input placeholder='Basic usage' value={11} disabled />
                   <EditOutlined />
                 </div>
               </div>
               <div className={styles.cell}>
-                <span>邮箱</span>
+                <span>
+                  <FormattedMessage id='pages.person.center.email.label' />
+                </span>
                 <div className={styles.input}>
                   <Input placeholder='Basic usage' />
                   <EditOutlined />
                 </div>
               </div>
               <div className={styles.cell}>
-                <span>微信名称</span>
+                <span>
+                  <FormattedMessage id='pages.person.center.wx.label' />
+                </span>
                 <div className={styles.input}>
                   <Input placeholder='Basic usage' />
                   <EditOutlined />
@@ -117,14 +127,14 @@ const Account = () => {
               defaultActiveKey='1'
               items={[
                 {
-                  label: <FormattedMessage id='pages.person.center.system.setting' />,
+                  label: <FormattedMessage id='pages.person.center.group.tab' />,
                   key: '1',
-                  children: <SystemSetting />
+                  children: <GroupManager />
                 },
                 {
-                  label: `Tab 2`,
+                  label: <FormattedMessage id='pages.person.center.system.tab' />,
                   key: '2',
-                  children: `Content of Tab Pane 2`
+                  children: <SystemSetting />
                 },
                 {
                   label: `Tab 3`,

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-25 18:34:10
+ * @LastEditTime: 2022-11-25 19:42:20
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -32,6 +32,8 @@ interface IPageOption {
 const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   const { centerHeight, selectDay, dataView, lunarView } = props
   const { fullCalendarDayChage, fullCalendarDateClick } = props
+  const disableLunarView = !isChinese() || lunarView === '0'
+
   const calendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
     headerToolbar: {
@@ -81,14 +83,16 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   }
 
   const dayCellContent = (item: any) => {
-    let _dateF = lunarDay(item.date)
-    return {
-      html: lunarView === '1' ? `<p><label>${_dateF.cDay}</label><span>${_dateF.dayCn}</span></p>` : `<p><label>${_dateF.cDay}</label></p>`
+    if (disableLunarView) {
+      const _dayjs = dayjs(item.date)
+      return { html: `<p><label>${_dayjs.date()}</label></p>` }
     }
+    let _dateF = lunarDay(item.date)
+    return { html: `<p><label>${_dateF.cDay}</label><span>${_dateF.dayCn}</span></p>` }
   }
 
   const dayHeaderContent = (item: any) => {
-    if (lunarView === '0') {
+    if (disableLunarView) {
       const _dayjs = dayjs(item.date)
       return { html: `<label>${_dayjs.date()}</label></br><span>${getEnglishWeek(_dayjs.day())}</span>` }
     }

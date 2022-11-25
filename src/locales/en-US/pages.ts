@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-25 17:40:21
+ * @LastEditTime: 2022-11-25 20:06:23
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -41,8 +41,14 @@ export default {
   'pages.person.center.upload.avatar': 'Upload Avatar',
   'pages.person.center.userinfo': 'UserInfo',
   'pages.person.center.info.detail': 'Detail',
+  'pages.person.center.name.label': 'Name',
+  'pages.person.center.username.label': 'Account',
+  'pages.person.center.phone.label': 'Phone',
+  'pages.person.center.email.label': 'Email',
+  'pages.person.center.wx.label': 'Wechat',
   'pages.person.center.setting': 'Settting',
-  'pages.person.center.system.setting': 'System Set',
+  'pages.person.center.group.tab': 'Group Manage',
+  'pages.person.center.system.tab': 'System Set',
   'pages.person.center.lanuage.title': 'Lanuage',
   'pages.person.center.week.start': 'The Week start of day',
   'pages.person.center.week.monday': 'Mon',
