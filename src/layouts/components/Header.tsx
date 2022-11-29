@@ -2,18 +2,18 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-28 16:59:07
+ * @LastEditTime: 2022-11-29 22:22:08
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\Header.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { FC, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Header } from 'antd/lib/layout/layout'
-import { message, Space } from 'antd'
-import NoticeIcon from '@/components/NoticeIcon/NoticeIcon'
+import { Menu } from 'antd'
 import AvatarDropdown from './AvatarDropdown'
-import { QuestionCircleOutlined, TeamOutlined } from '@ant-design/icons'
+import { getIntl, history, getLocale } from 'umi'
+import { HomeOutlined, SettingOutlined, UsergroupDeleteOutlined } from '@ant-design/icons'
 import styles from './header.less'
 
 interface IPageOption {
@@ -23,6 +23,16 @@ interface IPageOption {
 const HeaderContainer: FC<IPageOption> = (props) => {
   const { setLoading } = props
   const [modalVisit, setModalVisit] = useState(false)
+  const [items, setItems] = useState<any[]>()
+
+  useEffect(() => {
+    setItems([
+      { icon: <HomeOutlined />, label: getIntl().formatMessage({ id: 'component.globalHeader.menu.home' }), key: 'home' }, // 菜单项务必填写 key
+      { icon: <UsergroupDeleteOutlined />, label: getIntl().formatMessage({ id: 'component.globalHeader.menu.group' }), key: 'group' },
+      { icon: <SettingOutlined />, label: getIntl().formatMessage({ id: 'component.globalHeader.menu.person' }), key: 'center' }
+    ])
+  }, [getLocale()])
+
   const list = [
     {
       id: '000000001',
@@ -40,37 +50,26 @@ const HeaderContainer: FC<IPageOption> = (props) => {
     }
   ]
 
+  const menuClick = (item: any) => {
+    const { key } = item
+    let pathname = '/home'
+    switch (key) {
+      case 'center':
+        pathname = '/account'
+        break
+    }
+    history.push({
+      pathname
+    })
+  }
+
   return (
     <Header className={styles.header}>
-      <div className={styles.left}>123123</div>
-      <div className={styles.center}></div>
-      <Space className={`${styles.right}`} size='middle'>
-        <span
-          className={styles.action}
-          onClick={() => {
-            window.open('https://pro.ant.design/docs/getting-started')
-          }}
-        >
-          <TeamOutlined style={{ color: '#fff' }} />
-        </span>
-        <NoticeIcon
-          count={10}
-          onItemClick={(item) => {
-            message.info(`${item.title} 被点击了`)
-          }}
-          onClear={(title: string, key: string) => message.info('点击了清空更多')}
-          loading={false}
-          clearText='清空'
-          viewMoreText='查看更多'
-          onViewMore={() => message.info('点击了查看更多')}
-          clearClose
-        >
-          <NoticeIcon.Tab tabKey='notification' count={2} list={list} title='通知' emptyText='你已查看所有通知' showViewMore />
-          <NoticeIcon.Tab tabKey='message' count={2} list={list} title='消息' emptyText='您已读完所有消息' showViewMore />
-          <NoticeIcon.Tab tabKey='event' title='待办' emptyText='你已完成所有待办' count={2} list={list} showViewMore />
-        </NoticeIcon>
+      <div className='logo'>123123</div>
+      <div className={styles.right}>
+        <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['home']} items={items} onClick={menuClick} />
         <AvatarDropdown menu modalVisit={modalVisit} setLoading={setLoading} setModalVisit={setModalVisit} />
-      </Space>
+      </div>
     </Header>
   )
 }

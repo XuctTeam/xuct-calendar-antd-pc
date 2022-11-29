@@ -1,3 +1,12 @@
+/*
+ * @Author: Derek Xu
+ * @Date: 2022-11-16 22:19:54
+ * @LastEditors: Derek Xu
+ * @LastEditTime: 2022-11-29 21:36:28
+ * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\globalHeader.ts
+ * @Description: 
+ * Copyright (c) 2022 by 楚恬商行, All Rights Reserved. 
+ */
 export default {
   'component.globalHeader.search': '站内搜索',
   'component.globalHeader.search.example1': '搜索提示一',
@@ -5,6 +14,13 @@ export default {
   'component.globalHeader.search.example3': '搜索提示三',
   'component.globalHeader.help': '使用文档',
   'component.globalHeader.notification': '通知',
+
+  'component.globalHeader.menu.home': '首页',
+  'component.globalHeader.menu.group': '群组',
+  'component.globalHeader.menu.person': '个人中心',
+  'component.globalHeader.modify.password': '修改密码',
+  'component.globalHeader.logout': '退出登录',
+
   'component.globalHeader.notification.empty': '你已查看所有通知',
   'component.globalHeader.message': '消息',
   'component.globalHeader.message.empty': '您已读完所有消息',

@@ -26,14 +26,9 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
     ...(menu
       ? [
           {
-            key: 'center',
-            icon: <UserOutlined />,
-            label: '个人中心'
-          },
-          {
             key: 'settings',
             icon: <EditOutlined />,
-            label: '修改密码'
+            label: getIntl().formatMessage({ id: 'component.globalHeader.modify.password' })
           },
           {
             type: 'divider' as const
@@ -43,7 +38,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: '退出登录'
+      label: getIntl().formatMessage({ id: 'component.globalHeader.logout' })
     }
   ]
 
@@ -52,12 +47,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
       const { key } = event
       if (key === 'logout') {
         loginOut()
-        return
-      }
-      if (key === 'center') {
-        history.push({
-          pathname: '/account'
-        })
         return
       }
       setModalVisit(true)

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 17:48:57
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-28 17:02:55
+ * @LastEditTime: 2022-11-29 17:05:09
  * @FilePath: \xuct-calendar-antd-pc\src\components\HeaderDropdown\index.tsx
  * @Description:
  *
@@ -21,9 +21,7 @@ export type HeaderDropdownProps = {
 } & Omit<DropDownProps, 'overlay'>
 
 const HeaderDropdown: React.FC<HeaderDropdownProps> = ({ overlayClassName: cls, ...restProps }) => {
-  return (
-    <Dropdown arrow overlayClassName={classNames(styles.container, cls)} getPopupContainer={(target) => target.parentElement || document.body} {...restProps} />
-  )
+  return <Dropdown overlayClassName={classNames(styles.container, cls)} getPopupContainer={(target) => target.parentElement || document.body} {...restProps} />
 }
 
 export default HeaderDropdown
