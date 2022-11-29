@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 15:54:11
+ * @LastEditTime: 2022-11-28 16:59:07
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\Header.tsx
  * @Description:
  *
@@ -13,7 +13,7 @@ import { Header } from 'antd/lib/layout/layout'
 import { message, Space } from 'antd'
 import NoticeIcon from '@/components/NoticeIcon/NoticeIcon'
 import AvatarDropdown from './AvatarDropdown'
-import { QuestionCircleOutlined } from '@ant-design/icons'
+import { QuestionCircleOutlined, TeamOutlined } from '@ant-design/icons'
 import styles from './header.less'
 
 interface IPageOption {
@@ -51,7 +51,7 @@ const HeaderContainer: FC<IPageOption> = (props) => {
             window.open('https://pro.ant.design/docs/getting-started')
           }}
         >
-          <QuestionCircleOutlined />
+          <TeamOutlined style={{ color: '#fff' }} />
         </span>
         <NoticeIcon
           count={10}
