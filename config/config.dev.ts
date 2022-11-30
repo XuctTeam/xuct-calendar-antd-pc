@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 14:55:59
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-22 21:56:49
+ * @LastEditTime: 2022-11-30 17:09:19
  * @FilePath: \xuct-calendar-antd-pc\config\config.dev.ts
  * @Description:
  *
@@ -17,6 +17,7 @@ import { defineConfig } from 'umi'
 export default defineConfig({
   define: {
     APP_CLIENT: 'YXBwOmFwcA==',
-    API_URL: '/rest' // API地址
+    API_URL: '/rest', // API地址
+    IMAGE_URL: 'https://images.xuct.net.cn/'
   }
 })

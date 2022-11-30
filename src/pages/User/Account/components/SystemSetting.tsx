@@ -1,8 +1,8 @@
 /*
  * @Author: Derek Xu
  * @Date: 2022-11-24 19:49:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-11-30 11:00:55
+ * @LastEditors: Derek Xu
+ * @LastEditTime: 2022-11-30 15:49:19
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\SystemSetting.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -44,7 +44,7 @@ const CalendarSetting = (props: any) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles.setting}`}>
       <Card>
         <Row>
           <Col span={12}>

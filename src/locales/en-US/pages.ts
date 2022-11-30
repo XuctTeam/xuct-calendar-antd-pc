@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-25 20:06:23
+ * @LastEditTime: 2022-11-30 20:26:26
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -48,12 +48,21 @@ export default {
   'pages.person.center.wx.label': 'Wechat',
   'pages.person.center.setting': 'Settting',
   'pages.person.center.userinfo.tab': 'UserInfo',
+  'pages.person.center.userinfo.password.label': 'Password',
+  'pages.person.center.userinfo.name.label': 'Name',
+  'pages.person.center.userinfo.username.label': 'Username',
+  'pages.person.center.userinfo.phone.label': 'Phone',
+  'pages.person.center.userinfo.email.label': 'Email',
+  'pages.person.center.userinfo.last.login.label': 'Last Login Time',
+  'pages.person.center.userinfo.security.title': 'Security Settings',
+  'pages.person.center.userinfo.modify.password.title': 'ModifyPassword',
+  'pages.person.center.userinfo.password.desc.first': 'A secure password makes an account more secure',
+  'pages.person.center.userinfo.password.desc.second': 'You are advised to change your password periodically. Set a password that contains 8 to 26 letters, digits, and special symbols',
   'pages.person.center.system.tab': 'SystemSet',
   'pages.person.center.lanuage.title': 'Lanuage',
   'pages.person.center.week.start': 'The Week start of day',
   'pages.person.center.week.monday': 'Mon',
   'pages.person.center.week.sunday': 'Sun',
-  'pages.person.center.calednar.setting':'Calendar Set',
 
   'pages.component.button.add': 'Add Component',
   'page.calendar.manager.title': 'Calendar',

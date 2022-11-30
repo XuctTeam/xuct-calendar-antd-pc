@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 20:15:02
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 23:26:32
+ * @LastEditTime: 2022-11-30 17:08:45
  * @FilePath: \xuct-calendar-antd-pc\src\typings.d.ts
  * @Description: 
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved. 
@@ -36,3 +36,4 @@ declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false
 // 以下变量声明对应config.[env].ts文件内define的变量
 declare const API_URL: string
 declare const APP_CLIENT: string
+declare const IMAGE_URL: string

@@ -2,8 +2,8 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 16:52:13
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 11:29:28
- * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\ModifyPassword.tsx
+ * @LastEditTime: 2022-11-30 20:58:49
+ * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\ModifyPassword.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -18,11 +18,10 @@ import { updatePassword } from '@/services/user'
 interface IPageOption {
   modalVisit: boolean
   setModalVisit: (visit: boolean) => void
-  quitLogin: () => void
 }
 
 const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
-  const { modalVisit, setModalVisit, quitLogin } = props
+  const { modalVisit, setModalVisit } = props
   const formRef = useRef<ProFormInstance>()
 
   const isPasswordValidate = (value: any, callback: any, ty: number) => {
@@ -53,9 +52,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
           await updatePassword(password)
           message.warning(getIntl().formatMessage({ id: 'pages.modify.passowrd.success' }))
           formRef?.current?.resetFields()
-          window.setTimeout(() => {
-            quitLogin()
-          }, 3000)
+          setModalVisit(false)
           return true
         }}
         onOpenChange={setModalVisit}

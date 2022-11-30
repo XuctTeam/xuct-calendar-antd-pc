@@ -1,4 +1,13 @@
-import { EditOutlined, ExclamationCircleOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
+/*
+ * @Author: Derek Xu
+ * @Date: 2022-11-24 14:07:32
+ * @LastEditors: Derek Xu
+ * @LastEditTime: 2022-11-30 20:53:54
+ * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\AvatarDropdown.tsx
+ * @Description:
+ * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
+ */
+import { ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons'
 import { getIntl, history, useModel } from 'umi'
 import { Avatar, Menu, Modal } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
@@ -6,35 +15,20 @@ import type { MenuInfo } from 'rc-menu/lib/interface'
 import React, { useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import HeaderDropdown from '@/components/HeaderDropdown'
-import ModifyPassword from './ModifyPassword'
 import { logout } from '@/services/login'
 import { stringify } from 'qs'
 import styles from './avatar.less'
 
 export type GlobalHeaderRightProps = {
   menu?: boolean
-  modalVisit: boolean
-  setModalVisit: (visit: boolean) => void
   setLoading: (loading: boolean) => void
 }
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
+  const { setLoading } = props
   const { initialState, setInitialState } = useModel('@@initialState')
-  const { menu, modalVisit, setModalVisit, setLoading } = props
   const { currentUser } = initialState || { currentUser: null }
   const menuItems: ItemType[] = [
-    ...(menu
-      ? [
-          {
-            key: 'settings',
-            icon: <EditOutlined />,
-            label: getIntl().formatMessage({ id: 'component.globalHeader.modify.password' })
-          },
-          {
-            type: 'divider' as const
-          }
-        ]
-      : []),
     {
       key: 'logout',
       icon: <LogoutOutlined />,
@@ -49,7 +43,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
         loginOut()
         return
       }
-      setModalVisit(true)
     },
     [setInitialState]
   )
@@ -78,8 +71,8 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
     try {
       await logout()
     } catch (err) {
-      setLoading(false)
       console.log(err)
+      setLoading(false)
       return
     }
     setLoading(false)
@@ -111,7 +104,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
           <span className={`${styles.name}`}>欢迎您：{currentUser.member.name}</span>
         </span>
       </HeaderDropdown>
-      <ModifyPassword modalVisit={modalVisit} setModalVisit={setModalVisit} quitLogin={quitLogin} />
     </>
   )
 }
