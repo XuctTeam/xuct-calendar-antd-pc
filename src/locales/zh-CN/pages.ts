@@ -47,7 +47,7 @@ export default {
   'pages.person.center.email.label': '邮箱',
   'pages.person.center.wx.label': '微信',
   'pages.person.center.setting': '设置',
-  'pages.person.center.group.tab': '群组管理',
+  'pages.person.center.userinfo.tab': '基础信息',
   'pages.person.center.system.tab': '系统设置',
   'pages.person.center.lanuage.title': '语言',
   'pages.person.center.week.start': '每周开始于',

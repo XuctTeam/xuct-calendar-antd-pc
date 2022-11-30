@@ -1,5 +1,7 @@
 .container {
   padding: 30px;
+  width: 100%;
+  height: 100%;
 }
 
 .cell {
@@ -12,18 +14,28 @@
   }
 }
 
-.group {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  overflow: hidden;
+.userinfo {
+  padding: 30px;
 
-  .left {
-    width: 400px;
-    overflow-y: auto;
+  .avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button {
+      margin-top: 10px;
+    }
   }
 
-  .right {
-    flex: 1;
+  .cell {
+    border: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    line-height: 40px;
+
+    > div:first-child {
+      margin-right: 10px;
+    }
   }
 }
