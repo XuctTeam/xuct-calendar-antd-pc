@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-30 21:01:16
+ * @LastEditTime: 2022-12-01 22:43:42
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\Header.tsx
  * @Description:
  *
@@ -12,7 +12,7 @@ import { FC, useEffect, useState } from 'react'
 import { Header } from 'antd/lib/layout/layout'
 import { Menu } from 'antd'
 import AvatarDropdown from './AvatarDropdown'
-import { getIntl, history } from 'umi'
+import { FormattedMessage, getIntl, history } from 'umi'
 import { HomeOutlined, SettingOutlined, UsergroupDeleteOutlined } from '@ant-design/icons'
 import styles from './header.less'
 
@@ -54,9 +54,13 @@ const HeaderContainer: FC<IPageOption> = (props) => {
           mode='horizontal'
           selectedKeys={menuKey}
           items={[
-            { icon: <HomeOutlined />, label: getIntl().formatMessage({ id: 'component.globalHeader.menu.home' }), key: 'home' }, // 菜单项务必填写 key
-            { icon: <UsergroupDeleteOutlined />, label: getIntl().formatMessage({ id: 'component.globalHeader.menu.group' }), key: 'group' },
-            { icon: <SettingOutlined />, label: getIntl().formatMessage({ id: 'component.globalHeader.menu.person' }), key: 'center' }
+            {
+              icon: <HomeOutlined />,
+              label: <FormattedMessage id='component.globalHeader.menu.home' />,
+              key: 'home'
+            }, // 菜单项务必填写 key
+            { icon: <UsergroupDeleteOutlined />, label: <FormattedMessage id='component.globalHeader.menu.group' />, key: 'group' },
+            { icon: <SettingOutlined />, label: <FormattedMessage id='component.globalHeader.menu.person' />, key: 'center' }
           ]}
           onClick={menuClick}
         />

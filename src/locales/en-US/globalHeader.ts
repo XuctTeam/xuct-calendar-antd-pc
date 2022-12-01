@@ -2,10 +2,10 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:19:54
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-29 21:36:39
+ * @LastEditTime: 2022-12-01 22:47:01
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\globalHeader.ts
- * @Description: 
- * Copyright (c) 2022 by 楚恬商行, All Rights Reserved. 
+ * @Description:
+ * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 export default {
   'component.globalHeader.search': 'Search',
@@ -15,6 +15,7 @@ export default {
   'component.globalHeader.help': 'Help',
   'component.globalHeader.notification': 'Notification',
 
+  'component.globalHeader.welcome': 'Welcome',
   'component.globalHeader.menu.home': 'Home',
   'component.globalHeader.menu.group': 'Group',
   'component.globalHeader.menu.person': 'PersonCenter',
@@ -29,5 +30,5 @@ export default {
   'component.noticeIcon.clear': 'Clear',
   'component.noticeIcon.cleared': 'Cleared',
   'component.noticeIcon.empty': 'No notifications',
-  'component.noticeIcon.view-more': 'View more',
-};
+  'component.noticeIcon.view-more': 'View more'
+}

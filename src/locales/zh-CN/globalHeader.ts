@@ -2,10 +2,10 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:19:54
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-29 21:36:28
+ * @LastEditTime: 2022-12-01 22:46:40
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\globalHeader.ts
- * @Description: 
- * Copyright (c) 2022 by 楚恬商行, All Rights Reserved. 
+ * @Description:
+ * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 export default {
   'component.globalHeader.search': '站内搜索',
@@ -15,6 +15,7 @@ export default {
   'component.globalHeader.help': '使用文档',
   'component.globalHeader.notification': '通知',
 
+  'component.globalHeader.welcome': '欢迎',
   'component.globalHeader.menu.home': '首页',
   'component.globalHeader.menu.group': '群组',
   'component.globalHeader.menu.person': '个人中心',
@@ -29,5 +30,5 @@ export default {
   'component.noticeIcon.clear': '清空',
   'component.noticeIcon.cleared': '清空了',
   'component.noticeIcon.empty': '暂无数据',
-  'component.noticeIcon.view-more': '查看更多',
-};
+  'component.noticeIcon.view-more': '查看更多'
+}

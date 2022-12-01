@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 16:52:13
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-30 20:58:49
+ * @LastEditTime: 2022-12-01 21:34:12
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\ModifyPassword.tsx
  * @Description:
  *
@@ -57,7 +57,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
         }}
         onOpenChange={setModalVisit}
       >
-        <ProFormText
+        <ProFormText.Password
           width='sm'
           name='password'
           label='密码'
@@ -70,7 +70,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
             }
           ]}
         />
-        <ProFormText
+        <ProFormText.Password
           width='sm'
           name='confirm_password'
           label='确认密码'

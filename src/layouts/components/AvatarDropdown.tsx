@@ -2,13 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-30 20:53:54
+ * @LastEditTime: 2022-12-01 21:24:03
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\AvatarDropdown.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons'
-import { getIntl, history, useModel } from 'umi'
+import { FormattedMessage, getIntl, history, useModel } from 'umi'
 import { Avatar, Menu, Modal } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
 import type { MenuInfo } from 'rc-menu/lib/interface'
@@ -58,8 +58,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
       title: getIntl().formatMessage({ id: 'pages.modal.commit.title' }),
       icon: <ExclamationCircleOutlined />,
       content: getIntl().formatMessage({ id: 'pages.logout.content' }),
-      okText: '确认',
-      cancelText: '取消',
       onOk: () => {
         quitLogin()
       }
@@ -101,7 +99,9 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size='small' className={styles.avatar} src={currentUser.member.avatar} alt='avatar' />
-          <span className={`${styles.name}`}>欢迎您：{currentUser.member.name}</span>
+          <span className={`${styles.name}`}>
+            <FormattedMessage id='component.globalHeader.welcome' />：{currentUser.member.name}
+          </span>
         </span>
       </HeaderDropdown>
     </>

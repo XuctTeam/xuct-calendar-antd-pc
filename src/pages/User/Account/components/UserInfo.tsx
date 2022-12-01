@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Description:
  * @Date: 2022-11-30 10:34:38
- * @LastEditTime: 2022-11-30 20:45:34
+ * @LastEditTime: 2022-12-01 22:41:47
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\UserInfo.tsx
  */
 import { UploadOutlined } from '@ant-design/icons'
@@ -10,24 +10,31 @@ import { ProCard } from '@ant-design/pro-components'
 import { Avatar, Button, Col, Divider, message, Row, Upload, UploadProps } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { FormattedMessage, useModel } from 'umi'
+import BindingPhone from './BindingPhone'
+import ModifyPassword from './ModifyPassword'
 import styles from './index.less'
 
-interface IPageOption {
-  setModalVisit: (visit: boolean) => void
-}
-
-const UserInfo: FC<IPageOption> = (props) => {
-  const { setModalVisit } = props
+const UserInfo: FC = () => {
+  const [passwordOpen, setPasswordOpen] = useState<boolean>(false)
+  const [phoneOpen, setPhoneOpen] = useState<boolean>(false)
   const { initialState } = useModel('@@initialState')
   const [member, setMember] = useState<USER.Userinfo>()
-  const [auths, setAuths] = useState<USER.UserAuth[]>([])
+  const [userNameAuth, setUserNameAuth] = useState<USER.UserAuth>()
+  const [phoneAuth, setPhoneAuth] = useState<USER.UserAuth>()
+  const [emailAuth, setEmailAuth] = useState<USER.UserAuth>()
 
   useEffect(() => {
     if (!initialState?.currentUser) return
     const { member, auths } = initialState?.currentUser
     setMember(member)
-    setAuths(auths)
+    setUserNameAuth(getAuth(auths, 'user_name'))
+    setPhoneAuth(getAuth(auths, 'phone'))
+    setEmailAuth(getAuth(auths, 'email'))
   }, [initialState?.currentUser])
+
+  const getAuth = (auths: USER.UserAuth[], type: string) => {
+    return auths.find((item) => item.identityType === type)
+  }
 
   const getAuthTitle = (type: string) => {
     switch (type) {
@@ -38,8 +45,17 @@ const UserInfo: FC<IPageOption> = (props) => {
     }
   }
 
-  const getAuth = (type: string) => {
-    return auths.find((item) => item.identityType === type)
+  const getAuthName = (type: string) => {
+    switch (type) {
+      case 'user_name':
+        return userNameAuth?.username
+      case 'phone':
+        return phoneAuth?.username
+      case 'email':
+        return emailAuth?.username
+      default:
+        return ''
+    }
   }
 
   const upload: UploadProps = {
@@ -83,9 +99,9 @@ const UserInfo: FC<IPageOption> = (props) => {
             </div>
             {['user_name', 'phone', 'email'].map((item, index) => {
               return (
-                <div key={item} className={styles.cell}>
+                <div key={index} className={styles.cell}>
                   <span>{getAuthTitle(item)}：</span>
-                  <span>{getAuth(item)?.username}</span>
+                  <span>{getAuthName(item)}</span>
                 </div>
               )
             })}
@@ -112,22 +128,43 @@ const UserInfo: FC<IPageOption> = (props) => {
               <FormattedMessage id='pages.person.center.userinfo.password.desc.second' />
             </div>
           </div>
-          <Button type='link' danger onClick={() => setModalVisit(true)}>
+          <Button type='link' danger onClick={() => setPasswordOpen(true)}>
             <FormattedMessage id='pages.person.center.userinfo.modify.password.title' />
           </Button>
         </div>
         <div className={styles.detail}>
           <span>{getAuthTitle('phone')}：</span>
           <div className={styles.description}>
-            <div>{getAuth('phone') ? `您已经绑定了手机：${getAuth('phone')?.username}` : '您暂未绑定手机'}</div>
-            <div>[您的手机为安全手机，可以找回密码，也可用于登录]</div>
+            {phoneAuth ? (
+              <>
+                <span>
+                  <FormattedMessage id='pages.person.center.userinfo.already.bind.phone.title' />
+                </span>
+                <span>{`： ${getAuthName('phone')}`}</span>
+              </>
+            ) : (
+              <span>
+                <FormattedMessage id='pages.person.center.userinfo.un.bind.phone.title' />
+              </span>
+            )}
+            <div>
+              【<FormattedMessage id='pages.person.center.userinfo.phone.warning.title' />】
+            </div>
           </div>
-          <div>修改密码</div>
+          <div>
+            <Button type='link' danger>
+              {phoneAuth ? (
+                <FormattedMessage id='pages.person.center.userinfo.phone.unbinding.button' />
+              ) : (
+                <FormattedMessage id='pages.person.center.userinfo.phone.binding.button' />
+              )}
+            </Button>
+          </div>
         </div>
         <div className={styles.detail}>
           <span>{getAuthTitle('email')}：</span>
           <div className={styles.description}>
-            <div>{getAuth('email') ? `您已经绑定了邮箱：${getAuth('email')?.username}` : '您暂未绑定邮箱'}</div>
+            <div>{emailAuth ? `您已经绑定了邮箱：${getAuthName('email')}` : '您暂未绑定邮箱'}</div>
             <div>[邮箱也可以作为登录方式之一]</div>
           </div>
           <div>修改密码</div>
@@ -149,6 +186,8 @@ const UserInfo: FC<IPageOption> = (props) => {
           <div>修改密码</div>
         </div>
       </ProCard>
+      <ModifyPassword modalVisit={passwordOpen} setModalVisit={setPasswordOpen}></ModifyPassword>
+      <BindingPhone open={phoneOpen} setPhoneOpen={setPhoneOpen}></BindingPhone>
     </div>
   )
 }

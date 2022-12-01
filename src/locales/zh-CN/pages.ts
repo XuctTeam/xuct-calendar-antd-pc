@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-30 20:26:19
+ * @LastEditTime: 2022-12-01 21:00:40
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -58,6 +58,11 @@ export default {
   'pages.person.center.userinfo.password.desc.second': '建议您定期更换密码，设置一个长度8-26位包含字母、数字和特殊符号的密码',
   'pages.person.center.userinfo.last.login.label': '最后一次登录时间',
   'pages.person.center.userinfo.security.title': '安全认证',
+  'pages.person.center.userinfo.already.bind.phone.title': '您已经绑定了手机',
+  'pages.person.center.userinfo.un.bind.phone.title': '您暂未绑定手机',
+  'pages.person.center.userinfo.phone.warning.title': '手机号一旦解绑，将无法通过手机号同步',
+  'pages.person.center.userinfo.phone.bing.button': '绑定',
+  'pages.person.center.userinfo.phone.unbinding.button': '解绑',
   'pages.person.center.system.tab': '系统设置',
   'pages.person.center.lanuage.title': '语言',
   'pages.person.center.week.start': '每周开始于',
