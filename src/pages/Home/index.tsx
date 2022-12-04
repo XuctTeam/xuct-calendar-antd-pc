@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-29 21:50:39
+ * @LastEditTime: 2022-12-02 17:06:07
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -11,14 +11,14 @@
 
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
-import { Alert, Button, Calendar, Spin } from 'antd'
+import { Button, Calendar } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
-//import bootstrap5Plugin from '@fullcalendar/bootstrap5'
 import { ProCard } from '@ant-design/pro-components'
-import { ColoredCheckboxes, RightCalendar } from './components'
+import { CalendarList, RightCalendar } from './components'
+import { list } from '@/services/calendar'
 import styles from './index.less'
 
 const HomePage = () => {
@@ -27,6 +27,7 @@ const HomePage = () => {
   const calenarRefContent = useRef<any>()
   const calendarRef = React.createRef<any>()
   const [selectDay, setSelectDay] = useState<any>()
+  const [calendars, setCalendars] = useState<CALENDAR.Calendar[]>([])
 
   // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
   const { dataView, lunarView } = useSelector(function (state: any) {
@@ -37,6 +38,8 @@ const HomePage = () => {
     setCenterHeight(calenarRefContent.current.offsetHeight - 20)
     // 页面变化时获取浏览器窗口的大小
     window.addEventListener('resize', resizeUpdate)
+    //加载日历数据
+    initData()
     return () => {
       // 组件销毁时移除监听事件
       window.removeEventListener('resize', resizeUpdate)
@@ -46,6 +49,21 @@ const HomePage = () => {
   const resizeUpdate = () => {
     // 通过事件对象获取浏览器窗口的高度
     setCenterHeight(calenarRefContent.current.offsetHeight - 20)
+  }
+
+  const initData = async () => {
+    setLoading(true)
+    let _calendars: any
+    try {
+      _calendars = await list()
+    } catch (err) {
+      console.log(err)
+      setLoading(false)
+      return
+    }
+    setLoading(false)
+    if (!(_calendars && _calendars.length > 0)) return
+    setCalendars(_calendars)
   }
 
   // const select = (info: any) => {
@@ -103,20 +121,7 @@ const HomePage = () => {
         <ProCard hoverable bordered className={styles.calendar}>
           <Calendar fullscreen={false} value={dayjs(selectDay)} onSelect={antdCalendarSelect} />
         </ProCard>
-
-        <ProCard
-          title={<FormattedMessage id='page.calendar.manager.title' />}
-          hoverable
-          bordered
-          headerBordered
-          className={styles.card}
-          extra={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />}
-        >
-          <div className={styles.body}>
-            <ColoredCheckboxes color='#ee0a24' name='123'></ColoredCheckboxes>
-            <ColoredCheckboxes color='#2eb82e' name='123'></ColoredCheckboxes>
-          </div>
-        </ProCard>
+        <CalendarList loading={loading} calendars={calendars}></CalendarList>
       </div>
       <div className={styles.right} ref={calenarRefContent}>
         <div className={styles.calendar}>
