@@ -2,23 +2,23 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-02 17:06:07
+ * @LastEditTime: 2022-12-05 17:17:31
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useState, useEffect, useRef } from 'react'
-import { Button, Calendar } from 'antd'
+import { Badge, Button, Calendar } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { ProCard } from '@ant-design/pro-components'
 import { CalendarList, RightCalendar } from './components'
-import { list } from '@/services/calendar'
+import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
 import styles from './index.less'
 
 const HomePage = () => {
@@ -28,6 +28,8 @@ const HomePage = () => {
   const calendarRef = React.createRef<any>()
   const [selectDay, setSelectDay] = useState<any>()
   const [calendars, setCalendars] = useState<CALENDAR.Calendar[]>([])
+  const [marks, setMarks] = useState<string[]>([])
+  const [components, setComponents] = useState<CALENDAR.DayCompoent[]>([])
 
   // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
   const { dataView, lunarView } = useSelector(function (state: any) {
@@ -64,12 +66,27 @@ const HomePage = () => {
     setLoading(false)
     if (!(_calendars && _calendars.length > 0)) return
     setCalendars(_calendars)
+    /** 加载日程 */
+    _queryComponent(_calendars, dayjs().startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs().endOf('month').format('YYYY-MM-DD HH:mm:ss'))
   }
 
   // const select = (info: any) => {
   //   console.log('select')
   //   console.log('info')
   // }
+
+  const antdCalendarDateCellRender = useCallback(
+    (value: Dayjs) => {
+      if (marks.includes(value.format('YYYY-MM-DD')))
+        return (
+          <div className={styles.mark}>
+            <Badge status='default' />
+          </div>
+        )
+      return <></>
+    },
+    [marks]
+  )
 
   const fullCalendarDateClick = (info: any) => {
     console.log('dateClick')
@@ -110,6 +127,68 @@ const HomePage = () => {
     /** 判断是否是同一月 */
     const sameMonth = dayjs(selecteDay).isSame(day, 'month')
     if (sameMonth) return
+    _queryComponent(calendars, dayjs(day).startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs(day).endOf('month').format('YYYY-MM-DD HH:mm:ss'))
+  }
+
+  /**
+   * 更新日历显示状态
+   * @param calendarId
+   * @param display
+   */
+  const calendarChageDisplay = async (calendarId: string, display: number) => {
+    updateDisplay(calendarId, display).catch((err) => {
+      console.log(err)
+    })
+    const _calendars = [...calendars]
+    const index = _calendars.findIndex((item) => item.id === calendarId)
+    _calendars.splice(index, 1, { ..._calendars[index], display })
+    setCalendars(_calendars)
+  }
+
+  /**
+   * 根据日历查询事件
+   * @param calList
+   * @param start
+   * @param end
+   */
+  const _queryComponent = (calList: CALENDAR.Calendar[], start: string, end: string) => {
+    let pList: Array<Promise<any>> = []
+    calList.forEach((item: any) => {
+      pList.push(
+        new Promise(function (resolve, reject) {
+          componentsDaysById(item.calendarId, start, end)
+            .then((res: any) => {
+              resolve(res)
+            })
+            .catch((err: any) => {
+              reject(err)
+            })
+        })
+      )
+    })
+    let calendarComponents: Array<CALENDAR.DayCompoent> = []
+    Promise.all(
+      pList.map((p) => {
+        return p.catch((error) => error)
+      })
+    )
+      .then((res) => {
+        res.forEach((i) => (calendarComponents = calendarComponents.concat(i)))
+        _fillMarkDay(calendarComponents)
+        setComponents(calendarComponents)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  const _fillMarkDay = (components: Array<CALENDAR.DayCompoent>) => {
+    if (components.length === 0) return
+    const daySet: Set<string> = new Set<string>([])
+    components.forEach((comp) => {
+      daySet.add(dayjs(comp.day).format('YYYY-MM-DD'))
+    })
+    setMarks(Array.from(daySet))
   }
 
   return (
@@ -119,9 +198,9 @@ const HomePage = () => {
           <FormattedMessage id='pages.component.button.add' />
         </Button>
         <ProCard hoverable bordered className={styles.calendar}>
-          <Calendar fullscreen={false} value={dayjs(selectDay)} onSelect={antdCalendarSelect} />
+          <Calendar fullscreen={false} value={dayjs(selectDay)} onSelect={antdCalendarSelect} dateCellRender={antdCalendarDateCellRender} />
         </ProCard>
-        <CalendarList loading={loading} calendars={calendars}></CalendarList>
+        <CalendarList loading={loading} calendars={calendars} calendarChageDisplay={calendarChageDisplay}></CalendarList>
       </div>
       <div className={styles.right} ref={calenarRefContent}>
         <div className={styles.calendar}>
@@ -131,6 +210,8 @@ const HomePage = () => {
             centerHeight={centerHeight}
             dataView={dataView}
             lunarView={lunarView}
+            calendars={calendars}
+            components={components}
             fullCalendarDateClick={fullCalendarDateClick}
             fullCalendarDayChage={fullCalendarDayChage}
           ></RightCalendar>

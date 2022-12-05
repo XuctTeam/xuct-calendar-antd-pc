@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:48:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-01 23:53:55
+ * @LastEditTime: 2022-12-05 13:21:15
  * @FilePath: \xuct-calendar-antd-pc\src\types\calendar.d.ts
  * @Description:
  *
@@ -24,5 +24,39 @@ declare namespace CALENDAR {
     isShare: number
     alarmTime: number
     alarmType: string
+  }
+
+  type Component = {
+    id: string
+    calendarId: string
+    creatorMemberId: string
+    status: string
+    summary: string
+    location: string
+    description: string
+    dtstart: Date
+    dtend: Date
+    startTime?: string
+    endTime?: string
+    alarmType: string
+    alarmTimes?: string
+    fullDay: number
+    color?: string
+    calendarName?: string
+    repeatStatus?: string
+    repeatType?: string
+    repeatByday?: string
+    repeatBymonth?: string
+    repeatBymonthday?: string
+    repeatInterval?: number
+    repeatUntil?: string
+    memberIds?: string[]
+    attendStatus: number
+  }
+
+  type DayCompoent = {
+    day: string
+    calendarId: string
+    components: Array<Component>
   }
 }

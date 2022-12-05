@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-02 17:47:36
+ * @LastEditTime: 2022-12-05 09:21:29
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -19,13 +19,14 @@ import styles from '../index.less'
 interface IPageOption {
   loading: boolean
   calendars: CALENDAR.Calendar[]
+  calendarChageDisplay: (calendarId: string, display: number) => void
 }
 
 const CalendarList: FC<IPageOption> = (props) => {
-  const { loading, calendars } = props
+  const { loading, calendars, calendarChageDisplay } = props
 
   const checkboxCheck = (id: string, checked: boolean) => {
-    debugger
+    calendarChageDisplay(id, !checked ? 0 : 1)
   }
 
   return (
