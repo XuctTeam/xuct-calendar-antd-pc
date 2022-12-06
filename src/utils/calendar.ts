@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 15:15:51
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-05 10:37:58
+ * @LastEditTime: 2022-12-06 18:34:56
  * @FilePath: \xuct-calendar-antd-pc\src\utils\calendar.ts
  * @Description:
  *
@@ -11,6 +11,7 @@
 import solarLunar from 'solarlunar-es'
 import dayjs from 'dayjs'
 import { getLocale } from 'umi'
+import { RRule, WeekDay, WeekDayEn } from '@/constants'
 
 enum Lanuage {
   ZH = 'zh-CN',
@@ -40,7 +41,7 @@ export const isChinese = () => {
  * @returns
  */
 export const getDayJsLocal = () => {
-  return isChinese() ? 'zh-cn' : 'en'
+  return isChinese() ? Lanuage.ZH.toLocaleLowerCase() : Lanuage.EN
 }
 
 /**
@@ -52,36 +53,73 @@ export const getWeekDay = (week: number) => {
   if (isChinese()) {
     switch (week) {
       case 1:
-        return '星期一'
+        return WeekDay.MO
       case 2:
-        return '星期二'
+        return WeekDay.TU
       case 3:
-        return '星期三'
+        return WeekDay.WE
       case 4:
-        return '星期四'
+        return WeekDay.TH
       case 5:
-        return '星期五'
+        return WeekDay.FR
       case 6:
-        return '星期六'
+        return WeekDay.SA
       default:
-        return '星期日'
+        return WeekDay.SU
     }
   }
 
   switch (week) {
     case 1:
-      return 'Mon'
+      return WeekDayEn.MO
     case 2:
-      return 'Tue'
+      return WeekDayEn.TU
     case 3:
-      return 'Wed'
+      return WeekDayEn.WE
     case 4:
-      return 'Thu'
+      return WeekDayEn.TH
     case 5:
-      return 'Fri'
+      return WeekDayEn.FR
     case 6:
-      return 'Sat'
+      return WeekDayEn.SA
     default:
-      return 'Sun'
+      return WeekDayEn.SU
   }
+}
+
+/**
+ * 获取每周循环
+ * @param repeatByday
+ */
+export const formatWeekly = (repeatByday: string | undefined) => {
+  if (!repeatByday) return []
+  const weeklys = repeatByday.split(',')
+  const weekSet = new Set()
+  weeklys.forEach((item) => {
+    const weeks = item.split(':')
+    if (weeks.length !== 2) return
+    switch (Number.parseInt(weeks[1])) {
+      case 1:
+        weekSet.add(RRule.MO)
+        break
+      case 2:
+        weekSet.add(RRule.TU)
+        break
+      case 3:
+        weekSet.add(RRule.WE)
+        break
+      case 4:
+        weekSet.add(RRule.TH)
+        break
+      case 5:
+        weekSet.add(RRule.FR)
+        break
+      case 6:
+        weekSet.add(RRule.SA)
+        break
+      default:
+        weekSet.add(RRule.SU)
+    }
+  })
+  return Array.from(weekSet)
 }

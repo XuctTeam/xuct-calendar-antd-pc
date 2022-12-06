@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-05 17:17:31
+ * @LastEditTime: 2022-12-06 17:35:14
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -108,9 +108,7 @@ const HomePage = () => {
     const day = dayjs(api.getDate()).format('YYYY-MM-DD')
     const selecteDay = selectDay
     setSelectDay(day)
-    /** 判断是否是同一月 */
-    const sameMonth = dayjs(selecteDay).isSame(day, 'month')
-    if (sameMonth) return
+    _dateChageLoadComponent(day, selecteDay)
   }
 
   /**
@@ -124,10 +122,7 @@ const HomePage = () => {
     setSelectDay(day)
     api.gotoDate(day)
     api.select(day)
-    /** 判断是否是同一月 */
-    const sameMonth = dayjs(selecteDay).isSame(day, 'month')
-    if (sameMonth) return
-    _queryComponent(calendars, dayjs(day).startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs(day).endOf('month').format('YYYY-MM-DD HH:mm:ss'))
+    _dateChageLoadComponent(day, selecteDay)
   }
 
   /**
@@ -143,6 +138,18 @@ const HomePage = () => {
     const index = _calendars.findIndex((item) => item.id === calendarId)
     _calendars.splice(index, 1, { ..._calendars[index], display })
     setCalendars(_calendars)
+  }
+
+  /**
+   * 判断是否是同一月
+   * @param day
+   * @param selecteDay
+   * @returns
+   */
+  const _dateChageLoadComponent = (day: string, selecteDay: string) => {
+    const sameMonth = dayjs(selecteDay).isSame(day, 'month')
+    if (sameMonth) return
+    _queryComponent(calendars, dayjs(day).startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs(day).endOf('month').format('YYYY-MM-DD HH:mm:ss'))
   }
 
   /**

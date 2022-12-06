@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:48:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-05 13:21:15
+ * @LastEditTime: 2022-12-06 11:58:02
  * @FilePath: \xuct-calendar-antd-pc\src\types\calendar.d.ts
  * @Description:
  *

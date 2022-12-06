@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-05 18:30:40
+ * @LastEditTime: 2022-12-06 18:36:26
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -18,8 +18,9 @@ import rrulePlugin from '@fullcalendar/rrule'
 import { isChinese, lunarDay } from '@/utils/calendar'
 import zhCncale from '@fullcalendar/core/locales/zh-cn'
 import { getIntl } from 'umi'
-import { getWeekDay } from '@/utils/calendar'
+import { getWeekDay, formatWeekly } from '@/utils/calendar'
 import dayjs from 'dayjs'
+import { RRule } from '@/constants'
 
 interface IPageOption {
   centerHeight: number
@@ -124,12 +125,16 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
 
   const convertToEvent = (components: CALENDAR.Component[]) => {
     const events = components.map((item: CALENDAR.Component) => {
+      debugger
       if (item.repeatStatus !== '0') {
-        if (item.repeatType === 'DAILY') {
-          return repeatDailyEvent(item)
-        }
-        if (item.repeatType === 'WEEKLY') {
-          return repertWeekEvent(item)
+        switch (item.repeatType) {
+          case RRule.DAILY.toLocaleUpperCase():
+            return repeatDailyEvent(item)
+          case RRule.WEEKLY.toLocaleUpperCase():
+            return repeatWeekEvent(item)
+          case RRule.MONTHLY.toLocaleUpperCase():
+            return repeatMonthlyEvent(item)
+          default:
         }
       }
       return notRepeatEvent(item)
@@ -149,29 +154,84 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   }
 
   const repeatDailyEvent = (component: CALENDAR.Component) => {
-    return {
+    const vent = {
       title: component.summary,
-      rrule: {
-        freq: 'daily',
-        interval: component.repeatInterval,
-        dtstart: component.dtstart,
-        until: dayjs(component.repeatUntil).format('YYYY-MM-DD')
-      },
       backgroundColor: component.color,
       borderColor: component.color,
       allDay: component.fullDay === 1
     }
+    const rrule = {
+      freq: RRule.DAILY,
+      interval: component.repeatInterval,
+      dtstart: component.fullDay === 1 ? dayjs(component.dtstart).format('YYYY-MM-DD') : dayjs(component.dtstart).format('YYYY-MM-DDTHH:mm:ss'),
+      until: dayjs(component.repeatUntil).format('YYYY-MM-DD')
+    }
+    return _packageRepeatEvent(vent, rrule, component.fullDay, component.dtstart, component.dtend)
   }
 
-  const repertWeekEvent = (component: CALENDAR.Component) => {
-    return {
+  const repeatWeekEvent = (component: CALENDAR.Component) => {
+    const vent = {
       title: component.summary,
-      rrule: {
-        freq: 'weekly',
-        interval: component.repeatInterval,
-        dtstart: component.dtstart
-      }
+      backgroundColor: component.color,
+      borderColor: component.color,
+      allDay: component.fullDay === 1
     }
+    const rrule = {
+      freq: RRule.WEEKLY,
+      interval: component.repeatInterval,
+      byweekday: formatWeekly(component?.repeatByday),
+      until: dayjs(component.repeatUntil).format('YYYY-MM-DD')
+    }
+    return _packageRepeatEvent(vent, rrule, component.fullDay, component.dtstart, component.dtend)
+  }
+
+  const repeatMonthlyEvent = (component: CALENDAR.Component) => {
+    const vent = {
+      title: component.summary,
+      backgroundColor: component.color,
+      borderColor: component.color,
+      allDay: component.fullDay === 1
+    }
+    let rrule
+    /* 每月重复 */
+    if (component.repeatStatus === '5' || (component.repeatStatus === '8' && component.repeatBymonthday)) {
+      rrule = {
+        freq: RRule.MONTHLY,
+        interval: component.repeatInterval,
+        until: dayjs(component.repeatUntil).format('YYYY-MM-DD'),
+        bymonthday: [Number.parseInt(component.repeatBymonthday || '0')]
+      }
+      return _packageRepeatEvent(vent, rrule, component.fullDay, component.dtstart, component.dtend)
+    }
+  }
+
+  /**
+   * 封装循环日期显示
+   * @param vent
+   * @param rrule
+   * @param fullDay
+   * @param dtstart
+   * @param dtend
+   * @returns
+   */
+  const _packageRepeatEvent = (vent: any, rrule: any, fullDay: number, dtstart: Date, dtend: Date) => {
+    const sameDay = dayjs(dtstart).isSame(dayjs(dtend), 'day')
+    if (sameDay) {
+      if (fullDay === 1) {
+        return { ...vent, rrule: { ...rrule, dtstart: dayjs(dtstart).format('YYYY-MM-DD') } }
+      }
+      return { ...vent, rrule: { ...rrule, dtstart: dayjs(dtstart).format('YYYY-MM-DDTHH:mm:ss') } }
+    }
+    const dayjsStart = dayjs(dtstart)
+    const dayjsEnd = dayjs(dtend)
+    const diffDay = dayjsEnd.diff(dayjsStart, 'day')
+    if (diffDay > 1) {
+      return { ...vent, duration: { days: diffDay }, rrule }
+    }
+    if (diffDay === 0) {
+      return { ...vent, duration: { day: 1 }, rrule }
+    }
+    return { ...vent, duration: { day: 2 }, rrule }
   }
 
   return (
@@ -186,6 +246,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
       customButtons={getFullCustomButtons()}
       firstDay={Number.parseInt(dataView)}
       events={events}
+      dayMaxEventRows={true}
     />
   )
 })
