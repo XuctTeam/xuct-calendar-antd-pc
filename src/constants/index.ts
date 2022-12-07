@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 13:04:50
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-06 18:33:53
+ * @LastEditTime: 2022-12-07 13:36:28
  * @FilePath: \xuct-calendar-antd-pc\src\constants\index.ts
  * @Description:
  *
@@ -16,6 +16,7 @@ export const RRule = {
   DAILY: 'daily',
   WEEKLY: 'weekly',
   MONTHLY: 'monthly',
+  YEARLY: 'yearly',
   MO: 'mo',
   TU: 'tu',
   WE: 'we',
