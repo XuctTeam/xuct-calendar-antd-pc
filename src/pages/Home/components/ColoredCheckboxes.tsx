@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:03
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-02 17:48:03
+ * @LastEditTime: 2022-12-07 18:03:35
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ColoredCheckboxes.tsx
  * @Description:
  *
@@ -11,6 +11,7 @@
 import { EllipsisOutlined } from '@ant-design/icons'
 import { Checkbox, Dropdown, MenuProps } from 'antd'
 import { FC } from 'react'
+import { FormattedMessage } from 'umi'
 import styles from '../index.less'
 
 interface IPageOption {
@@ -59,7 +60,7 @@ const ColoredCheckboxes: FC<IPageOption> = (props) => {
       key: '1',
       label: (
         <a target='_blank' rel='noopener noreferrer' href='https://www.antgroup.com'>
-          1st menu item
+          <FormattedMessage id='pages.calendar.manager.button.edit' />
         </a>
       )
     },
@@ -67,15 +68,15 @@ const ColoredCheckboxes: FC<IPageOption> = (props) => {
       key: '2',
       label: (
         <a target='_blank' rel='noopener noreferrer' href='https://www.aliyun.com'>
-          2nd menu item
+          <FormattedMessage id='pages.calendar.manager.button.share' />
         </a>
       )
     },
     {
       key: '3',
       label: (
-        <a target='_blank' rel='noopener noreferrer' href='https://www.luohanacademy.com'>
-          3rd menu item
+        <a style={{ color: 'red' }} target='_blank' rel='noopener noreferrer' href='https://www.luohanacademy.com'>
+          <FormattedMessage id='pages.calendar.manager.button.del' />
         </a>
       )
     }

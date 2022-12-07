@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 16:52:13
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-01 21:34:12
+ * @LastEditTime: 2022-12-07 18:24:48
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\ModifyPassword.tsx
  * @Description:
  *
@@ -16,12 +16,11 @@ import { useRef } from 'react'
 import { updatePassword } from '@/services/user'
 
 interface IPageOption {
-  modalVisit: boolean
-  setModalVisit: (visit: boolean) => void
+  trigger: JSX.Element
 }
 
 const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
-  const { modalVisit, setModalVisit } = props
+  const { trigger } = props
   const formRef = useRef<ProFormInstance>()
 
   const isPasswordValidate = (value: any, callback: any, ty: number) => {
@@ -46,16 +45,17 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
       <ModalForm
         formRef={formRef}
         title={getIntl().formatMessage({ id: 'pages.modify.passowrd.title' })}
-        open={modalVisit}
+        trigger={trigger}
         onFinish={async (data: any) => {
           const { password } = data
           await updatePassword(password)
           message.warning(getIntl().formatMessage({ id: 'pages.modify.passowrd.success' }))
           formRef?.current?.resetFields()
-          setModalVisit(false)
           return true
         }}
-        onOpenChange={setModalVisit}
+        modalProps={{
+          destroyOnClose: true
+        }}
       >
         <ProFormText.Password
           width='sm'

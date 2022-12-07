@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 21:38:19
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-01 22:36:54
+ * @LastEditTime: 2022-12-07 18:25:23
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\BindingPhone.tsx
  * @Description:
  *
@@ -10,16 +10,14 @@
  */
 import { FC, useRef } from 'react'
 import { CaptFieldRef, ModalForm, ProFormCaptcha } from '@ant-design/pro-components'
-import { Button, Form, message } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { Form, message } from 'antd'
 
 interface IPageOption {
-  open: boolean
-  setPhoneOpen: (open: boolean) => void
+  trigger: JSX.Element
 }
 
 const BindingPhone: FC<IPageOption> = (props) => {
-  const { open } = props
+  const { trigger } = props
   const [form] = Form.useForm<{ name: string; company: string }>()
   const captchaRef = useRef<CaptFieldRef | null | undefined>()
   const inputRef = useRef()
@@ -30,7 +28,7 @@ const BindingPhone: FC<IPageOption> = (props) => {
       company: string
     }>
       title='新建表单'
-      open={open}
+      trigger={trigger}
       form={form}
       autoFocusFirstInput
       modalProps={{

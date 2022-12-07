@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-05 09:21:29
+ * @LastEditTime: 2022-12-07 18:16:50
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -14,6 +14,7 @@ import { Button, Empty, Spin } from 'antd'
 import { FC } from 'react'
 import { FormattedMessage } from 'umi'
 import ColoredCheckboxes from './ColoredCheckboxes'
+import CalendarEdit from './CalendarEdit'
 import styles from '../index.less'
 
 interface IPageOption {
@@ -31,12 +32,12 @@ const CalendarList: FC<IPageOption> = (props) => {
 
   return (
     <ProCard
-      title={<FormattedMessage id='page.calendar.manager.title' />}
+      title={<FormattedMessage id='pages.calendar.manager.title' />}
       hoverable
       bordered
       headerBordered
       className={styles.card}
-      extra={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />}
+      extra={<CalendarEdit trigger={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />}></CalendarEdit>}
     >
       <Spin spinning={loading}>
         <div className={styles.body}>

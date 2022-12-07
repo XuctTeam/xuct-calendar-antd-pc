@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Description:
  * @Date: 2022-11-30 10:34:38
- * @LastEditTime: 2022-12-01 22:41:47
+ * @LastEditTime: 2022-12-07 18:27:18
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\UserInfo.tsx
  */
 import { UploadOutlined } from '@ant-design/icons'
@@ -15,8 +15,6 @@ import ModifyPassword from './ModifyPassword'
 import styles from './index.less'
 
 const UserInfo: FC = () => {
-  const [passwordOpen, setPasswordOpen] = useState<boolean>(false)
-  const [phoneOpen, setPhoneOpen] = useState<boolean>(false)
   const { initialState } = useModel('@@initialState')
   const [member, setMember] = useState<USER.Userinfo>()
   const [userNameAuth, setUserNameAuth] = useState<USER.UserAuth>()
@@ -128,9 +126,13 @@ const UserInfo: FC = () => {
               <FormattedMessage id='pages.person.center.userinfo.password.desc.second' />
             </div>
           </div>
-          <Button type='link' danger onClick={() => setPasswordOpen(true)}>
-            <FormattedMessage id='pages.person.center.userinfo.modify.password.title' />
-          </Button>
+          <ModifyPassword
+            trigger={
+              <Button type='link' danger>
+                <FormattedMessage id='pages.person.center.userinfo.modify.password.title' />
+              </Button>
+            }
+          ></ModifyPassword>
         </div>
         <div className={styles.detail}>
           <span>{getAuthTitle('phone')}：</span>
@@ -152,13 +154,17 @@ const UserInfo: FC = () => {
             </div>
           </div>
           <div>
-            <Button type='link' danger>
-              {phoneAuth ? (
-                <FormattedMessage id='pages.person.center.userinfo.phone.unbinding.button' />
-              ) : (
-                <FormattedMessage id='pages.person.center.userinfo.phone.binding.button' />
-              )}
-            </Button>
+            <BindingPhone
+              trigger={
+                <Button type='link' danger>
+                  {phoneAuth ? (
+                    <FormattedMessage id='pages.person.center.userinfo.phone.unbinding.button' />
+                  ) : (
+                    <FormattedMessage id='pages.person.center.userinfo.phone.binding.button' />
+                  )}
+                </Button>
+              }
+            ></BindingPhone>
           </div>
         </div>
         <div className={styles.detail}>
@@ -186,8 +192,6 @@ const UserInfo: FC = () => {
           <div>修改密码</div>
         </div>
       </ProCard>
-      <ModifyPassword modalVisit={passwordOpen} setModalVisit={setPasswordOpen}></ModifyPassword>
-      <BindingPhone open={phoneOpen} setPhoneOpen={setPhoneOpen}></BindingPhone>
     </div>
   )
 }
