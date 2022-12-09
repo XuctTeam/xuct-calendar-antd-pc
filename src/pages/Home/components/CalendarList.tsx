@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-07 18:16:50
+ * @LastEditTime: 2022-12-09 17:51:13
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -14,7 +14,7 @@ import { Button, Empty, Spin } from 'antd'
 import { FC } from 'react'
 import { FormattedMessage } from 'umi'
 import ColoredCheckboxes from './ColoredCheckboxes'
-import CalendarEdit from './CalendarEdit'
+import CalendarEditFrom from './CalendarEditFrom'
 import styles from '../index.less'
 
 interface IPageOption {
@@ -37,7 +37,7 @@ const CalendarList: FC<IPageOption> = (props) => {
       bordered
       headerBordered
       className={styles.card}
-      extra={<CalendarEdit trigger={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />}></CalendarEdit>}
+      extra={<CalendarEditFrom trigger={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />}></CalendarEditFrom>}
     >
       <Spin spinning={loading}>
         <div className={styles.body}>

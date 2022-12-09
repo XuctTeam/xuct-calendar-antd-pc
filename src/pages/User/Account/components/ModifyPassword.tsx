@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 16:52:13
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-07 18:24:48
+ * @LastEditTime: 2022-12-09 17:43:16
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\ModifyPassword.tsx
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 import { ModalForm, ProFormInstance, ProFormText } from '@ant-design/pro-components'
 import { message } from 'antd'
-import { getIntl } from 'umi'
+import { FormattedMessage, getIntl } from 'umi'
 import { checkPassowrd } from '@/utils'
 import { useRef } from 'react'
 import { updatePassword } from '@/services/user'
@@ -44,7 +44,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
     <>
       <ModalForm
         formRef={formRef}
-        title={getIntl().formatMessage({ id: 'pages.modify.passowrd.title' })}
+        title={<FormattedMessage id='pages.modify.passowrd.title' />}
         trigger={trigger}
         onFinish={async (data: any) => {
           const { password } = data
@@ -60,7 +60,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
         <ProFormText.Password
           width='sm'
           name='password'
-          label='密码'
+          label={<FormattedMessage id='page.modify.password.label' />}
           rules={[
             {
               required: true,
@@ -73,7 +73,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
         <ProFormText.Password
           width='sm'
           name='confirm_password'
-          label='确认密码'
+          label={<FormattedMessage id='page.modify.confirm.password.label' />}
           rules={[
             {
               required: true,

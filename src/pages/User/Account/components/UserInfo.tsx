@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Description:
  * @Date: 2022-11-30 10:34:38
- * @LastEditTime: 2022-12-07 18:27:18
+ * @LastEditTime: 2022-12-09 17:46:47
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Account\components\UserInfo.tsx
  */
 import { UploadOutlined } from '@ant-design/icons'
@@ -160,7 +160,7 @@ const UserInfo: FC = () => {
                   {phoneAuth ? (
                     <FormattedMessage id='pages.person.center.userinfo.phone.unbinding.button' />
                   ) : (
-                    <FormattedMessage id='pages.person.center.userinfo.phone.binding.button' />
+                    <FormattedMessage id='pages.person.center.userinfo.phone.bing.button' />
                   )}
                 </Button>
               }

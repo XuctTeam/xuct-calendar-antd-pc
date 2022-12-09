@@ -6,7 +6,7 @@
     "dev": "umi dev",
     "postinstall": "umi setup",
     "setup": "umi setup",
-    "start": "cross-env UMI_ENV=dev COMPRESS=none umi dev"
+    "start": "cross-env UMI_ENV=dev  umi dev"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
@@ -22,7 +22,7 @@
     "@types/lodash": "^4.14.189",
     "@types/qs": "^6.9.7",
     "@types/querystringify": "^2.0.0",
-    "antd": "^5.0.3",
+    "antd": "^5.0.5",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.6",
     "lodash": "^4.17.21",

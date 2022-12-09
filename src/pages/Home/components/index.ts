@@ -12,4 +12,4 @@ export { default as CalendarList } from './CalendarList'
 
 export { default as RightCalendar } from './RightCalendar'
 
-export { default as CalendarEdit } from './CalendarEdit'
+export { default as CalendarEditFrom } from './CalendarEditFrom'
