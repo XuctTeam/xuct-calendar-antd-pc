@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-10 11:32:21
+ * @LastEditTime: 2022-12-10 20:34:32
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -40,8 +40,8 @@ const CalendarList: FC<IPageOption> = (props) => {
       className={styles.card}
       extra={<CalendarEditFrom trigger={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />} refresh={refresh} />}
     >
-      <Spin spinning={loading}>
-        <div className={styles.body}>
+      <div className={styles.body}>
+        <Spin spinning={loading}>
           {calendars.length === 0 ? (
             <Empty />
           ) : (
@@ -58,8 +58,8 @@ const CalendarList: FC<IPageOption> = (props) => {
               )
             })
           )}
-        </div>
-      </Spin>
+        </Spin>
+      </div>
     </ProCard>
   )
 }
