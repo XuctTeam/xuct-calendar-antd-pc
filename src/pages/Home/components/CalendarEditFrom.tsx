@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-07 18:10:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-09 18:04:04
+ * @LastEditTime: 2022-12-10 12:33:03
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarEditFrom.tsx
  * @Description:
  *
@@ -12,13 +12,16 @@ import { FC } from 'react'
 import { ModalForm, ProForm, ProFormDependency, ProFormRadio, ProFormSelect, ProFormSwitch, ProFormText, ProFormTextArea } from '@ant-design/pro-components'
 import { Form, message } from 'antd'
 import { FormattedMessage, getIntl } from 'umi'
+import { saveOrUpdateCalendar } from '@/services/calendar'
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 
 interface IPageOption {
   trigger: JSX.Element
+  refresh: () => void
 }
 
 const CalendarEditFrom: FC<IPageOption> = (props) => {
-  const { trigger } = props
+  const { trigger, refresh } = props
   const [form] = Form.useForm<{ name: string; description: string; display: number; alarmType: string }>()
 
   const getCalendarColor = (): any[] => {
@@ -80,9 +83,20 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
       }}
       omitNil
       submitTimeout={2000}
-      onFinish={async (values) => {
-        console.log(values.name)
-        message.success('提交成功')
+      onFinish={async (values: any) => {
+        const { display = true, alarmTime = 0, isShare = 0 } = values
+        try {
+          await saveOrUpdateCalendar({
+            ...values,
+            display: display ? 1 : 0,
+            isShare: isShare ? 1 : 0,
+            alarmTime
+          })
+          message.success(getIntl().formatMessage({ id: 'pages.calendar.mananger.add.success' }))
+          refresh()
+        } catch (err) {
+          console.log(err)
+        }
         return true
       }}
     >
@@ -96,34 +110,50 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
         rules={[{ required: true, message: <FormattedMessage id={'pages.calendar.add.name.error'} /> }]}
       />
       <ProFormRadio.Group label={<FormattedMessage id={'pages.calendar.add.color.label'} />} name='color' initialValue='ee0a24' options={getCalendarColor()} />
+      <ProForm.Group>
+        <ProFormSwitch
+          name='display'
+          label={<FormattedMessage id={'pages.calendar.add.display.label'} />}
+          checkedChildren={<CheckOutlined />}
+          unCheckedChildren={<CloseOutlined />}
+        />
+        <div style={{ width: '200px' }}></div>
+        <ProFormSwitch
+          name='isShare'
+          label={<FormattedMessage id={'pages.calendar.add.isshare.label'} />}
+          checkedChildren={<CheckOutlined />}
+          unCheckedChildren={<CloseOutlined />}
+        />
+      </ProForm.Group>
       <ProFormTextArea
         width='lg'
         name='description'
         label={<FormattedMessage id={'pages.calendar.add.description.label'} />}
         placeholder={getIntl().formatMessage({ id: 'pages.calendar.add.description.placeholder' })}
       />
-      <ProFormSwitch name='display' label={<FormattedMessage id={'pages.calendar.add.display.label'} />} />
+
       <ProForm.Group key='group'>
         <ProFormSelect
           required
           options={alartTyleSelect}
-          width='md'
+          width='sm'
           name='alarmType'
           label={<FormattedMessage id={'pages.calendar.add.alarmtype.label'} />}
           rules={[{ required: true, message: <FormattedMessage id={'pages.calendar.add.alarmtype.error'} /> }]}
         />
         <ProFormDependency name={['alarmType']}>
-          {({ alarmType }) => {
+          {({ alarmType }: any) => {
             if (alarmType === '0') {
-              return <ProFormText width='md' name='alarmTime' label={<FormattedMessage id={'pages.calendar.add.alarmtime.label'} />} disabled />
+              return <ProFormText width='sm' name='alarmTime' label={<FormattedMessage id={'pages.calendar.add.alarmtime.label'} />} disabled />
             }
             return (
               <ProFormSelect
                 required
                 options={alarmTimeSelect}
-                width='md'
+                width='sm'
                 name='alarmTime'
                 label={<FormattedMessage id={'pages.calendar.add.alarmtime.label'} />}
+                rules={[{ required: true, message: <FormattedMessage id={'pages.calendar.add.alarmtime.error'} /> }]}
               />
             )
           }}

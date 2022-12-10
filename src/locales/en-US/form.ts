@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-09 18:02:59
+ * @LastEditTime: 2022-12-10 12:31:48
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\form.ts
  * @Description:
  *
@@ -23,6 +23,7 @@ export default {
   'pages.calendar.add.description.label': 'Description',
   'pages.calendar.add.description.placeholder': 'Please Input Description',
   'pages.calendar.add.display.label': 'Display',
+  'pages.calendar.add.isshare.label': 'Share',
   'pages.calendar.add.alarmtype.label': 'AlarmType',
   'pages.calendar.add.alarmtype.error': 'Please Select AlarmType',
   'pages.calendar.add.alarmtype.select.none': 'NO',
@@ -30,7 +31,8 @@ export default {
   'pages.calendar.add.alarmtype.select.email': 'Email',
   'pages.calendar.add.alarmtype.select.wx': 'Wechat',
   'pages.calendar.add.alarmtime.label': 'AlarmTime',
+  'pages.calendar.add.alarmtime.error': 'Please Select AlarmTime',
   'pages.calendar.add.alarmtime.select.fifteen': '15Min',
   'pages.calendar.add.alarmtime.select.thirty': '30Min',
-  'pages.calendar.add.alarmtime.select.sixty': '60Min'
+  'pages.calendar.add.alarmtime.select.sixty': '60Min',
 }

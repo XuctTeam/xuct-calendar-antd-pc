@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:45:38
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-05 13:36:16
+ * @LastEditTime: 2022-12-10 11:52:15
  * @FilePath: \xuct-calendar-antd-pc\src\services\calendar.ts
  * @Description:
  *
@@ -30,6 +30,18 @@ export const updateDisplay = (calendarId: string, display: number) => {
       calendarId,
       display
     }
+  })
+}
+
+/**
+ * 新增日历
+ * 
+ * @param calendar 
+ */
+export const saveOrUpdateCalendar = (calendar: CALENDAR.Calendar) => {
+  return request<API.Response>('/cms/api/app/v1/calendar', {
+    method: 'post',
+    data: calendar
   })
 }
 

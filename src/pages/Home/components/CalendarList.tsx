@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-09 17:51:13
+ * @LastEditTime: 2022-12-10 11:32:21
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -21,10 +21,11 @@ interface IPageOption {
   loading: boolean
   calendars: CALENDAR.Calendar[]
   calendarChageDisplay: (calendarId: string, display: number) => void
+  refresh: () => void
 }
 
 const CalendarList: FC<IPageOption> = (props) => {
-  const { loading, calendars, calendarChageDisplay } = props
+  const { loading, calendars, calendarChageDisplay, refresh } = props
 
   const checkboxCheck = (id: string, checked: boolean) => {
     calendarChageDisplay(id, !checked ? 0 : 1)
@@ -37,7 +38,7 @@ const CalendarList: FC<IPageOption> = (props) => {
       bordered
       headerBordered
       className={styles.card}
-      extra={<CalendarEditFrom trigger={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />}></CalendarEditFrom>}
+      extra={<CalendarEditFrom trigger={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />} refresh={refresh} />}
     >
       <Spin spinning={loading}>
         <div className={styles.body}>

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-07 18:29:37
+ * @LastEditTime: 2022-12-10 11:36:21
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -140,6 +140,12 @@ const HomePage = () => {
     setCalendars(_calendars)
   }
 
+  const refresh = () => {
+    setCalendars([])
+    setComponents([])
+    initData()
+  }
+
   /**
    * 判断是否是同一月
    * @param day
@@ -207,7 +213,7 @@ const HomePage = () => {
         <ProCard hoverable bordered className={styles.calendar}>
           <Calendar fullscreen={false} value={dayjs(selectDay)} onSelect={antdCalendarSelect} dateCellRender={antdCalendarDateCellRender} />
         </ProCard>
-        <CalendarList loading={loading} calendars={calendars} calendarChageDisplay={calendarChageDisplay}></CalendarList>
+        <CalendarList loading={loading} calendars={calendars} calendarChageDisplay={calendarChageDisplay} refresh={refresh} />
       </div>
       <div className={styles.right} ref={calenarRefContent}>
         <div className={styles.calendar}>

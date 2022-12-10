@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-07 18:05:10
+ * @LastEditTime: 2022-12-10 12:32:21
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -75,5 +75,6 @@ export default {
   'pages.calendar.today.button': 'Today',
   'pages.calendar.manager.button.edit': 'Edit',
   'pages.calendar.manager.button.share': 'Share',
-  'pages.calendar.manager.button.del': 'Delete'
+  'pages.calendar.manager.button.del': 'Delete',
+  'pages.calendar.mananger.add.success': 'Add Success',
 }
