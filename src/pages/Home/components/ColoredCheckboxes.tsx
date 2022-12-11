@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:03
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-07 18:03:35
+ * @LastEditTime: 2022-12-10 21:30:03
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ColoredCheckboxes.tsx
  * @Description:
  *
@@ -20,10 +20,11 @@ interface IPageOption {
   name: string
   display: boolean
   onChange: (id: string, checked: boolean) => void
+  onEdit: (id: string) => void
 }
 
 const ColoredCheckboxes: FC<IPageOption> = (props) => {
-  const { id, color, name, display, onChange } = props
+  const { id, color, name, display, onChange, onEdit } = props
   const getColor = () => {
     let checkboxClassName = 'ant-checkbox-blue'
     if (color === '#ee0a24') {
@@ -59,7 +60,13 @@ const ColoredCheckboxes: FC<IPageOption> = (props) => {
     {
       key: '1',
       label: (
-        <a target='_blank' rel='noopener noreferrer' href='https://www.antgroup.com'>
+        <a
+          href='#!'
+          onClick={(e) => {
+            e.preventDefault()
+            onEdit(id)
+          }}
+        >
           <FormattedMessage id='pages.calendar.manager.button.edit' />
         </a>
       )

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 13:04:50
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-07 13:36:28
+ * @LastEditTime: 2022-12-11 17:19:24
  * @FilePath: \xuct-calendar-antd-pc\src\constants\index.ts
  * @Description:
  *
@@ -45,3 +45,8 @@ export const WeekDayEn = {
   SA: 'Sat',
   SU: 'Sun'
 }
+
+export const Color = [
+  'ee0a24', '2eb82e', 'ffaa00', '3399ff', '990000', 'bb33ff', '3366cc', 'c68c53', '006600', 'ff99dd'
+]
+

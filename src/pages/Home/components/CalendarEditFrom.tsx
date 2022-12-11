@@ -2,30 +2,44 @@
  * @Author: Derek Xu
  * @Date: 2022-12-07 18:10:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-10 12:33:03
+ * @LastEditTime: 2022-12-11 22:36:13
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarEditFrom.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { FC } from 'react'
-import { ModalForm, ProForm, ProFormDependency, ProFormRadio, ProFormSelect, ProFormSwitch, ProFormText, ProFormTextArea } from '@ant-design/pro-components'
+import { FC, useEffect, useRef } from 'react'
+import {
+  ModalForm,
+  ProForm,
+  ProFormDependency,
+  ProFormInstance,
+  ProFormRadio,
+  ProFormSelect,
+  ProFormSwitch,
+  ProFormText,
+  ProFormTextArea
+} from '@ant-design/pro-components'
 import { Form, message } from 'antd'
 import { FormattedMessage, getIntl } from 'umi'
-import { saveOrUpdateCalendar } from '@/services/calendar'
+import { saveCalendar, updateCalendar } from '@/services/calendar'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
+import { Color } from '@/constants'
 
 interface IPageOption {
-  trigger: JSX.Element
+  type: string
+  modalVisit: boolean
   refresh: () => void
+  setModalVisit: (modalVisit: boolean) => void
+  initValues: any
 }
 
 const CalendarEditFrom: FC<IPageOption> = (props) => {
-  const { trigger, refresh } = props
-  const [form] = Form.useForm<{ name: string; description: string; display: number; alarmType: string }>()
+  const { type, initValues, modalVisit, refresh, setModalVisit } = props
+  const formRef = useRef<ProFormInstance>()
 
   const getCalendarColor = (): any[] => {
-    return ['ee0a24', '2eb82e', 'ffaa00', '3399ff', '990000', 'bb33ff', '3366cc', 'c68c53', '006600', 'ff99dd'].map((item) => {
+    return Color.map((item) => {
       return {
         label: <div style={{ width: '16px', height: '16px', background: `#${item}`, marginBottom: '-2px' }}></div>,
         value: item
@@ -67,31 +81,55 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
     }
   ]
 
+  useEffect(() => {
+    if (type === 'add') {
+      formRef.current?.resetFields()
+      return
+    }
+    debugger
+    formRef.current?.setFieldsValue(initValues)
+  }, [])
+
+  const saveOrUpdate = async (values: any) => {
+    const { display = true, alarmTime = 0, isShare = 0 } = values
+
+    //   await saveCalendar({
+    //     ...values,
+    //     display: display ? 1 : 0,
+    //     isShare: isShare ? 1 : 0,
+    //     alarmTime
+    //   })
+    //   return
+    // }
+    await updateCalendar({
+      ...values,
+      display: display ? 1 : 0,
+      isShare: isShare ? 1 : 0,
+      alarmTime
+    })
+  }
+
   return (
     <ModalForm<{
       name: string
       description: string
       display: number
       alarmType: string
+      alarmTime: string
     }>
       title={<FormattedMessage id='pages.calendar.add.title' />}
-      trigger={trigger}
-      form={form}
+      formRef={formRef}
       autoFocusFirstInput
+      open={modalVisit}
       modalProps={{
         destroyOnClose: true
       }}
       omitNil
+      onOpenChange={setModalVisit}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const { display = true, alarmTime = 0, isShare = 0 } = values
         try {
-          await saveOrUpdateCalendar({
-            ...values,
-            display: display ? 1 : 0,
-            isShare: isShare ? 1 : 0,
-            alarmTime
-          })
+          saveOrUpdate(values)
           message.success(getIntl().formatMessage({ id: 'pages.calendar.mananger.add.success' }))
           refresh()
         } catch (err) {

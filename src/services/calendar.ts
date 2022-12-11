@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:45:38
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-10 11:52:15
+ * @LastEditTime: 2022-12-11 19:42:25
  * @FilePath: \xuct-calendar-antd-pc\src\services\calendar.ts
  * @Description:
  *
@@ -38,10 +38,36 @@ export const updateDisplay = (calendarId: string, display: number) => {
  * 
  * @param calendar 
  */
-export const saveOrUpdateCalendar = (calendar: CALENDAR.Calendar) => {
+export const saveCalendar = (calendar: CALENDAR.Calendar) => {
   return request<API.Response>('/cms/api/app/v1/calendar', {
     method: 'post',
     data: calendar
+  })
+}
+
+/**
+ * 更新日历
+ * @param calendar 
+ * @returns 
+ */
+export const updateCalendar = (calendar: CALENDAR.Calendar) => { 
+  return request<API.Response>('/cms/api/app/v1/calendar', {
+    method: 'put',
+    data: calendar
+  })
+}
+
+/**
+ * 获取日历详情
+ * @param calendarId 
+ * @returns 
+ */
+export const getCalendar = (calendarId: string) => {
+   return request<CALENDAR.Calendar>('/cms/api/app/v1/calendar', {
+     method: 'get',
+     params: {
+      id: calendarId
+    }
   })
 }
 
@@ -61,3 +87,6 @@ export const componentsDaysById = (calendarId: string, start: string, end: strin
     }
   })
 }
+
+
+
