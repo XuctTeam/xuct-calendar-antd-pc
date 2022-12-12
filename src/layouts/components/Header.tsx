@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-07 17:28:36
+ * @LastEditTime: 2022-12-12 14:25:55
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\Header.tsx
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 import { FC, useEffect, useState } from 'react'
 import { Header } from 'antd/lib/layout/layout'
-import { Menu } from 'antd'
+import { Menu, Space } from 'antd'
 import AvatarDropdown from './AvatarDropdown'
 import { FormattedMessage, history } from 'umi'
 import { HomeOutlined, SettingOutlined, UsergroupDeleteOutlined } from '@ant-design/icons'
@@ -49,7 +49,11 @@ const HeaderContainer: FC<IPageOption> = (props) => {
     <Header className={styles.header}>
       <div className='logo'>123123</div>
       <div className={styles.right}>
-        <Menu
+        <Space>
+          <SettingOutlined />
+          <AvatarDropdown menu setLoading={setLoading} />
+        </Space>
+        {/* <Menu
           theme='dark'
           mode='horizontal'
           selectedKeys={menuKey}
@@ -63,8 +67,7 @@ const HeaderContainer: FC<IPageOption> = (props) => {
             { icon: <SettingOutlined />, label: <FormattedMessage id='component.globalHeader.menu.person' />, key: 'center' }
           ]}
           onClick={menuClick}
-        />
-        <AvatarDropdown menu setLoading={setLoading} />
+        /> */}
       </div>
     </Header>
   )

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:45:38
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-11 19:42:25
+ * @LastEditTime: 2022-12-12 13:04:18
  * @FilePath: \xuct-calendar-antd-pc\src\services\calendar.ts
  * @Description:
  *
@@ -35,8 +35,8 @@ export const updateDisplay = (calendarId: string, display: number) => {
 
 /**
  * 新增日历
- * 
- * @param calendar 
+ *
+ * @param calendar
  */
 export const saveCalendar = (calendar: CALENDAR.Calendar) => {
   return request<API.Response>('/cms/api/app/v1/calendar', {
@@ -47,10 +47,10 @@ export const saveCalendar = (calendar: CALENDAR.Calendar) => {
 
 /**
  * 更新日历
- * @param calendar 
- * @returns 
+ * @param calendar
+ * @returns
  */
-export const updateCalendar = (calendar: CALENDAR.Calendar) => { 
+export const updateCalendar = (calendar: CALENDAR.Calendar) => {
   return request<API.Response>('/cms/api/app/v1/calendar', {
     method: 'put',
     data: calendar
@@ -59,14 +59,28 @@ export const updateCalendar = (calendar: CALENDAR.Calendar) => {
 
 /**
  * 获取日历详情
- * @param calendarId 
- * @returns 
+ * @param calendarId
+ * @returns
  */
 export const getCalendar = (calendarId: string) => {
-   return request<CALENDAR.Calendar>('/cms/api/app/v1/calendar', {
-     method: 'get',
-     params: {
+  return request<CALENDAR.Calendar>('/cms/api/app/v1/calendar', {
+    method: 'get',
+    params: {
       id: calendarId
+    }
+  })
+}
+
+/**
+ * 删除日历
+ * @param id
+ * @returns
+ */
+export const deleteCalendar = (calendarId: string) => {
+  return request<API.Response>('/cms/api/app/v1/calendar', {
+    method: 'delete',
+    params: {
+      calendarId
     }
   })
 }
@@ -87,6 +101,3 @@ export const componentsDaysById = (calendarId: string, start: string, end: strin
     }
   })
 }
-
-
-

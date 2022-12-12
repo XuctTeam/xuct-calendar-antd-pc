@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-07 18:10:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-11 22:36:13
+ * @LastEditTime: 2022-12-12 13:33:10
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarEditFrom.tsx
  * @Description:
  *
@@ -20,22 +20,21 @@ import {
   ProFormText,
   ProFormTextArea
 } from '@ant-design/pro-components'
-import { Form, message } from 'antd'
+import { message, notification } from 'antd'
 import { FormattedMessage, getIntl } from 'umi'
-import { saveCalendar, updateCalendar } from '@/services/calendar'
+import { saveCalendar, updateCalendar, getCalendar } from '@/services/calendar'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { Color } from '@/constants'
 
 interface IPageOption {
-  type: string
-  modalVisit: boolean
+  id?: string
+  open: boolean
   refresh: () => void
-  setModalVisit: (modalVisit: boolean) => void
-  initValues: any
+  setOpen: (modalVisit: boolean) => void
 }
 
 const CalendarEditFrom: FC<IPageOption> = (props) => {
-  const { type, initValues, modalVisit, refresh, setModalVisit } = props
+  const { id, open, refresh, setOpen } = props
   const formRef = useRef<ProFormInstance>()
 
   const getCalendarColor = (): any[] => {
@@ -82,27 +81,40 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
   ]
 
   useEffect(() => {
-    if (type === 'add') {
-      formRef.current?.resetFields()
-      return
+    if (!id) return
+    _setFilesVaules(id)
+  }, [id])
+
+  const _setFilesVaules = async (id: string) => {
+    const res = await getCalendar(id)
+    const { name, color, display, isShare, description, alarmType, alarmTime } = res as any as CALENDAR.Calendar
+    const initValues = {
+      name,
+      color,
+      display,
+      isShare,
+      description,
+      alarmType: `${alarmType}`
     }
-    debugger
+    if (`${alarmType}` !== '0') {
+      initValues['alarmTime'] = `${alarmTime}`
+    }
     formRef.current?.setFieldsValue(initValues)
-  }, [])
+  }
 
-  const saveOrUpdate = async (values: any) => {
+  const saveOrUpdate = (values: any) => {
     const { display = true, alarmTime = 0, isShare = 0 } = values
-
-    //   await saveCalendar({
-    //     ...values,
-    //     display: display ? 1 : 0,
-    //     isShare: isShare ? 1 : 0,
-    //     alarmTime
-    //   })
-    //   return
-    // }
-    await updateCalendar({
+    if (!id) {
+      return saveCalendar({
+        ...values,
+        display: display ? 1 : 0,
+        isShare: isShare ? 1 : 0,
+        alarmTime
+      })
+    }
+    return updateCalendar({
       ...values,
+      id: id,
       display: display ? 1 : 0,
       isShare: isShare ? 1 : 0,
       alarmTime
@@ -120,17 +132,18 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
       title={<FormattedMessage id='pages.calendar.add.title' />}
       formRef={formRef}
       autoFocusFirstInput
-      open={modalVisit}
+      open={open}
+      preserve
       modalProps={{
         destroyOnClose: true
       }}
       omitNil
-      onOpenChange={setModalVisit}
+      onOpenChange={setOpen}
       submitTimeout={2000}
       onFinish={async (values: any) => {
         try {
-          saveOrUpdate(values)
-          message.success(getIntl().formatMessage({ id: 'pages.calendar.mananger.add.success' }))
+          await saveOrUpdate(values)
+          message.success(getIntl().formatMessage({ id: !id ? 'pages.calendar.mananger.add.success' : 'pages.calendar.mananger.edit.success' }))
           refresh()
         } catch (err) {
           console.log(err)
@@ -181,7 +194,7 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
         />
         <ProFormDependency name={['alarmType']}>
           {({ alarmType }: any) => {
-            if (alarmType === '0') {
+            if (alarmType === '0' || !alarmType) {
               return <ProFormText width='sm' name='alarmTime' label={<FormattedMessage id={'pages.calendar.add.alarmtime.label'} />} disabled />
             }
             return (

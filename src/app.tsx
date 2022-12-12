@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-25 17:27:15
+ * @LastEditTime: 2022-12-12 13:28:33
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -89,14 +89,9 @@ const responseInterceptors = (response: any): any => {
   const { url } = config
   if (url && url.includes('/oauth2/token')) return response
   if (!data) return response
-  const { code, message } = data
-  if (code !== 200) {
-    notification.warning({
-      message: 'message',
-      description: message
-    })
-  }
-  return data
+  const { code } = data
+  if (code === 200) return data
+  return response
 }
 /** 异常处理程序 */
 const codeMessage: any = {
@@ -112,11 +107,27 @@ const codeMessage: any = {
 }
 
 const errorThrower = (res: any) => {
-  debugger
+  const { code, message, success } = res
+  if (!success) {
+    const error: any = new Error(message)
+    error.name = 'BizError'
+    error.info = { code, message }
+    throw error // 抛出自制的错误
+  }
 }
 
 const errorHandler = (error: any, opts: any) => {
   if (opts?.skipErrorHandler) throw error
+  if (error.name === 'BizError') {
+    const { code, message } = error.info
+    if (code) {
+      notification.error({
+        message: getIntl().formatMessage({ id: 'pages.modal.commit.title' }),
+        description: `【${code}】: ` + message
+      })
+    }
+    return
+  }
   const { response, config } = error
   if (response && response.status) {
     const { url } = config
@@ -149,7 +160,6 @@ const errorHandler = (error: any, opts: any) => {
       message: getIntl().formatMessage({ id: 'code.message.network.eror' })
     })
   }
-  return response
 }
 
 /**

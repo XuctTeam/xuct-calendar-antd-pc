@@ -2,24 +2,20 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
-<<<<<<< Updated upstream
- * @LastEditTime: 2022-12-10 20:34:32
-=======
- * @LastEditTime: 2022-12-11 22:37:22
->>>>>>> Stashed changes
+ * @LastEditTime: 2022-12-12 14:29:17
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 
-import { PlusOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { ProCard } from '@ant-design/pro-components'
-import { Button, Empty, Spin } from 'antd'
-import { FC, useCallback, useState } from 'react'
-import { FormattedMessage } from 'umi'
+import { Button, Empty, message, Modal, notification, Spin } from 'antd'
+import { FC, useState } from 'react'
+import { FormattedMessage, getIntl } from 'umi'
 import ColoredCheckboxes from './ColoredCheckboxes'
 import CalendarEditFrom from './CalendarEditFrom'
-import { getCalendar } from '@/services/calendar'
+import { deleteCalendar } from '@/services/calendar'
 import styles from '../index.less'
 
 interface IPageOption {
@@ -31,61 +27,49 @@ interface IPageOption {
 
 const CalendarList: FC<IPageOption> = (props) => {
   const { loading, calendars, calendarChageDisplay, refresh } = props
-  const [modalVisit, setModalVisit] = useState(false)
-  const [formValues, setFormValues] = useState<any>()
-  const [type, setType] = useState<string>('add')
+  const [formOpen, setFormOpen] = useState(false)
+  const [calendarId, setCalendarId] = useState<any>()
 
   const checkboxCheck = (id: string, checked: boolean) => {
     calendarChageDisplay(id, !checked ? 0 : 1)
   }
 
-  const calendarOnEdit = (id: string) => {
-    getCalendar(id)
-      .then((res) => {
-        setType('update')
-        setFormValues(res as any as CALENDAR.Calendar)
-        setModalVisit(true)
-      })
-      .catch((err) => {})
+  const calendarOnEdit = (id?: string) => {
+    setCalendarId(id || undefined)
+    setFormOpen(true)
   }
 
-  const calendarOnAdd = () => {
-    setType('add')
-    setModalVisit(true)
+  const changeFormOpen = (open: boolean) => {
+    setFormOpen(open)
+    if (!open) {
+      setCalendarId(undefined)
+    }
+  }
+
+  const calendarOnDelete = (id: string) => {
+    Modal.confirm({
+      title: getIntl().formatMessage({ id: 'pages.calendar.manager.modal.delete.title' }),
+      icon: <ExclamationCircleOutlined />,
+      content: getIntl().formatMessage({ id: 'pages.calendar.manager.modal.delete.content' }),
+      okType: 'danger',
+      onOk: () => {
+        _deleteCalendar(id)
+      }
+    })
+  }
+
+  const _deleteCalendar = (calendarId: string) => {
+    deleteCalendar(calendarId)
+      .then(() => {
+        message.success(getIntl().formatMessage({ id: 'pages.calendar.mananger.delete.success' }))
+        refresh()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
-<<<<<<< Updated upstream
-    <ProCard
-      title={<FormattedMessage id='pages.calendar.manager.title' />}
-      hoverable
-      bordered
-      headerBordered
-      className={styles.card}
-      extra={<CalendarEditFrom trigger={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' />} refresh={refresh} />}
-    >
-      <div className={styles.body}>
-        <Spin spinning={loading}>
-          {calendars.length === 0 ? (
-            <Empty />
-          ) : (
-            calendars.map((item, index) => {
-              return (
-                <ColoredCheckboxes
-                  key={index}
-                  id={item.id}
-                  color={`#${item.color}`}
-                  name={item.name}
-                  display={item.display === 1}
-                  onChange={checkboxCheck}
-                ></ColoredCheckboxes>
-              )
-            })
-          )}
-        </Spin>
-      </div>
-    </ProCard>
-=======
     <>
       <ProCard
         title={<FormattedMessage id='pages.calendar.manager.title' />}
@@ -93,7 +77,7 @@ const CalendarList: FC<IPageOption> = (props) => {
         bordered
         headerBordered
         className={styles.card}
-        extra={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' onClick={calendarOnAdd} />}
+        extra={<Button type='primary' danger shape='round' icon={<PlusOutlined />} size='small' onClick={() => calendarOnEdit()} />}
       >
         <div className={styles.body}>
           <Spin spinning={loading}>
@@ -107,9 +91,11 @@ const CalendarList: FC<IPageOption> = (props) => {
                     id={item.id}
                     color={`#${item.color}`}
                     name={item.name}
+                    calendarId={item.calendarId}
                     display={item.display === 1}
                     onChange={checkboxCheck}
                     onEdit={calendarOnEdit}
+                    onDelete={calendarOnDelete}
                   ></ColoredCheckboxes>
                 )
               })
@@ -117,9 +103,8 @@ const CalendarList: FC<IPageOption> = (props) => {
           </Spin>
         </div>
       </ProCard>
-      <CalendarEditFrom modalVisit={modalVisit} type={type} refresh={refresh} setModalVisit={setModalVisit} initValues={formValues} />
+      <CalendarEditFrom open={formOpen} setOpen={changeFormOpen} refresh={refresh} id={calendarId}></CalendarEditFrom>
     </>
->>>>>>> Stashed changes
   )
 }
 

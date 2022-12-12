@@ -2,22 +2,23 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-01 21:24:03
+ * @LastEditTime: 2022-12-12 14:38:46
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\AvatarDropdown.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { FormattedMessage, getIntl, history, useModel } from 'umi'
 import { Avatar, Menu, Modal } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
 import type { MenuInfo } from 'rc-menu/lib/interface'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { flushSync } from 'react-dom'
 import HeaderDropdown from '@/components/HeaderDropdown'
 import { logout } from '@/services/login'
 import { stringify } from 'qs'
 import styles from './avatar.less'
+import PasswordForm from './PasswordForm'
 
 export type GlobalHeaderRightProps = {
   menu?: boolean
@@ -25,10 +26,28 @@ export type GlobalHeaderRightProps = {
 }
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
-  const { setLoading } = props
+  const { menu, setLoading } = props
+  const [passwordOpen, setPasswordOpen] = useState<boolean>(false)
   const { initialState, setInitialState } = useModel('@@initialState')
   const { currentUser } = initialState || { currentUser: null }
   const menuItems: ItemType[] = [
+    ...(menu
+      ? [
+          {
+            key: 'user',
+            icon: <UserOutlined />,
+            label: getIntl().formatMessage({ id: 'component.globalHeader.user' })
+          }
+        ]
+      : []),
+    {
+      key: 'password',
+      icon: <LockOutlined />,
+      label: getIntl().formatMessage({ id: 'component.globalHeader.modify.password' })
+    },
+    {
+      type: 'divider' as const
+    },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
@@ -41,6 +60,10 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
       const { key } = event
       if (key === 'logout') {
         loginOut()
+        return
+      }
+      if (key === 'password') {
+        setPasswordOpen(true)
         return
       }
     },
@@ -104,6 +127,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
           </span>
         </span>
       </HeaderDropdown>
+      <PasswordForm open={passwordOpen} setOpen={setPasswordOpen} />
     </>
   )
 }

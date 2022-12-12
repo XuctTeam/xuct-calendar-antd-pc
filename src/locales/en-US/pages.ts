@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-10 12:32:21
+ * @LastEditTime: 2022-12-12 14:41:45
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -71,10 +71,14 @@ export default {
   'pages.person.center.week.sunday': 'Sun',
 
   'pages.component.button.add': 'Add Component',
-  'pages.calendar.manager.title': 'Calendar',
+  'pages.calendar.manager.title': 'My Calendar',
   'pages.calendar.today.button': 'Today',
   'pages.calendar.manager.button.edit': 'Edit',
   'pages.calendar.manager.button.share': 'Share',
   'pages.calendar.manager.button.del': 'Delete',
   'pages.calendar.mananger.add.success': 'Add Success',
+  'pages.calendar.mananger.edit.success': 'Edit Success',
+  'pages.calendar.manager.modal.delete.title': 'Confirm Delete Calendar？',
+  'pages.calendar.manager.modal.delete.content': 'The schedule in the calendar will be deleted after deletion',
+  'pages.calendar.mananger.delete.success': 'Delete Success'
 }

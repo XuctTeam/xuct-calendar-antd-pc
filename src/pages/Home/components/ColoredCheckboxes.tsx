@@ -2,13 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:03
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-10 21:30:03
+ * @LastEditTime: 2022-12-12 13:05:29
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ColoredCheckboxes.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { EllipsisOutlined } from '@ant-design/icons'
+import { EllipsisOutlined, ShareAltOutlined } from '@ant-design/icons'
 import { Checkbox, Dropdown, MenuProps } from 'antd'
 import { FC } from 'react'
 import { FormattedMessage } from 'umi'
@@ -16,15 +16,17 @@ import styles from '../index.less'
 
 interface IPageOption {
   id: string
+  calendarId: string
   color: string
   name: string
   display: boolean
   onChange: (id: string, checked: boolean) => void
   onEdit: (id: string) => void
+  onDelete: (id: string) => void
 }
 
 const ColoredCheckboxes: FC<IPageOption> = (props) => {
-  const { id, color, name, display, onChange, onEdit } = props
+  const { id, color, name, display, calendarId, onChange, onEdit, onDelete } = props
   const getColor = () => {
     let checkboxClassName = 'ant-checkbox-blue'
     if (color === '#ee0a24') {
@@ -82,7 +84,14 @@ const ColoredCheckboxes: FC<IPageOption> = (props) => {
     {
       key: '3',
       label: (
-        <a style={{ color: 'red' }} target='_blank' rel='noopener noreferrer' href='https://www.luohanacademy.com'>
+        <a
+          style={{ color: 'red' }}
+          href='#!'
+          onClick={(e) => {
+            e.preventDefault()
+            onDelete(calendarId)
+          }}
+        >
           <FormattedMessage id='pages.calendar.manager.button.del' />
         </a>
       )
@@ -96,7 +105,9 @@ const ColoredCheckboxes: FC<IPageOption> = (props) => {
   return (
     <div className={styles.cell}>
       <div className={styles.bg}>
-        <Dropdown menu={{ items }} placement='topRight'>
+        <ShareAltOutlined style={{ fontSize: '16px' }} />
+        <div className={styles.space}></div>
+        <Dropdown menu={{ items }} placement='topRight' trigger={['contextMenu']} arrow={{ pointAtCenter: true }}>
           <EllipsisOutlined style={{ fontSize: '20px' }} />
         </Dropdown>
       </div>
