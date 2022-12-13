@@ -7,53 +7,85 @@
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
+
 import { ExclamationCircleOutlined, LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { FormattedMessage, getIntl, history, useModel } from 'umi'
-import { Avatar, Menu, Modal } from 'antd'
-import type { ItemType } from 'antd/es/menu/hooks/useItems'
+import { useEmotionCss } from '@ant-design/use-emotion-css'
+import { Avatar, Modal, Spin } from 'antd'
+import { setAlpha } from '@ant-design/pro-components'
+import { stringify } from 'querystring'
 import type { MenuInfo } from 'rc-menu/lib/interface'
 import React, { useCallback, useState } from 'react'
 import { flushSync } from 'react-dom'
 import HeaderDropdown from '@/components/HeaderDropdown'
+import { useModel, history, useIntl } from 'umi'
 import { logout } from '@/services/login'
-import { stringify } from 'qs'
-import styles from './avatar.less'
 import PasswordForm from './PasswordForm'
+import { ItemType } from 'antd/es/menu/hooks/useItems'
 
 export type GlobalHeaderRightProps = {
   menu?: boolean
   setLoading: (loading: boolean) => void
 }
 
-const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
-  const { menu, setLoading } = props
-  const [passwordOpen, setPasswordOpen] = useState<boolean>(false)
-  const { initialState, setInitialState } = useModel('@@initialState')
-  const { currentUser } = initialState || { currentUser: null }
-  const menuItems: ItemType[] = [
-    ...(menu
-      ? [
-          {
-            key: 'user',
-            icon: <UserOutlined />,
-            label: getIntl().formatMessage({ id: 'component.globalHeader.user' })
-          }
-        ]
-      : []),
-    {
-      key: 'password',
-      icon: <LockOutlined />,
-      label: getIntl().formatMessage({ id: 'component.globalHeader.modify.password' })
-    },
-    {
-      type: 'divider' as const
-    },
-    {
-      key: 'logout',
-      icon: <LogoutOutlined />,
-      label: getIntl().formatMessage({ id: 'component.globalHeader.logout' })
+const Name = () => {
+  const { initialState } = useModel('@@initialState')
+  const { currentUser } = initialState || {}
+
+  const nameClassName = useEmotionCss(({ token }) => {
+    return {
+      width: '70px',
+      height: '48px',
+      overflow: 'hidden',
+      lineHeight: '48px',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      [`@media only screen and (max-width: ${token.screenMD}px)`]: {
+        display: 'none'
+      }
     }
-  ]
+  })
+
+  return <span className={`${nameClassName} anticon`}>{currentUser?.member.name}</span>
+}
+
+const AvatarLogo = () => {
+  const { initialState } = useModel('@@initialState')
+  const { currentUser } = initialState || {}
+
+  const avatarClassName = useEmotionCss(({ token }) => {
+    return {
+      marginRight: '8px',
+      color: token.colorPrimary,
+      verticalAlign: 'top',
+      background: setAlpha(token.colorBgContainer, 0.85),
+      [`@media only screen and (max-width: ${token.screenMD}px)`]: {
+        margin: 0
+      }
+    }
+  })
+
+  return <Avatar size='small' className={avatarClassName} src={currentUser?.member.avatar} alt='avatar' />
+}
+
+const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) => {
+  const [passOpen, setPassOpen] = useState<boolean>(false)
+  const init = useIntl()
+  const actionClassName = useEmotionCss(({ token }) => {
+    return {
+      display: 'flex',
+      height: '48px',
+      marginLeft: 'auto',
+      overflow: 'hidden',
+      alignItems: 'center',
+      padding: '0 8px',
+      cursor: 'pointer',
+      borderRadius: token.borderRadius,
+      '&:hover': {
+        backgroundColor: token.colorBgTextHover
+      }
+    }
+  })
+  const { initialState, setInitialState } = useModel('@@initialState')
 
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
@@ -63,14 +95,12 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
         return
       }
       if (key === 'password') {
-        setPasswordOpen(true)
+        setPassOpen(true)
         return
       }
     },
     [setInitialState]
   )
-
-  const menuHeaderDropdown = <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick} items={menuItems} />
 
   /**
    * 退出登录，并且将当前的 url 保存
@@ -78,9 +108,9 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
   const loginOut = () => {
     //await outLogin();
     Modal.confirm({
-      title: getIntl().formatMessage({ id: 'pages.modal.commit.title' }),
+      title: init.formatMessage({ id: 'pages.modal.commit.title' }),
       icon: <ExclamationCircleOutlined />,
-      content: getIntl().formatMessage({ id: 'pages.logout.content' }),
+      content: init.formatMessage({ id: 'pages.logout.content' }),
       onOk: () => {
         quitLogin()
       }
@@ -115,19 +145,68 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = (props) => {
     }
   }
 
-  if (!currentUser) return <></>
+  const loading = (
+    <span className={actionClassName}>
+      <Spin
+        size='small'
+        style={{
+          marginLeft: 8,
+          marginRight: 8
+        }}
+      />
+    </span>
+  )
+
+  if (!initialState) {
+    return loading
+  }
+
+  const { currentUser } = initialState
+
+  if (!currentUser || !currentUser.member.name) {
+    return loading
+  }
+
+  const menuItems: ItemType[] = [
+    ...(menu
+      ? [
+          {
+            key: 'user',
+            icon: <UserOutlined />,
+            label: init.formatMessage({ id: 'component.globalHeader.user' })
+          }
+        ]
+      : []),
+    {
+      key: 'password',
+      icon: <LockOutlined />,
+      label: init.formatMessage({ id: 'component.globalHeader.modify.password' })
+    },
+    {
+      type: 'divider' as const
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: init.formatMessage({ id: 'component.globalHeader.logout' })
+    }
+  ]
 
   return (
     <>
-      <HeaderDropdown overlay={menuHeaderDropdown}>
-        <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size='small' className={styles.avatar} src={currentUser.member.avatar} alt='avatar' />
-          <span className={`${styles.name}`}>
-            <FormattedMessage id='component.globalHeader.welcome' />：{currentUser.member.name}
-          </span>
+      <HeaderDropdown
+        menu={{
+          selectedKeys: [],
+          onClick: onMenuClick,
+          items: menuItems
+        }}
+      >
+        <span className={actionClassName}>
+          <AvatarLogo />
+          <Name />
         </span>
       </HeaderDropdown>
-      <PasswordForm open={passwordOpen} setOpen={setPasswordOpen} />
+      <PasswordForm open={passOpen} setOpen={setPassOpen} />
     </>
   )
 }

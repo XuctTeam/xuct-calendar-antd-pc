@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 14:25:55
+ * @LastEditTime: 2022-12-13 09:30:07
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\Header.tsx
  * @Description:
  *
@@ -50,7 +50,9 @@ const HeaderContainer: FC<IPageOption> = (props) => {
       <div className='logo'>123123</div>
       <div className={styles.right}>
         <Space>
-          <SettingOutlined />
+          <div className={styles.menu}>
+            <SettingOutlined />
+          </div>
           <AvatarDropdown menu setLoading={setLoading} />
         </Space>
         {/* <Menu

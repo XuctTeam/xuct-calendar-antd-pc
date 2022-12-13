@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:40:11
- * @LastEditTime: 2022-11-23 16:10:32
+ * @LastEditTime: 2022-12-13 13:55:18
  * @LastEditors: Derek Xu
  */
 import { message, Tabs } from 'antd'
@@ -16,6 +16,53 @@ import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi'
 import sessionStore from '@/cache'
 import { AUTHORIZATION } from '@/constants'
 import styles from './index.less'
+import { useEmotionCss } from '@ant-design/use-emotion-css'
+
+const ActionIcons = () => {
+  const langClassName = useEmotionCss(({ token }) => {
+    return {
+      marginLeft: '8px',
+      color: 'rgba(0, 0, 0, 0.2)',
+      fontSize: '24px',
+      verticalAlign: 'middle',
+      cursor: 'pointer',
+      transition: 'color 0.3s',
+      '&:hover': {
+        color: token.colorPrimaryActive
+      }
+    }
+  })
+
+  return (
+    <>
+      <AlipayCircleOutlined key='AlipayCircleOutlined' className={langClassName} />
+      <TaobaoCircleOutlined key='TaobaoCircleOutlined' className={langClassName} />
+      <WeiboCircleOutlined key='WeiboCircleOutlined' className={langClassName} />
+    </>
+  )
+}
+
+const Lang = () => {
+  const langClassName = useEmotionCss(({ token }) => {
+    return {
+      width: 42,
+      height: 42,
+      lineHeight: '42px',
+      position: 'fixed',
+      right: 16,
+      borderRadius: token.borderRadius,
+      ':hover': {
+        backgroundColor: token.colorBgTextHover
+      }
+    }
+  })
+
+  return (
+    <div className={langClassName} data-lang>
+      {SelectLang && <SelectLang />}
+    </div>
+  )
+}
 
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account')
@@ -57,9 +104,7 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang />}
-      </div>
+      <Lang />
       <div className={styles.content}>
         <LoginForm
           logo={<img alt='logo' src='/logo.png' />}
@@ -68,12 +113,7 @@ const Login: React.FC = () => {
           initialValues={{
             autoLogin: true
           }}
-          actions={[
-            <FormattedMessage key='loginWith' id='pages.login.loginWith' defaultMessage='其他登录方式' />,
-            <AlipayCircleOutlined key='AlipayCircleOutlined' className={styles.icon} />,
-            <TaobaoCircleOutlined key='TaobaoCircleOutlined' className={styles.icon} />,
-            <WeiboCircleOutlined key='WeiboCircleOutlined' className={styles.icon} />
-          ]}
+          actions={[<FormattedMessage key='loginWith' id='pages.login.loginWith' defaultMessage='其他登录方式' />, <ActionIcons key='icons' />]}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams)
           }}

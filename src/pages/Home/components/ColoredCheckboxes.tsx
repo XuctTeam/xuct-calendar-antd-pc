@@ -2,14 +2,16 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:03
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 13:05:29
+ * @LastEditTime: 2022-12-13 15:02:00
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ColoredCheckboxes.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { EllipsisOutlined, ShareAltOutlined } from '@ant-design/icons'
-import { Checkbox, Dropdown, MenuProps } from 'antd'
+import { useEmotionCss } from '@ant-design/use-emotion-css'
+import { Checkbox, ConfigProvider, Dropdown, MenuProps } from 'antd'
+import { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox'
 import { FC } from 'react'
 import { FormattedMessage } from 'umi'
 import styles from '../index.less'
@@ -25,39 +27,36 @@ interface IPageOption {
   onDelete: (id: string) => void
 }
 
+interface IStyleOption {
+  color: string
+  name: string
+  display: boolean
+  boxOnChange: (checked: CheckboxChangeEvent) => void
+}
+
+const StylesCheckbox: FC<IStyleOption> = ({ color, name, display, boxOnChange }) => {
+  const _color = `${color}`
+  return (
+    <ConfigProvider
+      theme={{
+        components: {
+          Checkbox: {
+            colorPrimary: _color,
+            colorPrimaryBorder: _color,
+            colorPrimaryHover: _color
+          }
+        }
+      }}
+    >
+      <Checkbox checked={display} onChange={boxOnChange}>
+        {name}
+      </Checkbox>
+    </ConfigProvider>
+  )
+}
+
 const ColoredCheckboxes: FC<IPageOption> = (props) => {
   const { id, color, name, display, calendarId, onChange, onEdit, onDelete } = props
-  const getColor = () => {
-    let checkboxClassName = 'ant-checkbox-blue'
-    if (color === '#ee0a24') {
-      checkboxClassName = 'ant-checkbox-red'
-    }
-    if (color === '#2eb82e') {
-      checkboxClassName = 'ant-checkbox-green'
-    }
-    if (color === '#ffaa00') {
-      checkboxClassName = 'ant-checkbox-yellow'
-    }
-    if (color === '#990000') {
-      checkboxClassName = 'ant-checkbox-brown'
-    }
-    if (color === '#bb33ff') {
-      checkboxClassName = 'ant-checkbox-purple'
-    }
-    if (color === '#3366cc') {
-      checkboxClassName = 'ant-checkbox-darkblue'
-    }
-    if (color === '#c68c53') {
-      checkboxClassName = 'ant-checkbox-darkyellow'
-    }
-    if (color === '#006600') {
-      checkboxClassName = 'ant-checkbox-darkgreen'
-    }
-    if (color === '#ff99dd') {
-      checkboxClassName = 'ant-checkbox-pink'
-    }
-    return checkboxClassName
-  }
   const items: MenuProps['items'] = [
     {
       key: '1',
@@ -112,11 +111,12 @@ const ColoredCheckboxes: FC<IPageOption> = (props) => {
         </Dropdown>
       </div>
       <div className={styles.checkbox}>
-        <span className={getColor()}>
+        {/* <span className={getColor()}>
           <Checkbox onChange={boxOnChange} checked={display}>
             {name}
           </Checkbox>
-        </span>
+        </span> */}
+        <StylesCheckbox color={color} name={name} display={display} boxOnChange={boxOnChange} />
       </div>
     </div>
   )
