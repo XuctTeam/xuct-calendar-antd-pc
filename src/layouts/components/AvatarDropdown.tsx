@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 14:38:46
+ * @LastEditTime: 2022-12-13 16:57:39
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\AvatarDropdown.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -21,6 +21,7 @@ import { useModel, history, useIntl } from 'umi'
 import { logout } from '@/services/login'
 import PasswordForm from './PasswordForm'
 import { ItemType } from 'antd/es/menu/hooks/useItems'
+import UserInfoForm from './UserInfoForm'
 
 export type GlobalHeaderRightProps = {
   menu?: boolean
@@ -69,6 +70,7 @@ const AvatarLogo = () => {
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) => {
   const [passOpen, setPassOpen] = useState<boolean>(false)
+  const [infoOpen, setInfoOpen] = useState<boolean>(false)
   const init = useIntl()
   const actionClassName = useEmotionCss(({ token }) => {
     return {
@@ -86,64 +88,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
     }
   })
   const { initialState, setInitialState } = useModel('@@initialState')
-
-  const onMenuClick = useCallback(
-    (event: MenuInfo) => {
-      const { key } = event
-      if (key === 'logout') {
-        loginOut()
-        return
-      }
-      if (key === 'password') {
-        setPassOpen(true)
-        return
-      }
-    },
-    [setInitialState]
-  )
-
-  /**
-   * 退出登录，并且将当前的 url 保存
-   */
-  const loginOut = () => {
-    //await outLogin();
-    Modal.confirm({
-      title: init.formatMessage({ id: 'pages.modal.commit.title' }),
-      icon: <ExclamationCircleOutlined />,
-      content: init.formatMessage({ id: 'pages.logout.content' }),
-      onOk: () => {
-        quitLogin()
-      }
-    })
-  }
-
-  const quitLogin = async () => {
-    setLoading(true)
-    try {
-      await logout()
-    } catch (err) {
-      console.log(err)
-      setLoading(false)
-      return
-    }
-    setLoading(false)
-    flushSync(() => {
-      setInitialState((s) => ({ ...s, currentUser: undefined }))
-    })
-    const { search, pathname } = window.location
-    const urlParams = new URL(window.location.href).searchParams
-    /** 此方法会跳转到 redirect 参数所在的位置 */
-    const redirect = urlParams.get('redirect')
-    // Note: There may be security issues, please note
-    if (window.location.pathname !== '/user/login' && !redirect) {
-      history.replace({
-        pathname: '/user/login',
-        search: stringify({
-          redirect: pathname + search
-        })
-      })
-    }
-  }
 
   const loading = (
     <span className={actionClassName}>
@@ -171,7 +115,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
     ...(menu
       ? [
           {
-            key: 'user',
+            key: 'userinfo',
             icon: <UserOutlined />,
             label: init.formatMessage({ id: 'component.globalHeader.user' })
           }
@@ -192,6 +136,68 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
     }
   ]
 
+  const onMenuClick = (event: MenuInfo) => {
+    const { key } = event
+    switch (key) {
+      case 'logout':
+        loginOut()
+        break
+      case 'password':
+        setPassOpen(true)
+        break
+      case 'userinfo':
+        setInfoOpen(true)
+        break
+    }
+  }
+
+  /**
+   * 退出登录，并且将当前的 url 保存
+   */
+  const loginOut = () => {
+    //await outLogin();
+    Modal.confirm({
+      title: init.formatMessage({ id: 'pages.modal.commit.title' }),
+      icon: <ExclamationCircleOutlined />,
+      content: init.formatMessage({ id: 'pages.logout.content' }),
+      onOk: () => {
+        quitLogin()
+      }
+    })
+  }
+
+  const quitLogin = useCallback(async () => {
+    setLoading(true)
+    try {
+      await logout()
+    } catch (err) {
+      console.log(err)
+      setLoading(false)
+      return
+    }
+    setLoading(false)
+    flushSync(() => {
+      setInitialState((s) => ({ ...s, currentUser: undefined }))
+    })
+    const { search, pathname } = window.location
+    const urlParams = new URL(window.location.href).searchParams
+    /** 此方法会跳转到 redirect 参数所在的位置 */
+    const redirect = urlParams.get('redirect')
+    // Note: There may be security issues, please note
+    if (window.location.pathname !== '/user/login' && !redirect) {
+      history.replace({
+        pathname: '/user/login',
+        search: stringify({
+          redirect: pathname + search
+        })
+      })
+    }
+  }, [setInitialState])
+
+  const infoClose = (e: any) => {
+    setInfoOpen(false)
+  }
+
   return (
     <>
       <HeaderDropdown
@@ -207,6 +213,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
         </span>
       </HeaderDropdown>
       <PasswordForm open={passOpen} setOpen={setPassOpen} />
+      <UserInfoForm open={infoOpen} setOpen={infoClose}></UserInfoForm>
     </>
   )
 }

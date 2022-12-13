@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 16:52:13
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 14:36:27
+ * @LastEditTime: 2022-12-13 16:02:16
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\PasswordForm.tsx
  * @Description:
  *
@@ -42,51 +42,49 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
   }
 
   return (
-    <>
-      <ModalForm
-        formRef={formRef}
-        title={<FormattedMessage id='pages.modify.passowrd.title' />}
-        open={open}
-        onOpenChange={setOpen}
-        onFinish={async (data: any) => {
-          const { password } = data
-          await updatePassword(password)
-          message.warning(getIntl().formatMessage({ id: 'pages.modify.passowrd.success' }))
-          formRef?.current?.resetFields()
-          return true
-        }}
-        modalProps={{
-          destroyOnClose: true
-        }}
-      >
-        <ProFormText.Password
-          width='sm'
-          name='password'
-          label={<FormattedMessage id='page.modify.password.label' />}
-          rules={[
-            {
-              required: true,
-              validator(rule, value, callback) {
-                isPasswordValidate(value, callback, 0)
-              }
+    <ModalForm
+      formRef={formRef}
+      title={<FormattedMessage id='pages.modify.passowrd.title' />}
+      open={open}
+      onOpenChange={setOpen}
+      onFinish={async (data: any) => {
+        const { password } = data
+        await updatePassword(password)
+        message.warning(getIntl().formatMessage({ id: 'pages.modify.passowrd.success' }))
+        formRef?.current?.resetFields()
+        return true
+      }}
+      modalProps={{
+        destroyOnClose: true
+      }}
+    >
+      <ProFormText.Password
+        width='sm'
+        name='password'
+        label={<FormattedMessage id='page.modify.password.label' />}
+        rules={[
+          {
+            required: true,
+            validator(rule, value, callback) {
+              isPasswordValidate(value, callback, 0)
             }
-          ]}
-        />
-        <ProFormText.Password
-          width='sm'
-          name='confirm_password'
-          label={<FormattedMessage id='page.modify.confirm.password.label' />}
-          rules={[
-            {
-              required: true,
-              validator(rule, value, callback) {
-                isPasswordValidate(value, callback, 1)
-              }
+          }
+        ]}
+      />
+      <ProFormText.Password
+        width='sm'
+        name='confirm_password'
+        label={<FormattedMessage id='page.modify.confirm.password.label' />}
+        rules={[
+          {
+            required: true,
+            validator(rule, value, callback) {
+              isPasswordValidate(value, callback, 1)
             }
-          ]}
-        />
-      </ModalForm>
-    </>
+          }
+        ]}
+      />
+    </ModalForm>
   )
 }
 

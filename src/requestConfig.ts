@@ -54,11 +54,12 @@ const errorThrower = (res: any) => {
 
 const errorHandler = (error: any, opts: any) => {
   if (opts?.skipErrorHandler) throw error
+  const init = getIntl()
   if (error.name === 'BizError') {
     const { code, message } = error.info
     if (code) {
       notification.error({
-        message: getIntl().formatMessage({ id: 'pages.modal.commit.title' }),
+        message: init.formatMessage({ id: 'pages.modal.commit.title' }),
         description: `【${code}】: ` + message
       })
     }
@@ -73,27 +74,27 @@ const errorHandler = (error: any, opts: any) => {
       if (status === 401) {
         message = response?.data.message
       } else {
-        message = getIntl().formatMessage({ id: codeMessage[status] })
+        message = init.formatMessage({ id: codeMessage[status] })
       }
     } else {
       const initMsgCode = codeMessage[response.status]
       message = initMsgCode ? getIntl().formatMessage({ id: initMsgCode }) : response.statusText
     }
     notification.error({
-      message: getIntl().formatMessage({ id: 'code.message.error' }) + ` ${status}: ${config?.url}`,
+      message: init.formatMessage({ id: 'code.message.error' }) + ` ${status}: ${config?.url}`,
       description: message
     })
   } else if (!response) {
     notification.error({
-      description: getIntl().formatMessage({
+      description: init.formatMessage({
         id: 'code.message.network.eror.describe'
       }),
-      message: getIntl().formatMessage({ id: 'code.message.network.eror' })
+      message: init.formatMessage({ id: 'code.message.network.eror' })
     })
   } else {
     // 发送请求时出了点问题
     notification.error({
-      message: getIntl().formatMessage({ id: 'code.message.network.eror' })
+      message: init.formatMessage({ id: 'code.message.network.eror' })
     })
   }
 }

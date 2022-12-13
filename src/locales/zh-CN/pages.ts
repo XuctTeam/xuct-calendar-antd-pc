@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 14:41:31
+ * @LastEditTime: 2022-12-13 17:21:58
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -37,37 +37,6 @@ export default {
   'pages.modal.commit.title': '提示',
   'pages.logout.content': '确定退出登录吗？',
   'pages.modify.passowrd.success': '修改成功，请用新密码登录',
-  'pages.person.center.menu': '个人中心',
-  'pages.person.center.upload.avatar': '上传头像',
-  'pages.person.center.userinfo': '我的信息',
-  'pages.person.center.info.detail': '详细信息',
-  'pages.person.center.name.label': '姓名',
-  'pages.person.center.username.label': '账号',
-  'pages.person.center.phone.label': '电话',
-  'pages.person.center.email.label': '邮箱',
-  'pages.person.center.wx.label': '微信',
-  'pages.person.center.setting': '设置',
-  'pages.person.center.userinfo.tab': '基础信息',
-  'pages.person.center.userinfo.password.label': '登录密码',
-  'pages.person.center.userinfo.name.label': '姓名',
-  'pages.person.center.userinfo.username.label': '账号',
-  'pages.person.center.userinfo.phone.label': '电话',
-  'pages.person.center.userinfo.email.label': '邮箱',
-  'pages.person.center.userinfo.modify.password.title': '修改密码',
-  'pages.person.center.userinfo.password.desc.first': '安全性高的密码可以使帐号更安全',
-  'pages.person.center.userinfo.password.desc.second': '建议您定期更换密码，设置一个长度8-26位包含字母、数字和特殊符号的密码',
-  'pages.person.center.userinfo.last.login.label': '最后一次登录时间',
-  'pages.person.center.userinfo.security.title': '安全认证',
-  'pages.person.center.userinfo.already.bind.phone.title': '您已经绑定了手机',
-  'pages.person.center.userinfo.un.bind.phone.title': '您暂未绑定手机',
-  'pages.person.center.userinfo.phone.warning.title': '手机号一旦解绑，将无法通过手机号同步',
-  'pages.person.center.userinfo.phone.bing.button': '绑定',
-  'pages.person.center.userinfo.phone.unbinding.button': '解绑',
-  'pages.person.center.system.tab': '系统设置',
-  'pages.person.center.lanuage.title': '语言',
-  'pages.person.center.week.start': '每周开始于',
-  'pages.person.center.week.monday': '周一',
-  'pages.person.center.week.sunday': '周日',
 
   'pages.component.button.add': '创建日程',
   'pages.calendar.manager.title': '我的日历',
