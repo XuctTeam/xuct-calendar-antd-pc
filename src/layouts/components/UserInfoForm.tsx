@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-13 16:02:04
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 18:27:17
+ * @LastEditTime: 2022-12-14 15:11:31
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\UserInfoForm.tsx
  * @Description:
  *
@@ -11,39 +11,31 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Avatar, Button, Col, Divider, Drawer, Input, message, Row, Upload, UploadProps } from 'antd'
 import { FormattedMessage, useModel } from 'umi'
-import { DownloadOutlined, UploadOutlined } from '@ant-design/icons'
-import styles from '../index.less'
-import { ProFormText } from '@ant-design/pro-components'
+import { UploadOutlined } from '@ant-design/icons'
+import { modifyName } from '@/services/user'
+import styles from './UserInfoForm.less'
 
 interface IPageOption {
   open: boolean
   setOpen: (e: React.MouseEvent | React.KeyboardEvent) => void
+  onUpateUserName: (name: string) => void
 }
 
-interface DescriptionItemProps {
-  title: string
-  content: React.ReactNode
-}
-
-const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
-  <div className='site-description-item-profile-wrapper'>
-    <p className='site-description-item-profile-p-label'>{title}:</p>
-    {content}
-  </div>
-)
-
-const UserInfoForm: FC<IPageOption> = ({ open, setOpen }) => {
+const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpateUserName }) => {
   const { initialState } = useModel('@@initialState')
   const [member, setMember] = useState<USER.Userinfo>()
   const [userNameAuth, setUserNameAuth] = useState<USER.UserAuth>()
   const [phoneAuth, setPhoneAuth] = useState<USER.UserAuth>()
   const [emailAuth, setEmailAuth] = useState<USER.UserAuth>()
   const [nameEdit, setNameEdit] = useState<boolean>(false)
+  const [name, setName] = useState<string>('')
+  const [nameLoading, setNameLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (!initialState?.currentUser) return
     const { member, auths } = initialState?.currentUser
     setMember(member)
+    setName(member.name)
     setUserNameAuth(getAuth(auths, 'user_name'))
     setPhoneAuth(getAuth(auths, 'phone'))
     setEmailAuth(getAuth(auths, 'email'))
@@ -53,26 +45,16 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen }) => {
     return auths.find((item) => item.identityType === type)
   }
 
-  const getAuthTitle = (type: string) => {
-    switch (type) {
-      case 'user_name':
-        return <FormattedMessage id='pages.person.center.userinfo.username.label' />
-      default:
-        return <FormattedMessage id={`pages.person.center.userinfo.${type}.label`} />
-    }
+  const authTitleLabel = {
+    user_name: <FormattedMessage id='pages.person.center.userinfo.username.label' />,
+    phone: <FormattedMessage id={`pages.person.center.userinfo.phone.label`} />,
+    email: <FormattedMessage id={`pages.person.center.userinfo.email.label`} />
   }
 
-  const getAuthName = (type: string) => {
-    switch (type) {
-      case 'user_name':
-        return userNameAuth?.username
-      case 'phone':
-        return phoneAuth?.username
-      case 'email':
-        return emailAuth?.username
-      default:
-        return ''
-    }
+  const authTitleDesc = {
+    user_name: <FormattedMessage id='pages.person.center.userinfo.username.desc' />,
+    phone: <FormattedMessage id='pages.person.center.userinfo.phone.desc' />,
+    email: <FormattedMessage id='pages.person.center.userinfo.email.desc' />
   }
 
   const upload: UploadProps = {
@@ -93,6 +75,39 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen }) => {
     }
   }
 
+  const nameOnchage = (e: any) => {
+    setName(e.currentTarget.value)
+  }
+
+  const saveOrUpdateName = () => {
+    if (!nameEdit) {
+      setNameEdit(!nameEdit)
+      return
+    }
+    if (!name) {
+      setNameEdit(!nameEdit)
+      setName(member?.name || '')
+      return
+    }
+    if (nameEdit && member?.name === name) {
+      setNameEdit(!nameEdit)
+      setName(member?.name || '')
+      return
+    }
+    setNameLoading(true)
+    modifyName(name)
+      .then(() => {
+        onUpateUserName(name)
+        setNameLoading(false)
+        setNameEdit(!nameEdit)
+      })
+      .catch((err) => {
+        console.log(err)
+        setNameLoading(false)
+        setNameEdit(!nameEdit)
+      })
+  }
+
   return (
     <Drawer title={<FormattedMessage id='pages.userinfo.title' />} width={640} placement='right' closable={false} onClose={setOpen} open={open}>
       <div className={styles.cell}>
@@ -106,43 +121,65 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen }) => {
       <Divider orientation='left' plain>
         <FormattedMessage id='pages.person.center.userinfo' />
       </Divider>
-      <Row className={styles.item} justify='center' align='middle'>
-        <Col span={2}>
-          <FormattedMessage id='pages.person.center.name.label' />
-        </Col>
-        <Col span={18}>
-          <Input style={{ width: '100%' }} maxLength={20} defaultValue={member?.name} disabled={!nameEdit} bordered={false} />
-        </Col>
-        <Col span={4}>
-          {nameEdit ? (
-            <Button type='link' onClick={() => setNameEdit(false)}>
-              保存
+      <Row className={styles.item} justify='start' align='middle'>
+        <Col span={12} className={styles.cell}>
+          <span>
+            <FormattedMessage id='pages.person.center.name.label' />
+          </span>
+          <div className={styles.name}>
+            {nameEdit ? <Input maxLength={20} value={name} onChange={nameOnchage} /> : <span>{name}</span>}
+            <Button type='link' onClick={saveOrUpdateName} danger={!nameEdit} loading={nameLoading}>
+              {nameEdit ? <FormattedMessage id='pages.person.center.name.save.button' /> : <FormattedMessage id='pages.person.center.name.update.button' />}
             </Button>
-          ) : (
-            <Button type='link' danger onClick={() => setNameEdit(true)}>
-              修改
-            </Button>
-          )}
+          </div>
+        </Col>
+        <Col span={12} className={styles.cell}>
+          <span>
+            <FormattedMessage id='pages.person.center.last.login.time' />
+          </span>
+          <div>1111</div>
         </Col>
       </Row>
-      <Row className={styles.item} justify='center' align='middle'>
-        <Col span={2}>
-          <FormattedMessage id='pages.person.center.name.label' />
+      <Divider orientation='left' plain>
+        <FormattedMessage id='pages.person.center.security' />
+      </Divider>
+      <Row className={`${styles.item}  ${styles.security}`} justify='start' align='middle'>
+        <Col span={20} className={styles.col}>
+          <div>{authTitleLabel.user_name}</div>
+          <div>
+            <span>{authTitleDesc.user_name}</span>
+            <span>{userNameAuth && `【${userNameAuth.username}】`}</span>
+          </div>
         </Col>
-        <Col span={18}>
-          <Input style={{ width: '100%' }} maxLength={20} defaultValue='https://ant.design' disabled={!nameEdit} bordered={false} />
+        <Col span={4}>{!userNameAuth && <Button>234234</Button>}</Col>
+      </Row>
+      <Row className={`${styles.item}  ${styles.security}`} justify='start' align='middle'>
+        <Col span={20} className={styles.col}>
+          <div>{authTitleLabel.phone}</div>
+          <div>
+            <span>{authTitleDesc.phone}</span>
+            <span>{phoneAuth && `【${phoneAuth.username}】`}</span>
+          </div>
         </Col>
         <Col span={4}>
-          {nameEdit ? (
-            <Button type='link' onClick={() => setNameEdit(false)}>
-              保存
-            </Button>
-          ) : (
-            <Button type='link' danger onClick={() => setNameEdit(true)}>
-              修改
-            </Button>
-          )}
+          <Button type='link' danger>
+            {phoneAuth ? (
+              <FormattedMessage id='pages.person.center.userinfo.phone.unbinding.button' />
+            ) : (
+              <FormattedMessage id='pages.person.center.userinfo.phone.bind.button' />
+            )}
+          </Button>
         </Col>
+      </Row>
+      <Row className={`${styles.item}  ${styles.security}`} justify='start' align='middle'>
+        <Col span={20} className={styles.col}>
+          <div>{authTitleLabel.email}</div>
+          <div>
+            <span>{authTitleDesc.email}</span>
+            <span>{emailAuth && `【${emailAuth.username}】`}</span>
+          </div>
+        </Col>
+        <Col span={4}>11</Col>
       </Row>
     </Drawer>
   )

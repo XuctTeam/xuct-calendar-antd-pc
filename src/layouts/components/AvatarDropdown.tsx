@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 16:57:39
+ * @LastEditTime: 2022-12-14 14:05:44
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\AvatarDropdown.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -198,6 +198,16 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
     setInfoOpen(false)
   }
 
+  const onUpateUserName = useCallback(
+    (name: string) => {
+      const { member, auths } = currentUser
+      flushSync(() => {
+        setInitialState((s) => ({ ...s, currentUser: { member: { ...member, name: name }, auths } }))
+      })
+    },
+    [setInitialState]
+  )
+
   return (
     <>
       <HeaderDropdown
@@ -213,7 +223,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
         </span>
       </HeaderDropdown>
       <PasswordForm open={passOpen} setOpen={setPassOpen} />
-      <UserInfoForm open={infoOpen} setOpen={infoClose}></UserInfoForm>
+      <UserInfoForm open={infoOpen} setOpen={infoClose} onUpateUserName={onUpateUserName}></UserInfoForm>
     </>
   )
 }

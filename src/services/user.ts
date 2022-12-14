@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 11:15:17
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 11:18:18
+ * @LastEditTime: 2022-12-14 13:56:23
  * @FilePath: \xuct-calendar-antd-pc\src\services\user.ts
  * @Description:
  *
@@ -23,9 +23,21 @@ export const userInfo = ({ ...ops }) => {
  * @param {string} password
  * @return {*}
  */
-export const updatePassword = (password: string): Promise<any> => {
+export const updatePassword = (password: string) => {
   return request<API.Response>('/ums/api/app/v1/member/password', {
     method: 'POST',
     data: { password }
+  })
+}
+
+/**
+ * @description: 修改姓名
+ * @param name
+ * @returns
+ */
+export const modifyName = (name: string) => {
+  return request<API.Response>('/ums/api/app/v1/member/name', {
+    method: 'POST',
+    data: { name }
   })
 }

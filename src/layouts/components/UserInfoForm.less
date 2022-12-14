@@ -1,0 +1,46 @@
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.item {
+  padding: 10px;
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    > span:first-child {
+      padding-bottom: 10px;
+    }
+  }
+
+  .name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: 30px;
+  }
+}
+
+.security {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+  .col {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 14px;
+
+    div {
+      margin-bottom: 10px;
+    }
+
+    div:first-child {
+      color: rgba(0, 0, 0, 0.85);
+    }
+  }
+}

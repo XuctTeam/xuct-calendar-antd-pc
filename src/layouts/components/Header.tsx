@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 09:30:07
+ * @LastEditTime: 2022-12-14 14:47:24
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\Header.tsx
  * @Description:
  *
@@ -10,11 +10,12 @@
  */
 import { FC, useEffect, useState } from 'react'
 import { Header } from 'antd/lib/layout/layout'
-import { Menu, Space } from 'antd'
+import { Space } from 'antd'
 import AvatarDropdown from './AvatarDropdown'
-import { FormattedMessage, history } from 'umi'
-import { HomeOutlined, SettingOutlined, UsergroupDeleteOutlined } from '@ant-design/icons'
+import { history } from 'umi'
+import { SettingOutlined } from '@ant-design/icons'
 import styles from './header.less'
+import SettingForm from './SettingForm'
 
 interface IPageOption {
   setLoading: (loading: boolean) => void
@@ -22,40 +23,20 @@ interface IPageOption {
 
 const HeaderContainer: FC<IPageOption> = (props) => {
   const { setLoading } = props
-  const [menuKey, setMenuKey] = useState<string[]>(['home'])
-
-  useEffect(() => {
-    const { pathname } = history.location
-    if (pathname.includes('account')) {
-      setMenuKey(['center'])
-    }
-  }, [])
-
-  const menuClick = (item: any) => {
-    const { key } = item
-    let pathname = '/home'
-    switch (key) {
-      case 'center':
-        pathname = '/account'
-        break
-    }
-    setMenuKey([key])
-    history.push({
-      pathname
-    })
-  }
+  const [setOpen, setSetOpen] = useState<boolean>(false)
 
   return (
-    <Header className={styles.header}>
-      <div className='logo'>123123</div>
-      <div className={styles.right}>
-        <Space>
-          <div className={styles.menu}>
-            <SettingOutlined />
-          </div>
-          <AvatarDropdown menu setLoading={setLoading} />
-        </Space>
-        {/* <Menu
+    <>
+      <Header className={styles.header}>
+        <div className='logo'>123123</div>
+        <div className={styles.right}>
+          <Space>
+            <div className={styles.menu} onClick={() => setSetOpen(true)}>
+              <SettingOutlined />
+            </div>
+            <AvatarDropdown menu setLoading={setLoading} />
+          </Space>
+          {/* <Menu
           theme='dark'
           mode='horizontal'
           selectedKeys={menuKey}
@@ -70,8 +51,15 @@ const HeaderContainer: FC<IPageOption> = (props) => {
           ]}
           onClick={menuClick}
         /> */}
-      </div>
-    </Header>
+        </div>
+      </Header>
+      <SettingForm
+        open={setOpen}
+        setOpen={() => {
+          setSetOpen(false)
+        }}
+      ></SettingForm>
+    </>
   )
 }
 

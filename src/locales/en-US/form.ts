@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 17:32:06
+ * @LastEditTime: 2022-12-14 15:00:42
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\form.ts
  * @Description:
  *
@@ -40,6 +40,10 @@ export default {
   'pages.person.center.upload.avatar': 'Upload Avatar',
   'pages.person.center.userinfo': 'UserInfo',
   'pages.person.center.name.label': 'Name',
+  'pages.person.center.last.login.time': 'Last Login Time',
+  'pages.person.center.name.save.button': 'Save',
+  'pages.person.center.name.update.button': 'Update',
+  'pages.person.center.security': 'Security',
   'pages.person.center.username.label': 'Account',
   'pages.person.center.phone.label': 'Phone',
   'pages.person.center.email.label': 'Email',
@@ -53,16 +57,13 @@ export default {
   'pages.person.center.userinfo.email.label': 'Email',
   'pages.person.center.userinfo.last.login.label': 'Last Login Time',
   'pages.person.center.userinfo.security.title': 'Security Settings',
-  'pages.person.center.userinfo.modify.password.title': 'ModifyPassword',
-  'pages.person.center.userinfo.password.desc.first': 'A secure password makes an account more secure',
-  'pages.person.center.userinfo.password.desc.second':
-    'You are advised to change your password periodically. Set a password that contains 8 to 26 letters, digits, and special symbols',
-  'pages.person.center.userinfo.already.bind.phone.title': 'You have bound your mobile phone',
-  'pages.person.center.userinfo.un.bind.phone.title': "You haven't bound your mobile phone yet",
-  'pages.person.center.userinfo.phone.warning.title': 'Once the phone number is unbound, it cannot be synchronized through the phone number',
+  'pages.person.center.userinfo.username.desc': 'Once the account is applied, it cannot be modified',
+  'pages.person.center.userinfo.phone.desc': 'Phone bound',
   'pages.person.center.userinfo.phone.bing.button': 'Binding',
   'pages.person.center.userinfo.phone.unbinding.button': 'Unbinding',
-  'pages.person.center.system.tab': 'SystemSet',
+  'pages.person.center.userinfo.email.desc': 'Email bound',
+
+  'pages.setting.title': 'SystemSet',
   'pages.person.center.lanuage.title': 'Lanuage',
   'pages.person.center.week.start': 'The Week start of day',
   'pages.person.center.week.monday': 'Mon',

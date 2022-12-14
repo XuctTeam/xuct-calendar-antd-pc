@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:29:30
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 12:44:16
+ * @LastEditTime: 2022-12-14 13:51:39
  * @FilePath: \xuct-calendar-antd-pc\config\config.ts
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -52,7 +52,7 @@ export default defineConfig({
     default: 'zh-CN',
     antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
-    baseNavigator: true
+    baseNavigator: false
   },
   /**
    * @name 代理配置
