@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-09-30 08:52:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-17 08:50:04
+ * @LastEditTime: 2022-12-16 10:02:58
  * @FilePath: \xuct-calendar-antd-pc\src\constants\url.ts
  * @Description:
  *
@@ -18,4 +18,6 @@ const SECURITY_OAUTH2_IGNORE_URL = [
   '/api/app/v1/sms/anno/register',
 ]
 
-export { SECURITY_OAUTH2_IGNORE_URL }
+const UPLOAD_FILE_URL = 'http://localhost:6400/ums/api/app/v1/file/upload'
+
+export { SECURITY_OAUTH2_IGNORE_URL , UPLOAD_FILE_URL }

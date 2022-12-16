@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-13 16:02:04
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-14 15:11:31
+ * @LastEditTime: 2022-12-16 10:29:13
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\UserInfoForm.tsx
  * @Description:
  *
@@ -13,6 +13,9 @@ import { Avatar, Button, Col, Divider, Drawer, Input, message, Row, Upload, Uplo
 import { FormattedMessage, useModel } from 'umi'
 import { UploadOutlined } from '@ant-design/icons'
 import { modifyName } from '@/services/user'
+import { RcFile } from 'antd/es/upload'
+import { UPLOAD_FILE_URL } from '@/constants/url'
+import sessionStore from '@/cache'
 import styles from './UserInfoForm.less'
 
 interface IPageOption {
@@ -59,15 +62,16 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpateUserName }) => {
 
   const upload: UploadProps = {
     name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    action: UPLOAD_FILE_URL,
     headers: {
-      authorization: 'authorization-text'
+      authorization: sessionStore.getItem('access_token') || ''
     },
     onChange(info: any) {
       if (info.file.status !== 'uploading') {
         console.log(info.file, info.fileList)
       }
       if (info.file.status === 'done') {
+        debugger
         message.success(`${info.file.name} file uploaded successfully`)
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} file upload failed.`)
@@ -108,11 +112,23 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpateUserName }) => {
       })
   }
 
+  const beforeUpload = (file: RcFile) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!')
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!')
+    }
+    return isJpgOrPng && isLt2M
+  }
+
   return (
     <Drawer title={<FormattedMessage id='pages.userinfo.title' />} width={640} placement='right' closable={false} onClose={setOpen} open={open}>
       <div className={styles.cell}>
         <Avatar src={member?.avatar} size={120} />
-        <Upload {...upload}>
+        <Upload {...upload} accept='image/png, image/jpeg' beforeUpload={beforeUpload}>
           <Button icon={<UploadOutlined />} danger type='dashed'>
             <FormattedMessage id='pages.person.center.upload.avatar' />
           </Button>
