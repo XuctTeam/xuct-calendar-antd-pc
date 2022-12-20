@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-14 15:00:55
+ * @LastEditTime: 2022-12-20 20:42:14
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\form.ts
  * @Description:
  *
@@ -68,5 +68,20 @@ export default {
   'pages.person.center.lanuage.title': '语言',
   'pages.person.center.week.start': '每周开始于',
   'pages.person.center.week.monday': '周一',
-  'pages.person.center.week.sunday': '周日'
+  'pages.person.center.week.sunday': '周日',
+
+  'pages.component.add.title': '事件编辑',
+  'pages.component.add.summary.label': '标题',
+  'pages.component.add.summary.placeholder': '请输入标题',
+  'pages.component.add.summary.require': '标题不能为空',
+  'pages.component.add.calendar.label': '日程',
+  'pages.component.add.calendar.placeholder': '请选择日程',
+  'pages.component.add.calendar.require': '日程不能为空',
+  'pages.component.add.location.label': '地点',
+  'pages.component.add.location.placeholder': '请输入地点',
+  'pages.component.add.dtstart.label': '时间',
+  'pages.component.add.dtstart.require': '时间不能为空',
+  'pages.compoennt.add.full.day': '全天',
+  'pages.component.add.description.label': '描述',
+  'pages.component.add.description.placeholder': '请输入描述',
 }

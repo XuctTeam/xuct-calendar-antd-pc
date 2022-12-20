@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-14 15:00:42
+ * @LastEditTime: 2022-12-20 20:42:25
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\form.ts
  * @Description:
  *
@@ -67,5 +67,20 @@ export default {
   'pages.person.center.lanuage.title': 'Lanuage',
   'pages.person.center.week.start': 'The Week start of day',
   'pages.person.center.week.monday': 'Mon',
-  'pages.person.center.week.sunday': 'Sun'
+  'pages.person.center.week.sunday': 'Sun',
+
+  'pages.component.add.title': 'EventEdit',
+  'pages.component.add.summary.label': 'Summary',
+  'pages.component.add.summary.placeholder': 'Please Input Summary',
+  'pages.component.add.summary.require': 'Summary is required',
+  'pages.component.add.calendar.label': 'Calendar',
+  'pages.component.add.calendar.placeholder': 'Please Select Calendar',
+  'pages.component.add.calendar.require': 'Calendar must select',
+  'pages.component.add.location.label': 'Location',
+  'pages.component.add.location.placeholder': 'Please Input Location',
+  'pages.component.add.dtstart.label': 'Time',
+  'pages.component.add.dtstart.require': 'Time is required',
+  'pages.compoennt.add.full.day': 'FullDay',
+  'pages.component.add.description.label': 'Description',
+  'pages.component.add.description.placeholder': 'Please Input Description',
 }

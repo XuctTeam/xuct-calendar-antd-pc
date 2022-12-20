@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 11:15:17
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-14 13:56:23
+ * @LastEditTime: 2022-12-19 20:07:32
  * @FilePath: \xuct-calendar-antd-pc\src\services\user.ts
  * @Description:
  *
@@ -39,5 +39,17 @@ export const modifyName = (name: string) => {
   return request<API.Response>('/ums/api/app/v1/member/name', {
     method: 'POST',
     data: { name }
+  })
+}
+
+/**
+ * @description: 修改头像
+ * @param avatar 
+ * @returns 
+ */
+export const modifyAvatar = (avatar: string) => {
+  return request<API.Response>('/ums/api/app/v1/member/avatar', {
+    method: 'POST',
+    data: { avatar }
   })
 }

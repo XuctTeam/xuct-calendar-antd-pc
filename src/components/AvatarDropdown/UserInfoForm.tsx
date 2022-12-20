@@ -2,29 +2,32 @@
  * @Author: Derek Xu
  * @Date: 2022-12-13 16:02:04
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-16 10:29:13
+ * @LastEditTime: 2022-12-19 20:27:20
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\UserInfoForm.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import React, { FC, useEffect, useState } from 'react'
-import { Avatar, Button, Col, Divider, Drawer, Input, message, Row, Upload, UploadProps } from 'antd'
+import { Avatar, Button, Col, Divider, Drawer, Input, message, Modal, Row, Upload, UploadProps } from 'antd'
 import { FormattedMessage, useModel } from 'umi'
-import { UploadOutlined } from '@ant-design/icons'
-import { modifyName } from '@/services/user'
+import { ExclamationCircleFilled, UploadOutlined } from '@ant-design/icons'
+import { modifyName, modifyAvatar } from '@/services/user'
 import { RcFile } from 'antd/es/upload'
 import { UPLOAD_FILE_URL } from '@/constants/url'
 import sessionStore from '@/cache'
+import Images from '@/constants/images'
 import styles from './UserInfoForm.less'
+import { useIntl } from 'umi'
 
 interface IPageOption {
   open: boolean
   setOpen: (e: React.MouseEvent | React.KeyboardEvent) => void
-  onUpateUserName: (name: string) => void
+  onUpdateUserName: (name: string) => void
+  onUpdateAvatar: (avatar: string) => void
 }
 
-const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpateUserName }) => {
+const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpdateUserName, onUpdateAvatar }) => {
   const { initialState } = useModel('@@initialState')
   const [member, setMember] = useState<USER.Userinfo>()
   const [userNameAuth, setUserNameAuth] = useState<USER.UserAuth>()
@@ -33,12 +36,15 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpateUserName }) => {
   const [nameEdit, setNameEdit] = useState<boolean>(false)
   const [name, setName] = useState<string>('')
   const [nameLoading, setNameLoading] = useState<boolean>(false)
+  const [avatar, setAvatar] = useState<string>('')
+  const [avatarEdit, setAvatarEdit] = useState<boolean>(false)
 
   useEffect(() => {
     if (!initialState?.currentUser) return
     const { member, auths } = initialState?.currentUser
     setMember(member)
     setName(member.name)
+    setAvatar(member.avatar || Images.DEFAULT_AVATAR)
     setUserNameAuth(getAuth(auths, 'user_name'))
     setPhoneAuth(getAuth(auths, 'phone'))
     setEmailAuth(getAuth(auths, 'email'))
@@ -71,8 +77,18 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpateUserName }) => {
         console.log(info.file, info.fileList)
       }
       if (info.file.status === 'done') {
-        debugger
-        message.success(`${info.file.name} file uploaded successfully`)
+        const { response } = info.file
+        if (!response) {
+          message.error(`${info.file.name} file upload failed.`)
+          return
+        }
+        const { data, success } = response
+        if (!success) {
+          message.error(`${info.file.name} msg::` + response.message)
+          return
+        }
+        setAvatar(data.url)
+        setAvatarEdit(true)
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} file upload failed.`)
       }
@@ -101,7 +117,7 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpateUserName }) => {
     setNameLoading(true)
     modifyName(name)
       .then(() => {
-        onUpateUserName(name)
+        onUpdateUserName(name)
         setNameLoading(false)
         setNameEdit(!nameEdit)
       })
@@ -124,11 +140,32 @@ const UserInfoForm: FC<IPageOption> = ({ open, setOpen, onUpateUserName }) => {
     return isJpgOrPng && isLt2M
   }
 
+  const saveAvatar = () => {
+    modifyAvatar(avatar).then(() => {
+      onUpdateAvatar(avatar)
+    })
+  }
+
   return (
     <Drawer title={<FormattedMessage id='pages.userinfo.title' />} width={640} placement='right' closable={false} onClose={setOpen} open={open}>
-      <div className={styles.cell}>
-        <Avatar src={member?.avatar} size={120} />
-        <Upload {...upload} accept='image/png, image/jpeg' beforeUpload={beforeUpload}>
+      <div className={styles.avatar}>
+        <div className={styles.save}>
+          {avatarEdit && (
+            <Button type='primary' onClick={saveAvatar}>
+              <FormattedMessage id='pages.person.center.avatar.button' />
+            </Button>
+          )}
+        </div>
+        <Avatar src={avatar} size={120} />
+        <Upload
+          {...upload}
+          accept='image/png, image/jpeg'
+          beforeUpload={beforeUpload}
+          maxCount={1}
+          onRemove={() => {
+            setAvatarEdit(false)
+          }}
+        >
           <Button icon={<UploadOutlined />} danger type='dashed'>
             <FormattedMessage id='pages.person.center.upload.avatar' />
           </Button>

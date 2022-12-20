@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 17:22:32
+ * @LastEditTime: 2022-12-19 20:23:58
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -48,5 +48,7 @@ export default {
   'pages.calendar.mananger.edit.success': 'Edit Success',
   'pages.calendar.manager.modal.delete.title': 'Confirm Delete Calendar？',
   'pages.calendar.manager.modal.delete.content': 'The schedule in the calendar will be deleted after deletion',
-  'pages.calendar.mananger.delete.success': 'Delete Success'
+  'pages.calendar.mananger.delete.success': 'Delete Success',
+
+  'pages.person.center.avatar.button': 'Save',
 }

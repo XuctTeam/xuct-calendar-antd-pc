@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-07 18:10:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 13:33:10
+ * @LastEditTime: 2022-12-19 17:06:28
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarEditFrom.tsx
  * @Description:
  *
@@ -20,7 +20,7 @@ import {
   ProFormText,
   ProFormTextArea
 } from '@ant-design/pro-components'
-import { message, notification } from 'antd'
+import { message } from 'antd'
 import { FormattedMessage, getIntl } from 'umi'
 import { saveCalendar, updateCalendar, getCalendar } from '@/services/calendar'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-10 11:36:21
+ * @LastEditTime: 2022-12-20 09:40:51
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -17,7 +17,7 @@ import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
 import dayjs, { Dayjs } from 'dayjs'
 import { ProCard } from '@ant-design/pro-components'
-import { CalendarList, RightCalendar } from './components'
+import { CalendarList, RightCalendar, ComponentForm } from './components'
 import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
 import styles from './index.less'
 
@@ -30,6 +30,7 @@ const HomePage = () => {
   const [calendars, setCalendars] = useState<CALENDAR.Calendar[]>([])
   const [marks, setMarks] = useState<string[]>([])
   const [components, setComponents] = useState<CALENDAR.DayCompoent[]>([])
+  const [compOpen, setCompOpen] = useState<boolean>(false)
 
   // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
   const { dataView, lunarView } = useSelector(function (state: any) {
@@ -205,32 +206,35 @@ const HomePage = () => {
   }
 
   return (
-    <Content className={styles.center}>
-      <div className={styles.left}>
-        <Button type='primary' icon={<PlusOutlined />} block>
-          <FormattedMessage id='pages.component.button.add' />
-        </Button>
-        <ProCard hoverable bordered className={styles.calendar}>
-          <Calendar fullscreen={false} value={dayjs(selectDay)} onSelect={antdCalendarSelect} dateCellRender={antdCalendarDateCellRender} />
-        </ProCard>
-        <CalendarList loading={loading} calendars={calendars} calendarChageDisplay={calendarChageDisplay} refresh={refresh} />
-      </div>
-      <div className={styles.right} ref={calenarRefContent}>
-        <div className={styles.calendar}>
-          <RightCalendar
-            ref={calendarRef}
-            selectDay={selectDay}
-            centerHeight={centerHeight}
-            dataView={dataView}
-            lunarView={lunarView}
-            calendars={calendars}
-            components={components}
-            fullCalendarDateClick={fullCalendarDateClick}
-            fullCalendarDayChage={fullCalendarDayChage}
-          ></RightCalendar>
+    <>
+      <Content className={styles.center}>
+        <div className={styles.left}>
+          <Button type='primary' icon={<PlusOutlined />} block onClick={() => setCompOpen(true)}>
+            <FormattedMessage id='pages.component.button.add' />
+          </Button>
+          <ProCard hoverable bordered className={styles.calendar}>
+            <Calendar fullscreen={false} value={dayjs(selectDay)} onSelect={antdCalendarSelect} dateCellRender={antdCalendarDateCellRender} />
+          </ProCard>
+          <CalendarList loading={loading} calendars={calendars} calendarChageDisplay={calendarChageDisplay} refresh={refresh} />
         </div>
-      </div>
-    </Content>
+        <div className={styles.right} ref={calenarRefContent}>
+          <div className={styles.calendar}>
+            <RightCalendar
+              ref={calendarRef}
+              selectDay={selectDay}
+              centerHeight={centerHeight}
+              dataView={dataView}
+              lunarView={lunarView}
+              calendars={calendars}
+              components={components}
+              fullCalendarDateClick={fullCalendarDateClick}
+              fullCalendarDayChage={fullCalendarDayChage}
+            ></RightCalendar>
+          </div>
+        </div>
+      </Content>
+      <ComponentForm calendars={calendars} open={compOpen} setOpen={setCompOpen} />
+    </>
   )
 }
 

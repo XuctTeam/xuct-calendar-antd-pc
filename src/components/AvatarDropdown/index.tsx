@@ -2,8 +2,8 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-14 14:05:44
- * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\AvatarDropdown.tsx
+ * @LastEditTime: 2022-12-20 08:47:30
+ * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\AvatarDropdown.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
@@ -198,11 +198,21 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
     setInfoOpen(false)
   }
 
-  const onUpateUserName = useCallback(
+  const onUpdateUserName = useCallback(
     (name: string) => {
       const { member, auths } = currentUser
       flushSync(() => {
         setInitialState((s) => ({ ...s, currentUser: { member: { ...member, name: name }, auths } }))
+      })
+    },
+    [setInitialState]
+  )
+
+  const onUpdateAvatar = useCallback(
+    (avatar: string) => {
+      const { member, auths } = currentUser
+      flushSync(() => {
+        setInitialState((s) => ({ ...s, currentUser: { member: { ...member, avatar: avatar }, auths } }))
       })
     },
     [setInitialState]
@@ -223,7 +233,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
         </span>
       </HeaderDropdown>
       <PasswordForm open={passOpen} setOpen={setPassOpen} />
-      <UserInfoForm open={infoOpen} setOpen={infoClose} onUpateUserName={onUpateUserName}></UserInfoForm>
+      <UserInfoForm open={infoOpen} setOpen={infoClose} onUpdateUserName={onUpdateUserName} onUpdateAvatar={onUpdateAvatar}></UserInfoForm>
     </>
   )
 }

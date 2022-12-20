@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 17:21:58
+ * @LastEditTime: 2022-12-19 20:23:45
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -48,5 +48,7 @@ export default {
   'pages.calendar.mananger.edit.success': '编辑成功',
   'pages.calendar.manager.modal.delete.title': '确认删除？',
   'pages.calendar.manager.modal.delete.content': '删除后日历中的日程将会被删除',
-  'pages.calendar.mananger.delete.success': '删除成功'
+  'pages.calendar.mananger.delete.success': '删除成功',
+
+  'pages.person.center.avatar.button': '保存',
 }
