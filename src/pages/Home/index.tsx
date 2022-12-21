@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-20 09:40:51
+ * @LastEditTime: 2022-12-21 17:45:16
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -33,7 +33,7 @@ const HomePage = () => {
   const [compOpen, setCompOpen] = useState<boolean>(false)
 
   // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
-  const { dataView, lunarView } = useSelector(function (state: any) {
+  const { dataView, lunarView, fullCalendarLocal } = useSelector(function (state: any) {
     return state.system
   })
   useEffect(() => {
@@ -229,6 +229,7 @@ const HomePage = () => {
               components={components}
               fullCalendarDateClick={fullCalendarDateClick}
               fullCalendarDayChage={fullCalendarDayChage}
+              fullCalendarLocal={fullCalendarLocal}
             ></RightCalendar>
           </div>
         </div>

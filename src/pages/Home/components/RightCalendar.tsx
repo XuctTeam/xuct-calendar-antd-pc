@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-07 13:41:24
+ * @LastEditTime: 2022-12-21 17:45:30
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -10,24 +10,24 @@
  */
 
 import FullCalendar from '@fullcalendar/react'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import rrulePlugin from '@fullcalendar/rrule'
 import { isChinese, lunarDay } from '@/utils/calendar'
-import zhCncale from '@fullcalendar/core/locales/zh-cn'
-import { getIntl } from 'umi'
 import { getWeekDay, formatWeekly } from '@/utils/calendar'
 import dayjs from 'dayjs'
-import { RRule } from '@/constants'
 import { RRule as RRuleJs } from 'rrule'
+import { useIntl } from 'umi'
+import { RRule } from '@/constants'
 
 interface IPageOption {
   centerHeight: number
   selectDay: string
   dataView: string
   lunarView: string
+  fullCalendarLocal: any
   calendars: CALENDAR.Calendar[]
   components: CALENDAR.DayCompoent[]
   fullCalendarDayChage: (ty: number) => void
@@ -35,10 +35,11 @@ interface IPageOption {
 }
 
 const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
-  const { centerHeight, selectDay, dataView, lunarView, calendars, components } = props
+  const { centerHeight, selectDay, fullCalendarLocal, dataView, lunarView, calendars, components } = props
   const { fullCalendarDayChage, fullCalendarDateClick } = props
   const disableLunarView = !isChinese() || lunarView === '0'
   const [events, setEvents] = useState<any[]>([])
+  const init = useIntl()
 
   const calendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, rrulePlugin],
@@ -82,7 +83,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
         click: () => fullCalendarDayChage(0)
       },
       customtoday: {
-        text: getIntl().formatMessage({ id: 'pages.calendar.today.button' }),
+        text: init.formatMessage({ id: 'pages.calendar.today.button' }),
         click: () => fullCalendarDayChage(2)
       },
       customRight: {
@@ -320,9 +321,9 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
       {...calendarOptions}
       height={centerHeight}
       // select={select}
+      locale={fullCalendarLocal}
       dateClick={fullCalendarDateClick}
       initialDate={selectDay}
-      locale={isChinese() ? zhCncale : ''}
       customButtons={getFullCustomButtons()}
       firstDay={Number.parseInt(dataView)}
       events={events}

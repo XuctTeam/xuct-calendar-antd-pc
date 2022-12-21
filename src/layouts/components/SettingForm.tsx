@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-14 14:26:04
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-14 15:07:07
+ * @LastEditTime: 2022-12-21 17:48:40
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\SettingForm.tsx
  * @Description:
  *
@@ -33,6 +33,11 @@ const SettingForm: FC<IPageOption> = ({ open, setOpen, dispatch }) => {
     setLocale(value, false)
     /** 这里要兼容语言切换时重置dayjs的参数 */
     dayjs.updateLocale(getDayJsLocal(), { weekStart: Number.parseInt(dataView) })
+
+    dispatch({
+      type: 'system/onchangeFullCalendarLocal',
+      payload: { local: value } //传递参数
+    })
   }
 
   const weekSelectChage = (value: string) => {

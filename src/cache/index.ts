@@ -28,7 +28,7 @@ export default {
     window.localStorage.setItem(prefix.concat(key), value)
   },
 
-  localGetItem(key: string){
-    return window.localStorage.getItem(prefix.concat(key))
+  localGetItem(key: string, hasPrefix: boolean = true) {
+    return window.localStorage.getItem(hasPrefix ? prefix.concat(key) : key)
   }
 }
