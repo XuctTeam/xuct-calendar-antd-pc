@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 15:15:51
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-06 18:34:56
+ * @LastEditTime: 2022-12-22 09:57:56
  * @FilePath: \xuct-calendar-antd-pc\src\utils\calendar.ts
  * @Description:
  *
@@ -16,7 +16,7 @@ import { RRule, WeekDay, WeekDayEn } from '@/constants'
 enum Lanuage {
   ZH = 'zh-CN',
 
-  EN = 'en'
+  EN = 'en-US'
 }
 
 /**
@@ -122,4 +122,36 @@ export const formatWeekly = (repeatByday: string | undefined) => {
     }
   })
   return Array.from(weekSet)
+}
+
+/**
+ * 每月第几个星期几
+ * @param date
+ */
+export const dayWeekInMonth = (date: Date) => {
+  const num = Math.ceil(date.getDate() / 7)
+  if (isChinese()) {
+    return '第' + num + '个' + getWeekDay(dayjs(date).day())
+  }
+  const week = dayjs(date).format('ddd')
+  switch (num) {
+    case 1:
+      return '1st ' + week
+    case 2:
+      return '2nd ' + week
+    case 3:
+      return '3rd ' + week
+    case 4:
+      return '4th ' + week
+    case 5:
+      return 'The 5th ' + week
+  }
+  return ''
+}
+
+export const dayInYear = (date: Date) => {
+  if (isChinese()) {
+    return dayjs(date).format('MM月DD日')
+  }
+  return dayjs(date).format('MMM DD')
 }
