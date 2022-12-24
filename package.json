@@ -30,7 +30,7 @@
     "qs": "^6.11.0",
     "querystring": "^0.2.1",
     "solarlunar-es": "^1.0.9",
-    "umi": "^4.0.38"
+    "umi": "^4.0.40"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-21 17:45:16
+ * @LastEditTime: 2022-12-24 19:27:39
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -234,7 +234,7 @@ const HomePage = () => {
           </div>
         </div>
       </Content>
-      <ComponentForm calendars={calendars} open={compOpen} setOpen={setCompOpen} />
+      <ComponentForm calendars={calendars} open={compOpen} setOpen={setCompOpen} refresh={refresh} />
     </>
   )
 }

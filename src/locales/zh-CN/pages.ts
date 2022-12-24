@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-19 20:23:45
+ * @LastEditTime: 2022-12-24 19:31:09
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -51,4 +51,6 @@ export default {
   'pages.calendar.mananger.delete.success': '删除成功',
 
   'pages.person.center.avatar.button': '保存',
+  'pages.calendar.mananger.component.add.success': '新增事件成功',
+  'pages.calendar.mananger.component.edit.success': '编辑时间成功'
 }
