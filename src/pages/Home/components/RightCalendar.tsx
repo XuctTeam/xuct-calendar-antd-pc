@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-21 17:45:30
+ * @LastEditTime: 2022-12-25 19:55:04
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -32,10 +32,11 @@ interface IPageOption {
   components: CALENDAR.DayCompoent[]
   fullCalendarDayChage: (ty: number) => void
   fullCalendarDateClick: (data: any) => void
+  eventClick: (id: string) => void
 }
 
 const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
-  const { centerHeight, selectDay, fullCalendarLocal, dataView, lunarView, calendars, components } = props
+  const { centerHeight, selectDay, fullCalendarLocal, dataView, lunarView, calendars, components, eventClick } = props
   const { fullCalendarDayChage, fullCalendarDateClick } = props
   const disableLunarView = !isChinese() || lunarView === '0'
   const [events, setEvents] = useState<any[]>([])
@@ -69,7 +70,8 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
         }
       }
     },
-    selectable: true
+    selectable: true,
+    selectMinDistance: 2
   }
 
   useEffect(() => {
@@ -125,6 +127,15 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
     convertToEvent(Array.from(componentMap.values()))
   }
 
+  const fullCalendarEventClick = (info: any) => {
+    const { id } = info.event
+    eventClick(id)
+  }
+
+  const fullCalendarSelect = (info: any) => {
+    debugger
+  }
+
   const convertToEvent = (components: CALENDAR.Component[]) => {
     const events = components.map((item: CALENDAR.Component) => {
       if (item.repeatStatus !== '0') {
@@ -146,6 +157,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
 
   const notRepeatEvent = (component: CALENDAR.Component) => {
     return {
+      id: component.id,
       title: component.summary,
       backgroundColor: component.color,
       borderColor: component.color,
@@ -157,6 +169,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
 
   const repeatDailyEvent = (component: CALENDAR.Component) => {
     const vent = {
+      id: component.id,
       title: component.summary,
       backgroundColor: component.color,
       borderColor: component.color,
@@ -171,8 +184,9 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   }
 
   const repeatWeekEvent = (component: CALENDAR.Component) => {
-    const { summary, color, fullDay, dtstart, dtend, repeatInterval = 1, repeatUntil = '', repeatByday = '' } = component
+    const { id, summary, color, fullDay, dtstart, dtend, repeatInterval = 1, repeatUntil = '', repeatByday = '' } = component
     const vent = {
+      id: id,
       title: summary,
       backgroundColor: color,
       borderColor: color,
@@ -188,8 +202,21 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   }
 
   const repeatMonthlyEvent = (component: CALENDAR.Component) => {
-    const { summary, color, fullDay, dtstart, dtend, repeatStatus, repeatInterval = 1, repeatUntil = '', repeatByday = '', repeatBymonthday = '' } = component
+    const {
+      id,
+      summary,
+      color,
+      fullDay,
+      dtstart,
+      dtend,
+      repeatStatus,
+      repeatInterval = 1,
+      repeatUntil = '',
+      repeatByday = '',
+      repeatBymonthday = ''
+    } = component
     const vent = {
+      id,
       title: summary,
       backgroundColor: color,
       borderColor: color,
@@ -320,7 +347,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
       ref={ref}
       {...calendarOptions}
       height={centerHeight}
-      // select={select}
+      select={fullCalendarSelect}
       locale={fullCalendarLocal}
       dateClick={fullCalendarDateClick}
       initialDate={selectDay}
@@ -328,6 +355,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
       firstDay={Number.parseInt(dataView)}
       events={events}
       dayMaxEventRows={true}
+      eventClick={fullCalendarEventClick}
     />
   )
 })

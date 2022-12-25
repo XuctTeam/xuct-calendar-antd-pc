@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-24 20:55:36
+ * @LastEditTime: 2022-12-25 21:02:25
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -25,10 +25,10 @@ import {
 } from '@ant-design/pro-components'
 import { message, SelectProps } from 'antd'
 import dayjs from 'dayjs'
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { FormattedMessage } from 'umi'
 import RepeatFormItem from './RepeatFormItem'
-import { saveOrUpdateComponent } from '@/services/calendar'
+import { saveOrUpdateComponent, getComponentById } from '@/services/calendar'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 
 interface IPageOption {
@@ -39,11 +39,10 @@ interface IPageOption {
   refresh: () => void
 }
 
-const ComponentForm: FC<IPageOption> = ({ calendars, open, setOpen, refresh }) => {
+const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh }) => {
   const formRef = useRef<ProFormInstance>()
   const init = useIntl()
   const repeatRef = useRef<any>()
-  const [id, setId] = useState<string>('')
   const chinese = isChinese()
   const calendarItems: SelectProps['options'] = calendars.map((item) => {
     return {
@@ -98,6 +97,17 @@ const ComponentForm: FC<IPageOption> = ({ calendars, open, setOpen, refresh }) =
       }`
     }
   ]
+
+  useEffect(() => {
+    if (!id) return
+    debugger
+    _initById(id)
+  }, [id])
+
+  const _initById = async (id: string) => {
+    const result = await getComponentById(id)
+    debugger
+  }
 
   return (
     <ModalForm<{

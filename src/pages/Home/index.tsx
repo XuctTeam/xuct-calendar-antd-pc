@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-24 19:27:39
+ * @LastEditTime: 2022-12-25 21:03:52
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -31,6 +31,7 @@ const HomePage = () => {
   const [marks, setMarks] = useState<string[]>([])
   const [components, setComponents] = useState<CALENDAR.DayCompoent[]>([])
   const [compOpen, setCompOpen] = useState<boolean>(false)
+  const [componentId, setComponentId] = useState<string | undefined>()
 
   // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
   const { dataView, lunarView, fullCalendarLocal } = useSelector(function (state: any) {
@@ -144,7 +145,13 @@ const HomePage = () => {
   const refresh = () => {
     setCalendars([])
     setComponents([])
+    setComponentId(undefined)
     initData()
+  }
+
+  const eventClick = (id: string) => {
+    setComponentId(id)
+    setCompOpen(true)
   }
 
   /**
@@ -230,11 +237,12 @@ const HomePage = () => {
               fullCalendarDateClick={fullCalendarDateClick}
               fullCalendarDayChage={fullCalendarDayChage}
               fullCalendarLocal={fullCalendarLocal}
+              eventClick={eventClick}
             ></RightCalendar>
           </div>
         </div>
       </Content>
-      <ComponentForm calendars={calendars} open={compOpen} setOpen={setCompOpen} refresh={refresh} />
+      <ComponentForm id={componentId} calendars={calendars} open={compOpen} setOpen={setCompOpen} refresh={refresh} />
     </>
   )
 }

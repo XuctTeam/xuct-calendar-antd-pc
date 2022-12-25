@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:45:38
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-24 19:16:16
+ * @LastEditTime: 2022-12-25 20:57:40
  * @FilePath: \xuct-calendar-antd-pc\src\services\calendar.ts
  * @Description:
  *
@@ -111,4 +111,12 @@ export const saveOrUpdateComponent = (component: CALENDAR.Component) => {
     data: component,
     method: 'post'
   })
+}
+
+/**
+ * 通过ID查询事件
+ * @param id 
+ */
+export const getComponentById = (id: string) => {
+  return request<CALENDAR.Component>(`/api/app/v1/component/${id}`)
 }
