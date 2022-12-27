@@ -68,7 +68,7 @@ const RepeatFormItem = forwardRef<any, IPageOption>(({ ...props }, ref) => {
       value: '0'
     },
     {
-      label: init.formatMessage({ id: 'pages.component.add.repeat.frequency.week' }),
+      label: init.formatMessage({ id: 'pages.component.repeat.frequency.week' }),
       value: '1'
     },
     {

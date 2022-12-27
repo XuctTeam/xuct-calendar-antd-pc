@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 10:38:26
+ * @LastEditTime: 2022-12-27 17:39:30
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US.ts
  * @Description:
  *
@@ -14,6 +14,7 @@ import pages from './en-US/pages'
 import pwa from './en-US/pwa'
 import codeMessage from './zh-CN/codeMessage'
 import form from './en-US/form'
+import repeat from './en-US/repeat'
 
 export default {
   'navBar.lang': 'Languages',
@@ -29,5 +30,6 @@ export default {
   ...component,
   ...form,
   ...pages,
-  ...codeMessage
+  ...codeMessage,
+  ...repeat
 }

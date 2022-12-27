@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-25 19:55:04
+ * @LastEditTime: 2022-12-27 09:05:42
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -32,7 +32,7 @@ interface IPageOption {
   components: CALENDAR.DayCompoent[]
   fullCalendarDayChage: (ty: number) => void
   fullCalendarDateClick: (data: any) => void
-  eventClick: (id: string) => void
+  eventClick: (id: string, clientX: number, clientY: number) => void
 }
 
 const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
@@ -129,7 +129,8 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
 
   const fullCalendarEventClick = (info: any) => {
     const { id } = info.event
-    eventClick(id)
+    const { clientX, clientY } = info.jsEvent
+    eventClick(id, clientX, clientY)
   }
 
   const fullCalendarSelect = (info: any) => {
@@ -186,7 +187,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   const repeatWeekEvent = (component: CALENDAR.Component) => {
     const { id, summary, color, fullDay, dtstart, dtend, repeatInterval = 1, repeatUntil = '', repeatByday = '' } = component
     const vent = {
-      id: id,
+      id,
       title: summary,
       backgroundColor: color,
       borderColor: color,
@@ -298,8 +299,9 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   }
 
   const repeatYearlyEvent = (component: CALENDAR.Component) => {
-    const { summary, color, fullDay, dtstart, dtend, repeatInterval = 1, repeatUntil = '', repeatBymonth = '', repeatBymonthday = '' } = component
+    const { id, summary, color, fullDay, dtstart, dtend, repeatInterval = 1, repeatUntil = '', repeatBymonth = '', repeatBymonthday = '' } = component
     const vent = {
+      id,
       title: summary,
       backgroundColor: color,
       borderColor: color,

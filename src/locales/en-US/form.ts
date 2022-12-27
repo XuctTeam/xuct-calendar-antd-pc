@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-22 15:55:46
+ * @LastEditTime: 2022-12-27 17:43:17
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\form.ts
  * @Description:
  *
@@ -80,33 +80,16 @@ export default {
   'pages.component.add.location.placeholder': 'Please Input Location',
   'pages.component.add.dtstart.label': 'Time',
   'pages.component.add.dtstart.require': 'Time is required',
-  'pages.compoennt.add.full.day': 'FullDay',
   'pages.component.add.description.label': 'Description',
   'pages.component.add.description.placeholder': 'Please Input Description',
   'pages.component.add.repeat.label': 'Repert',
   'pages.component.add.repeat.require': 'Repeat must select',
   'pages.component.add.repeat.norepeat': 'Do not repeat',
-  'pages.component.add.repeat.everyday': 'Every Day',
-  'pages.component.add.repeat.week.mo.fr': 'Every Monday to Friday',
-  'pages.component.add.repeat.week.st.su': 'Every Saturday and Sunday',
-  'pages.component.add.repeat.week.st': 'Every Saturday',
-  'pages.component.add.repeat.every.month': 'Every Month',
-  'pages.component.add.repeat.every.year': 'Every Year',
+
   'pages.component.add.repeat.custom': 'Custom',
   'pages.component.add.repeat.until.label': 'Until',
   'pages.component.add.repeat.until.require': 'Until is required',
   'pages.component.add.repeat.each.label': 'Each',
-  'pages.component.add.repeat.frequency.day': 'Day',
-  'pages.component.add.repeat.frequency.week': 'Week',
-  'pages.component.add.repeat.frequency.month': 'Month',
-  'pages.component.add.repeat.frequency.year': 'Year',
-  'pages.component.add.repeat.each.mon': 'Mon',
-  'pages.component.add.repeat.each.tue': 'Tue',
-  'pages.component.add.repeat.each.wed': 'Wed',
-  'pages.component.add.repeat.each.thu': 'Thu',
-  'pages.component.add.repeat.each.fri': 'Fri',
-  'pages.component.add.repeat.each.sat': 'Sat',
-  'pages.component.add.repeat.each.sun': 'Sun',
   'pages.component.add.alarm.type.label': 'AlarmType',
   'pages.component.add.alarm.type.rquire': 'AlarmType is required',
   'pages.component.add.alarm.select.none': 'No',
@@ -115,7 +98,5 @@ export default {
   'pages.component.add.alarm.select.official.accounts': 'Official Accounts',
   'pages.component.add.alarm.time.label': 'AlarmTime',
   'pages.component.add.alarm.time.rquire': 'AlarmTime is required',
-  'pages.component.add.alarm.select.label': 'Before',
-  'pages.component.add.alarm.select.min': 'Min',
-  'pages.component.add.alarm.select.day': 'Day'
+  'pages.component.add.alarm.select.label': 'Before'
 }

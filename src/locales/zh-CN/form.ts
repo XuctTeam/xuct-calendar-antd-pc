@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-22 16:01:52
+ * @LastEditTime: 2022-12-27 17:42:48
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\form.ts
  * @Description:
  *
@@ -81,33 +81,17 @@ export default {
   'pages.component.add.location.placeholder': '请输入地点',
   'pages.component.add.dtstart.label': '时间',
   'pages.component.add.dtstart.require': '时间不能为空',
-  'pages.compoennt.add.full.day': '全天',
+
   'pages.component.add.description.label': '描述',
   'pages.component.add.description.placeholder': '请输入描述',
   'pages.component.add.repeat.label': '重复',
   'pages.component.add.repeat.require': '重复必须选择',
   'pages.component.add.repeat.norepeat': '不重复',
-  'pages.component.add.repeat.everyday': '每天',
-  'pages.component.add.repeat.week.mo.fr': '每周一至五',
-  'pages.component.add.repeat.week.st.su': '每周六、周日',
-  'pages.component.add.repeat.week.st': '每周周六',
-  'pages.component.add.repeat.every.month': '每月',
-  'pages.component.add.repeat.every.year': '每年',
+
   'pages.component.add.repeat.custom': '自定义',
   'pages.component.add.repeat.until.label': '截止',
   'pages.component.add.repeat.until.require': '截止时间必须选择',
-  'pages.component.add.repeat.each.label': '每',
-  'pages.component.add.repeat.frequency.day': '天',
-  'pages.component.add.repeat.frequency.week': '周',
-  'pages.component.add.repeat.frequency.month': '月',
-  'pages.component.add.repeat.frequency.year': '年',
-  'pages.component.add.repeat.each.mon': '周一',
-  'pages.component.add.repeat.each.tue': '周二',
-  'pages.component.add.repeat.each.wed': '周三',
-  'pages.component.add.repeat.each.thu': '周四',
-  'pages.component.add.repeat.each.fri': '周五',
-  'pages.component.add.repeat.each.sat': '周六',
-  'pages.component.add.repeat.each.sun': '周日',
+
   'pages.component.add.alarm.type.label': '提醒方式',
   'pages.component.add.alarm.type.rquire': '提醒方式不能为空',
   'pages.component.add.alarm.select.none': '不提醒',
@@ -116,7 +100,5 @@ export default {
   'pages.component.add.alarm.select.official.accounts': '公众号',
   'pages.component.add.alarm.time.label': '提醒时间',
   'pages.component.add.alarm.time.rquire': '提醒时间不能为空',
-  'pages.component.add.alarm.select.label': '提前',
-  'pages.component.add.alarm.select.min': '分',
-  'pages.component.add.alarm.select.day': '天'
+  'pages.component.add.alarm.select.label': '提前'
 }

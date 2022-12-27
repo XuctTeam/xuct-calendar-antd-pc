@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-25 21:03:52
+ * @LastEditTime: 2022-12-27 14:41:02
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -17,9 +17,11 @@ import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
 import dayjs, { Dayjs } from 'dayjs'
 import { ProCard } from '@ant-design/pro-components'
-import { CalendarList, RightCalendar, ComponentForm } from './components'
+import { CalendarList, RightCalendar, ComponentForm, ComponentView } from './components'
 import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
 import styles from './index.less'
+
+const doc = window.document
 
 const HomePage = () => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -32,6 +34,9 @@ const HomePage = () => {
   const [components, setComponents] = useState<CALENDAR.DayCompoent[]>([])
   const [compOpen, setCompOpen] = useState<boolean>(false)
   const [componentId, setComponentId] = useState<string | undefined>()
+  const [componentViewOpen, setComponentViewOpen] = useState<boolean>(false)
+  const [componentViewClientX, setComponentViewClientX] = useState<number>(0)
+  const [componentViewClientY, setComponentViewClientY] = useState<number>(0)
 
   // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
   const { dataView, lunarView, fullCalendarLocal } = useSelector(function (state: any) {
@@ -149,9 +154,21 @@ const HomePage = () => {
     initData()
   }
 
-  const eventClick = (id: string) => {
+  const eventClick = (id: string, clientX: number, clientY: number) => {
+    //setComponentId(id)
+    //setCompOpen(true)
+    const { clientWidth, clientHeight } = doc.body
     setComponentId(id)
-    setCompOpen(true)
+    setComponentViewOpen(true)
+    setComponentViewClientX(clientX + 500 > clientWidth ? clientWidth - 500 : clientX)
+    setComponentViewClientY(clientY + 300 > clientHeight ? clientHeight - 300 : clientY)
+  }
+
+  const setComponentOpen = (open: boolean) => {
+    setCompOpen(open)
+    if (!open) {
+      setComponentId(undefined)
+    }
   }
 
   /**
@@ -242,7 +259,16 @@ const HomePage = () => {
           </div>
         </div>
       </Content>
-      <ComponentForm id={componentId} calendars={calendars} open={compOpen} setOpen={setCompOpen} refresh={refresh} />
+      {/* <ComponentForm id={componentId} calendars={calendars} open={compOpen} setOpen={setComponentOpen} refresh={refresh} /> */}
+      <ComponentView
+        id={componentId || ''}
+        open={componentViewOpen}
+        setOpen={() => {
+          setComponentViewOpen(false)
+        }}
+        clientX={componentViewClientX}
+        clientY={componentViewClientY}
+      />
     </>
   )
 }

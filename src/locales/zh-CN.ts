@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-24 10:37:57
+ * @LastEditTime: 2022-12-27 17:39:10
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN.ts
  * @Description:
  *
@@ -13,6 +13,7 @@ import pages from './zh-CN/pages'
 import pwa from './zh-CN/pwa'
 import codeMessage from './zh-CN/codeMessage'
 import form from './zh-CN/form'
+import repeat from './zh-CN/repeat'
 
 export default {
   'navBar.lang': '语言',
@@ -27,5 +28,6 @@ export default {
   ...globalHeader,
   ...form,
   ...pwa,
-  ...codeMessage
+  ...codeMessage,
+  ...repeat
 }

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:45:38
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-25 20:57:40
+ * @LastEditTime: 2022-12-27 15:38:28
  * @FilePath: \xuct-calendar-antd-pc\src\services\calendar.ts
  * @Description:
  *
@@ -11,7 +11,7 @@
 import { request } from 'umi'
 
 /**
- * 查询日历列表
+ * @description: 查询日历列表
  * @returns
  */
 export const list = () => {
@@ -19,7 +19,7 @@ export const list = () => {
 }
 
 /**
- * 更新日历显示状态
+ * @description: 更新日历显示状态
  * @param calendarId
  * @param display
  */
@@ -34,8 +34,7 @@ export const updateDisplay = (calendarId: string, display: number) => {
 }
 
 /**
- * 新增日历
- *
+ * @description: 新增日历
  * @param calendar
  */
 export const saveCalendar = (calendar: CALENDAR.Calendar) => {
@@ -46,7 +45,7 @@ export const saveCalendar = (calendar: CALENDAR.Calendar) => {
 }
 
 /**
- * 更新日历
+ * @description: 更新日历
  * @param calendar
  * @returns
  */
@@ -58,7 +57,7 @@ export const updateCalendar = (calendar: CALENDAR.Calendar) => {
 }
 
 /**
- * 获取日历详情
+ * @description: 获取日历详情
  * @param calendarId
  * @returns
  */
@@ -72,7 +71,7 @@ export const getCalendar = (calendarId: string) => {
 }
 
 /**
- * 删除日历
+ * @description: 删除日历
  * @param id
  * @returns
  */
@@ -86,7 +85,7 @@ export const deleteCalendar = (calendarId: string) => {
 }
 
 /**
- * 根据日历和开始时间查询事件
+ * @description: 根据日历和开始时间查询事件
  * @param calendarId
  * @param start
  * @param end
@@ -103,7 +102,7 @@ export const componentsDaysById = (calendarId: string, start: string, end: strin
 }
 
 /**
- * 新增或修改事件
+ * @description: 新增或修改事件
  * @param component
  */
 export const saveOrUpdateComponent = (component: CALENDAR.Component) => {
@@ -114,9 +113,23 @@ export const saveOrUpdateComponent = (component: CALENDAR.Component) => {
 }
 
 /**
- * 通过ID查询事件
- * @param id 
+ * @description: 通过ID查询事件
+ * @param id
  */
 export const getComponentById = (id: string) => {
-  return request<CALENDAR.Component>(`/api/app/v1/component/${id}`)
+  return request<CALENDAR.Component>(`/cms/api/app/v1/component/${id}`)
+}
+
+/**
+ * @description: 通过事件查询参会人
+ * @param {string} createMemberId
+ * @param {string} componentId
+ * @return {*}
+ * @author: Derek Xu
+ */
+export const queryComponentMembers = (createMemberId: string, componentId: string) => {
+  return request<CALENDAR.Attend>('/cms/api/app/v1/component/attend/member', {
+    method: 'get',
+    params: { createMemberId, componentId }
+  })
 }

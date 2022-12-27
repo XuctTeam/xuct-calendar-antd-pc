@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-25 21:02:25
+ * @LastEditTime: 2022-12-27 17:42:17
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -74,21 +74,15 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
   const alramTimeItem: SelectProps['options'] = [
     {
       value: '15',
-      label: `${
-        init.formatMessage({ id: 'pages.component.add.alarm.select.label' }) + '15' + init.formatMessage({ id: 'pages.component.add.alarm.select.min' })
-      }`
+      label: `${init.formatMessage({ id: 'pages.component.add.alarm.select.label' }) + '15' + init.formatMessage({ id: 'pages.component.repeat.min' })}`
     },
     {
       value: '30',
-      label: `${
-        init.formatMessage({ id: 'pages.component.add.alarm.select.label' }) + '30' + init.formatMessage({ id: 'pages.component.add.alarm.select.min' })
-      }`
+      label: `${init.formatMessage({ id: 'pages.component.add.alarm.select.label' }) + '30' + init.formatMessage({ id: 'pages.component.repeat.min' })}`
     },
     {
       value: '60',
-      label: `${
-        init.formatMessage({ id: 'pages.component.add.alarm.select.label' }) + '60' + init.formatMessage({ id: 'pages.component.add.alarm.select.min' })
-      }`
+      label: `${init.formatMessage({ id: 'pages.component.add.alarm.select.label' }) + '60' + init.formatMessage({ id: 'pages.component.repeat.min' })}`
     },
     {
       value: '1440',
@@ -105,8 +99,11 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
   }, [id])
 
   const _initById = async (id: string) => {
-    const result = await getComponentById(id)
-    debugger
+    try {
+      const result = await getComponentById(id)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -182,7 +179,7 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
       <ProForm.Group>
         <ProFormSwitch
           name='fullDay'
-          label={init.formatMessage({ id: 'pages.compoennt.add.full.day' })}
+          label={init.formatMessage({ id: 'pages.compoennt.repeat.full.day' })}
           fieldProps={{
             checkedChildren: <CheckOutlined />,
             unCheckedChildren: <CloseOutlined />
@@ -257,7 +254,7 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
                     value: '6'
                   },
                   {
-                    label: `${init.formatMessage({ id: 'pages.component.add.repeat.every.year' }) + '（' + dayInYear(selectedDate) + '）'}`,
+                    label: `${init.formatMessage({ id: 'pages.component.repeat.every.year' }) + '（' + dayInYear(selectedDate) + '）'}`,
                     value: '7'
                   },
                   {
