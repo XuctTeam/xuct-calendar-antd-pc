@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 15:15:51
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 18:44:08
+ * @LastEditTime: 2022-12-28 11:23:46
  * @FilePath: \xuct-calendar-antd-pc\src\utils\calendar.ts
  * @Description:
  *
@@ -11,7 +11,7 @@
 import solarLunar from 'solarlunar-es'
 import dayjs from 'dayjs'
 import { getLocale, getIntl } from 'umi'
-import { RRule, WeekDay, WeekDayEn } from '@/constants'
+import { RRule, WeekDay, WeekDayEn, Num } from '@/constants'
 
 enum Lanuage {
   ZH = 'zh-CN',
@@ -130,30 +130,17 @@ export const formatWeekly = (repeatByday: string | undefined) => {
  */
 export const dayWeekInMonth = (date: Date) => {
   const num = Math.ceil(date.getDate() / 7)
-  if (isChinese()) {
-    return '第' + num + '个' + getWeekDay(dayjs(date).day())
+  const week = getWeekDay(dayjs(date).day())
+  const chinese = isChinese()
+  if (chinese) {
+    return '第' + num + '个' + week
   }
-  const week = dayjs(date).format('ddd')
-  switch (num) {
-    case 1:
-      return '1st ' + week
-    case 2:
-      return '2nd ' + week
-    case 3:
-      return '3rd ' + week
-    case 4:
-      return '4th ' + week
-    case 5:
-      return 'The 5th ' + week
-  }
-  return ''
+  return _toEnNum(num) + week
 }
 
 export const dayInYear = (date: Date) => {
-  if (isChinese()) {
-    return dayjs(date).format('MM月DD日')
-  }
-  return dayjs(date).format('MMM DD')
+  const chinese = isChinese()
+  return dayjs(date).format(chinese ? 'MM月DD日' : 'MMM DD')
 }
 
 /**
@@ -202,15 +189,14 @@ const _formatWeeklyText = (repeatInterval: number, repeatStatus: string, repeatB
   const init = getIntl()
   switch (repeatStatus) {
     case '2':
-      return init.formatMessage({ id: 'pages.component.add.repeat.week.mo.fr' })
+      return init.formatMessage({ id: 'pages.component.repeat.week.mo.fr' })
     case '3':
-      return init.formatMessage({ id: 'pages.component.add.repeat.week.st.su' })
+      return init.formatMessage({ id: 'pages.component.repeat.week.st.su' })
     case '4':
-      return init.formatMessage({ id: 'pages.component.add.repeat.week.st' })
+      return init.formatMessage({ id: 'pages.component.repeat.week.st' })
     default:
       break
   }
-
   const weeks = repeatByday.split(',').map((i: string) => {
     const week: string | undefined = i.split(':')[1]
     if (!week) return
@@ -218,7 +204,7 @@ const _formatWeeklyText = (repeatInterval: number, repeatStatus: string, repeatB
   })
   return (
     (repeatInterval === 1
-      ? init.formatMessage({ id: 'pages.component.add.repeat.week.st' })
+      ? init.formatMessage({ id: 'pages.component.repeat.week.st' })
       : init.formatMessage({ id: 'pages.component.repeat.each' }) + repeatInterval + init.formatMessage({ id: 'pages.component.repeat.frequency.week' })) +
     weeks.join(',')
   )
@@ -235,27 +221,31 @@ const _formatWeeklyText = (repeatInterval: number, repeatStatus: string, repeatB
 const _formatMonthlyText = (repeatInterval: number, repeatStatus: string, repeatByday: string, repeatBymonthday: string): string => {
   const init = getIntl()
   const chinese = isChinese()
-  let dayText = '日'
-  if (!chinese) {
-    switch (repeatBymonthday) {
-      case '1':
-        dayText = '1st'
-      case '2':
-        dayText = '2nd'
-      case '3':
-        dayText = '3rd'
-      default:
-        dayText = repeatBymonthday + 'th'
-    }
-  }
   if (repeatStatus === '5') {
-    return init.formatMessage({ id: 'pages.component.add.repeat.every.month' }) + '（' + repeatBymonthday + '）'
+    return (
+      init.formatMessage({ id: 'pages.component.add.repeat.every.month' }) +
+      ' （' +
+      (chinese ? repeatByday : _toEnNum(Number.parseInt(repeatBymonthday))) +
+      '）'
+    )
   }
   if (repeatStatus === '6') {
     const monthDays = repeatByday ? repeatByday.split(':') : []
     if (!monthDays[1]) return ''
-    return '每月（第' + monthDays[0] + '个' + getWeekDay(Number.parseInt(monthDays[1])) + ')'
+    const week = getWeekDay(Number.parseInt(monthDays[1]))
+    return (
+      init.formatMessage({ id: 'pages.component.add.repeat.every.month' }) +
+      '（' +
+      (chinese ? '第' + monthDays[0] + '个' : _toEnNum(Number.parseInt(monthDays[0]))) +
+      ' ' +
+      week +
+      '）'
+    )
   }
+
+  const dayText = chinese
+    ? repeatBymonthday + init.formatMessage({ id: 'pages.component.repeat.frequency.daily' })
+    : _toEnNum(Number.parseInt(repeatBymonthday))
   if (repeatBymonthday) {
     if (repeatInterval === 1) {
       return init.formatMessage({ id: 'pages.component.add.repeat.every.month' }) + '（' + dayText + '）'
@@ -274,9 +264,22 @@ const _formatMonthlyText = (repeatInterval: number, repeatStatus: string, repeat
   const monthDays = repeatByday ? repeatByday.split(':') : []
   if (!monthDays[1]) return ''
   if (repeatInterval === 1) {
-    return '每月（第' + monthDays[0] + '个' + monthDays[1] + ')'
+    return (
+      init.formatMessage({ id: 'pages.component.add.repeat.every.month' }) +
+      '（' +
+      (chinese ? '第' + monthDays[0] + '个' : _toEnNum(Number.parseInt(monthDays[0])) + monthDays[1]) +
+      '）'
+    )
   }
-  return '每' + repeatInterval + '月（第' + monthDays[0] + '个' + getWeekDay(Number.parseInt(monthDays[1])) + ')'
+  return (
+    init.formatMessage({ id: 'pages.component.repeat.each' }) +
+    repeatInterval +
+    init.formatMessage({ id: 'pages.component.repeat.frequency.month' }) +
+    '（' +
+    (chinese ? '第' + monthDays[0] + '个' : _toEnNum(Number.parseInt(monthDays[0]))) +
+    getWeekDay(Number.parseInt(monthDays[1])) +
+    '）'
+  )
 }
 
 /**
@@ -298,17 +301,7 @@ const _formatYearlyText = (repeatInterval: number, repeatBymonth: string, repeat
       init.formatMessage({ id: 'pages.component.repeat.frequency.daily' }) +
       '）'
   } else {
-    let dayText
-    switch (repeatBymonthday) {
-      case '1':
-        dayText = '1st'
-      case '2':
-        dayText = '2nd'
-      case '3':
-        dayText = '3rd'
-      default:
-        dayText = repeatBymonthday + 'th'
-    }
+    let dayText = _toEnNum(Number.parseInt(repeatBymonthday))
     switch (repeatBymonth) {
       case '1':
         yearText = '（January ' + dayText + '）'
@@ -336,7 +329,6 @@ const _formatYearlyText = (repeatInterval: number, repeatBymonth: string, repeat
         yearText = '（December ' + dayText + '）'
     }
   }
-
   if (repeatInterval === 1) {
     return init.formatMessage({ id: 'pages.component.repeat.every.year' }) + yearText
   }
@@ -361,9 +353,9 @@ export const formatDifferentDayTime = (type: number, fullDay: number, date: Date
     return dayjs(date).format(fullDay === 0 ? 'YYYY年MM月DD日 HH:mm' : 'YYYY年MM月DD日') + ' 结束'
   }
   if (type === 1) {
-    return dayjs(date).format(fullDay === 0 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD日') + ' start'
+    return dayjs(date).format(fullDay === 0 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD日') + ' Start'
   }
-  return dayjs(date).format(fullDay === 0 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD日') + ' end'
+  return dayjs(date).format(fullDay === 0 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD日') + ' End'
 }
 
 /**
@@ -375,7 +367,7 @@ export const formatDifferentDayTime = (type: number, fullDay: number, date: Date
  */
 export const formatSameDayTime = (fullDay: number, dtstart: Date, dtend: Date): string => {
   const chinese = isChinese()
-  const day: string = dayjs(dtstart).format(chinese ? 'YYYY年MM月DD日' : 'YYYY-MM-DD') + '(' + getWeekDay(dayjs(dtend).get('day')) + ')'
+  const day: string = dayjs(dtstart).format(chinese ? 'YYYY年MM月DD日' : 'YYYY-MM-DD') + '（' + getWeekDay(dayjs(dtend).get('day')) + '）'
   if (fullDay === 1) return day
   return day + dayjs(dtstart).format('HH:mm') + '-' + dayjs(dtend).format('HH:mm')
 }
@@ -400,4 +392,22 @@ export const formateSameDayDuration = (fullDay: number, dtstart: Date, dtend: Da
   if (diff === 60) return init.formatMessage({ id: 'pages.component.repeat.one.hour' })
   const hour = parseInt(diff / 60 + '')
   return hour + init.formatMessage({ id: 'pages.component.repeat.hour' }) + (diff - hour * 60 > 0 ? diff - hour * 60 : diff) + minText
+}
+
+/**
+ * 转为英语中的数字
+ * @param day
+ * @returns
+ */
+const _toEnNum = (day: number) => {
+  switch (day) {
+    case 1:
+      return Num.First
+    case 2:
+      return Num.Second
+    case 3:
+      return Num.Third
+    default:
+      return day + Num.Other
+  }
 }

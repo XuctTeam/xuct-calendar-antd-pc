@@ -2,8 +2,8 @@
  * @Author: Derek Xu
  * @Date: 2022-12-13 16:02:04
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-19 20:27:20
- * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\UserInfoForm.tsx
+ * @LastEditTime: 2022-12-28 14:53:13
+ * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\UserInfoForm.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -11,14 +11,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Avatar, Button, Col, Divider, Drawer, Input, message, Modal, Row, Upload, UploadProps } from 'antd'
 import { FormattedMessage, useModel } from 'umi'
-import { ExclamationCircleFilled, UploadOutlined } from '@ant-design/icons'
+import { UploadOutlined } from '@ant-design/icons'
 import { modifyName, modifyAvatar } from '@/services/user'
 import { RcFile } from 'antd/es/upload'
 import { UPLOAD_FILE_URL } from '@/constants/url'
 import sessionStore from '@/cache'
 import Images from '@/constants/images'
 import styles from './UserInfoForm.less'
-import { useIntl } from 'umi'
 
 interface IPageOption {
   open: boolean

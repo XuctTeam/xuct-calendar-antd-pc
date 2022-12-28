@@ -231,15 +231,15 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
                     value: '1'
                   },
                   {
-                    label: init.formatMessage({ id: 'pages.component.add.repeat.week.mo.fr' }),
+                    label: init.formatMessage({ id: 'pages.component.repeat.week.mo.fr' }),
                     value: '2'
                   },
                   {
-                    label: init.formatMessage({ id: 'pages.component.add.repeat.week.st.su' }),
+                    label: init.formatMessage({ id: 'pages.component.repeat.week.st.su' }),
                     value: '3'
                   },
                   {
-                    label: init.formatMessage({ id: 'pages.component.add.repeat.week.st' }),
+                    label: init.formatMessage({ id: 'pages.component.repeat.week.st' }),
                     value: '4'
                   },
                   {

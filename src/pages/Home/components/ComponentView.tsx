@@ -2,20 +2,21 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 16:33:00
+ * @LastEditTime: 2022-12-28 15:10:07
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { useIntl } from 'umi'
-import { Col, Modal, Row } from 'antd'
+import { useIntl, useModel } from 'umi'
+import { Button, Col, Modal, Radio, Row, Space } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { getComponentById, queryComponentMembers } from '@/services/calendar'
-import styles from './ComponentView.less'
 import dayjs from 'dayjs'
 import { DifferentDay, SameDay } from '../ui'
 import { UserOutlined } from '@ant-design/icons'
+import ComponentAttendView from './ComponentAttendView'
+import styles from './ComponentView.less'
 
 interface IPageOption {
   id: string
@@ -27,6 +28,7 @@ interface IPageOption {
 
 const ComponentView: FC<IPageOption> = ({ id, clientX, clientY, open, setOpen }) => {
   const init = useIntl()
+  const { initialState } = useModel('@@initialState')
   const [summary, setSummary] = useState<string>('')
   const [color, setColor] = useState<string>('')
   const [dtstart, setDtstart] = useState<Date>(dayjs().toDate())
@@ -39,7 +41,10 @@ const ComponentView: FC<IPageOption> = ({ id, clientX, clientY, open, setOpen })
   const [repeatByday, setRepeatByday] = useState<string>('')
   const [repeatBymonth, setRepeatBymonth] = useState<string>('')
   const [repeatBymonthday, setRepeatBymonthday] = useState<string>('')
+  const [createMemberId, setCreateMemberId] = useState<string>('')
   const [createMemberName, setCreateMemberName] = useState<string>('')
+  const [attends, setAttends] = useState<CALENDAR.Attend[]>([])
+  const [attendStatus, setAttendStatus] = useState<number>(1)
 
   useEffect(() => {
     if (!id) return
@@ -54,8 +59,21 @@ const ComponentView: FC<IPageOption> = ({ id, clientX, clientY, open, setOpen })
   }
 
   const _initComponent = (component: CALENDAR.Component) => {
-    const { summary, color, dtstart, dtend, fullDay, repeatStatus, repeatUntil, repeatInterval, repeatType, repeatByday, repeatBymonth, repeatBymonthday } =
-      component
+    const {
+      summary,
+      color,
+      dtstart,
+      dtend,
+      fullDay,
+      repeatStatus,
+      repeatUntil,
+      repeatInterval,
+      repeatType,
+      repeatByday,
+      repeatBymonth,
+      repeatBymonthday,
+      creatorMemberId
+    } = component
     setSummary(summary)
     setColor(color || 'blue')
     setDtstart(dtstart)
@@ -68,11 +86,15 @@ const ComponentView: FC<IPageOption> = ({ id, clientX, clientY, open, setOpen })
     setRepeatByday(repeatByday || '')
     setRepeatBymonth(repeatBymonth || '')
     setRepeatBymonthday(repeatBymonthday || '')
+    setCreateMemberId(creatorMemberId)
   }
 
   const _initAttends = (createMemberId: string, attends: CALENDAR.Attend[]) => {
+    setAttends([...attends, ...attends, ...attends, ...attends, ...attends, ...attends, ...attends, ...attends, ...attends, ...attends])
     const createMember: CALENDAR.Attend | undefined = attends.find((i) => i.memberId === createMemberId)
+    const attend: CALENDAR.Attend | undefined = attends.find((i) => i.memberId === initialState?.currentUser?.member.id)
     setCreateMemberName(createMember?.name || '')
+    setAttendStatus(attend?.status || 0)
   }
 
   return (
@@ -82,11 +104,12 @@ const ComponentView: FC<IPageOption> = ({ id, clientX, clientY, open, setOpen })
       open={open}
       onOk={setOpen}
       onCancel={setOpen}
-      width={500}
+      width={460}
       mask={false}
       destroyOnClose={true}
+      footer={null}
     >
-      <Row className={styles.calendar}>
+      <Row className={`${styles.calendar} ${styles.cell}`}>
         <Col span={2}>
           <div className={styles.circle} style={{ background: `#${color}`, border: `#${color}` }} />
         </Col>
@@ -121,17 +144,46 @@ const ComponentView: FC<IPageOption> = ({ id, clientX, clientY, open, setOpen })
           )}
         </Col>
       </Row>
-      <Row>
+      <Row className={styles.cell}>
         <Col span={2}>
           <UserOutlined />
         </Col>
         <Col>{createMemberName}</Col>
       </Row>
-      <Row>
-        <Col span={2}>
-          <UserOutlined />
+      <ComponentAttendView attends={attends}></ComponentAttendView>
+      <Row className={styles.action}>
+        <Col span={2}></Col>
+        <Col span={12}>
+          <Radio.Group
+            size='small'
+            value={attendStatus}
+            options={
+              initialState?.currentUser?.member.id === createMemberId
+                ? [
+                    { label: '接受', value: 1 },
+                    { label: '拒绝', value: 2, disabled: true },
+                    { label: '待定', value: 0, disabled: true }
+                  ]
+                : [
+                    { label: '接受', value: 1 },
+                    { label: '拒绝', value: 2 },
+                    { label: '待定', value: 0 }
+                  ]
+            }
+            optionType='button'
+            buttonStyle='solid'
+          />
         </Col>
-        <Col>3</Col>
+        <Col span={2} offset={3}>
+          <Space>
+            <Button type='primary' size='small'>
+              编辑
+            </Button>
+            <Button type='primary' danger size='small'>
+              删除
+            </Button>
+          </Space>
+        </Col>
       </Row>
     </Modal>
   )

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-22 11:30:19
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-24 19:00:05
+ * @LastEditTime: 2022-12-28 11:09:41
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RepeatFormItem.tsx
  * @Description:
  *
@@ -64,7 +64,7 @@ const RepeatFormItem = forwardRef<any, IPageOption>(({ ...props }, ref) => {
 
   const customRepeatItem = [
     {
-      label: init.formatMessage({ id: 'pages.component.add.repeat.frequency.day' }),
+      label: init.formatMessage({ id: 'pages.component.repeat.frequency.day' }),
       value: '0'
     },
     {
@@ -72,11 +72,11 @@ const RepeatFormItem = forwardRef<any, IPageOption>(({ ...props }, ref) => {
       value: '1'
     },
     {
-      label: init.formatMessage({ id: 'pages.component.add.repeat.frequency.month' }),
+      label: init.formatMessage({ id: 'pages.component.repeat.frequency.month' }),
       value: '2'
     },
     {
-      label: init.formatMessage({ id: 'pages.component.add.repeat.frequency.year' }),
+      label: init.formatMessage({ id: 'pages.component.repeat.frequency.year' }),
       value: '3'
     }
   ]
@@ -184,7 +184,7 @@ const RepeatFormItem = forwardRef<any, IPageOption>(({ ...props }, ref) => {
   return (
     <Space className={styles.item}>
       <span>
-        <FormattedMessage id='pages.component.add.repeat.each.label' />
+        <FormattedMessage id='pages.component.repeat.each' />
       </span>
       <InputNumber min={1} max={99} value={repeatInterval} onChange={(e: any) => setRepeatInterval(e)} />
       <Select value={repeatType} style={{ width: 120 }} options={customRepeatItem} onChange={setRepeatType} />

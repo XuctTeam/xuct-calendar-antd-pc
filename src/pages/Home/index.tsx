@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 14:41:02
+ * @LastEditTime: 2022-12-28 15:11:16
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -160,8 +160,8 @@ const HomePage = () => {
     const { clientWidth, clientHeight } = doc.body
     setComponentId(id)
     setComponentViewOpen(true)
-    setComponentViewClientX(clientX + 500 > clientWidth ? clientWidth - 500 : clientX)
-    setComponentViewClientY(clientY + 300 > clientHeight ? clientHeight - 300 : clientY)
+    setComponentViewClientX(clientX + 480 > clientWidth ? clientWidth - 480 : clientX)
+    setComponentViewClientY(clientY + 420 > clientHeight ? clientHeight - 420 : clientY)
   }
 
   const setComponentOpen = (open: boolean) => {
@@ -259,7 +259,7 @@ const HomePage = () => {
           </div>
         </div>
       </Content>
-      {/* <ComponentForm id={componentId} calendars={calendars} open={compOpen} setOpen={setComponentOpen} refresh={refresh} /> */}
+      <ComponentForm id={componentId} calendars={calendars} open={compOpen} setOpen={setComponentOpen} refresh={refresh} />
       <ComponentView
         id={componentId || ''}
         open={componentViewOpen}
