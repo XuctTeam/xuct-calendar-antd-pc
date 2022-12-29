@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 09:05:42
+ * @LastEditTime: 2022-12-29 15:05:44
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 
 import FullCalendar from '@fullcalendar/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -21,6 +21,7 @@ import dayjs from 'dayjs'
 import { RRule as RRuleJs } from 'rrule'
 import { useIntl } from 'umi'
 import { RRule } from '@/constants'
+import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 
 interface IPageOption {
   centerHeight: number
@@ -32,11 +33,11 @@ interface IPageOption {
   components: CALENDAR.DayCompoent[]
   fullCalendarDayChage: (ty: number) => void
   fullCalendarDateClick: (data: any) => void
-  eventClick: (id: string, clientX: number, clientY: number) => void
+  event$: EventEmitter<Event.Action>
 }
 
 const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
-  const { centerHeight, selectDay, fullCalendarLocal, dataView, lunarView, calendars, components, eventClick } = props
+  const { centerHeight, selectDay, fullCalendarLocal, dataView, lunarView, calendars, components, event$ } = props
   const { fullCalendarDayChage, fullCalendarDateClick } = props
   const disableLunarView = !isChinese() || lunarView === '0'
   const [events, setEvents] = useState<any[]>([])
@@ -130,7 +131,14 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   const fullCalendarEventClick = (info: any) => {
     const { id } = info.event
     const { clientX, clientY } = info.jsEvent
-    eventClick(id, clientX, clientY)
+    event$.emit({
+      action: 'eventClick',
+      data: {
+        id,
+        x: clientX,
+        y: clientY
+      }
+    })
   }
 
   const fullCalendarSelect = (info: any) => {
@@ -348,7 +356,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
     <FullCalendar
       ref={ref}
       {...calendarOptions}
-      height={centerHeight}
+      height={centerHeight - 20}
       select={fullCalendarSelect}
       locale={fullCalendarLocal}
       dateClick={fullCalendarDateClick}

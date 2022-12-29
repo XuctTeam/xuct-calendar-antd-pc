@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 17:42:17
+ * @LastEditTime: 2022-12-29 16:52:45
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -11,7 +11,7 @@
 import { useIntl } from '@/.umi/plugin-locale'
 import { isChinese, dayWeekInMonth, dayInYear } from '@/utils/calendar'
 import {
-  ModalForm,
+  DrawerForm,
   ProForm,
   ProFormDatePicker,
   ProFormDateRangePicker,
@@ -25,11 +25,13 @@ import {
 } from '@ant-design/pro-components'
 import { message, SelectProps } from 'antd'
 import dayjs from 'dayjs'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { FormattedMessage } from 'umi'
 import RepeatFormItem from './RepeatFormItem'
-import { saveOrUpdateComponent, getComponentById } from '@/services/calendar'
+import { saveOrUpdateComponent } from '@/services/calendar'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
+import { EventEmitter } from 'ahooks/lib/useEventEmitter'
+import { useRafTimeout, useTimeout } from 'ahooks'
 
 interface IPageOption {
   id?: string
@@ -37,13 +39,16 @@ interface IPageOption {
   calendars: CALENDAR.Calendar[]
   setOpen: (open: any) => void
   refresh: () => void
+  event$: EventEmitter<Event.Action>
 }
 
-const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh }) => {
+const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh, event$ }) => {
   const formRef = useRef<ProFormInstance>()
   const init = useIntl()
   const repeatRef = useRef<any>()
   const chinese = isChinese()
+  const [initialValues, setInitialValues] = useState<any>()
+  const [repeatInitialValues, setRepeatInitialValues] = useState<any>()
   const calendarItems: SelectProps['options'] = calendars.map((item) => {
     return {
       label: item.name,
@@ -92,22 +97,42 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
     }
   ]
 
-  useEffect(() => {
-    if (!id) return
-    debugger
-    _initById(id)
-  }, [id])
-
-  const _initById = async (id: string) => {
-    try {
-      const result = await getComponentById(id)
-    } catch (err) {
-      console.log(err)
-    }
+  const drawFormOpenChage = (e: any) => {
+    if (e) return
+    setInitialValues(undefined)
+    setRepeatInitialValues(undefined)
+    setOpen(false)
   }
 
+  event$.useSubscription((values: Event.Action) => {
+    const { action, data } = values
+    if (action !== 'eventEdit') return
+    setOpen(true)
+    const { dtstart, dtend, calendarId, alarmType, repeatStatus, repeatType, repeatInterval, repeatByday, repeatBymonth, repeatBymonthday, ...comp } = data
+    let _alarmType
+    switch (alarmType) {
+      default:
+        _alarmType = '0'
+    }
+    setInitialValues({
+      ...comp,
+      calendar: calendarId,
+      alarmType: _alarmType,
+      repeatStatus,
+      dtTime: [dtstart, dtend]
+    })
+    if (repeatStatus !== '8') return
+    setRepeatInitialValues({
+      repeatType,
+      repeatInterval,
+      repeatByday,
+      repeatBymonth,
+      repeatBymonthday
+    })
+  })
+
   return (
-    <ModalForm<{
+    <DrawerForm<{
       summary: string
       description: string
       display: number
@@ -119,11 +144,12 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
       autoFocusFirstInput
       open={open}
       preserve
-      modalProps={{
+      initialValues={initialValues}
+      drawerProps={{
         destroyOnClose: true
       }}
       omitNil
-      onOpenChange={setOpen}
+      onOpenChange={drawFormOpenChage}
       submitTimeout={2000}
       onFinish={async (values: any) => {
         const { repeatStatus, dtTime, calendar, ...comp } = values
@@ -137,7 +163,7 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
         try {
           await saveOrUpdateComponent({
             ...comp,
-            ...repeatValues,
+            ...(repeatValues || { repeatStatus: '0', alarmTimes: [] }),
             ...{ calendarId: calendar, dtstart: dayjs(dtTime[0]).toDate(), dtend: dayjs(dtTime[1]).toDate() }
           })
         } catch (err) {
@@ -290,7 +316,7 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
         {({ repeatStatus, dtTime }) => {
           if (repeatStatus !== '8') return <></>
           const selectedDate = !dtTime ? new Date() : dayjs(dtTime[0]).toDate()
-          return <RepeatFormItem selectedDate={selectedDate} ref={repeatRef} />
+          return <RepeatFormItem selectedDate={selectedDate} ref={repeatRef} initialValues={repeatInitialValues} />
         }}
       </ProFormDependency>
       <ProForm.Group>
@@ -327,7 +353,7 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh 
         label={<FormattedMessage id='pages.component.add.description.label' />}
         placeholder={init.formatMessage({ id: 'pages.component.add.description.placeholder' })}
       />
-    </ModalForm>
+    </DrawerForm>
   )
 }
 

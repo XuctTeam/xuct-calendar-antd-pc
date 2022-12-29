@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 12:26:30
+ * @LastEditTime: 2022-12-29 09:54:00
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -53,6 +53,16 @@ export default {
   'pages.person.center.avatar.button': 'Save',
   'pages.calendar.mananger.component.add.success': 'Add Component Success',
   'pages.calendar.mananger.component.edit.success': 'Edit Component Success',
-
-  'pages.component.view.title': 'Component View'
+  'pages.component.view.title': 'CompView',
+  'pages.component.view.invited': 'Invited',
+  'pages.component.view.person': 'persons',
+  'pages.component.view.accept': 'Accept',
+  'pages.component.view.reject': 'Reject',
+  'pages.component.view.unknow': 'Unknow',
+  'pages.component.view.more': 'More',
+  'pages.component.view.button.edit': 'Edit',
+  'pages.component.view.button.delete': 'Del',
+  'pages.component.view.delete.title': 'DelEvent',
+  'pages.component.view.delete.content': 'Confirm Delete Event',
+  'pages.component.view.delete.success': 'Delete Success'
 }

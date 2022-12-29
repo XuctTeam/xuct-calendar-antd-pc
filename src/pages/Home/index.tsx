@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-28 15:11:16
+ * @LastEditTime: 2022-12-29 15:06:18
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 
 import React, { useCallback } from 'react'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Badge, Button, Calendar } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { connect, FormattedMessage, useSelector } from 'umi'
@@ -19,60 +19,63 @@ import dayjs, { Dayjs } from 'dayjs'
 import { ProCard } from '@ant-design/pro-components'
 import { CalendarList, RightCalendar, ComponentForm, ComponentView } from './components'
 import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
+import { useEventEmitter, useSetState, useSize } from 'ahooks'
 import styles from './index.less'
 
-const doc = window.document
+interface State {
+  loading: boolean
+  selectDay: any
+  calendars: CALENDAR.Calendar[]
+  marks: string[]
+  components: CALENDAR.DayCompoent[]
+  compOpen: boolean
+}
 
 const HomePage = () => {
-  const [loading, setLoading] = useState<boolean>(false)
-  const [centerHeight, setCenterHeight] = useState<number>(300)
   const calenarRefContent = useRef<any>()
   const calendarRef = React.createRef<any>()
-  const [selectDay, setSelectDay] = useState<any>()
-  const [calendars, setCalendars] = useState<CALENDAR.Calendar[]>([])
-  const [marks, setMarks] = useState<string[]>([])
-  const [components, setComponents] = useState<CALENDAR.DayCompoent[]>([])
-  const [compOpen, setCompOpen] = useState<boolean>(false)
-  const [componentId, setComponentId] = useState<string | undefined>()
-  const [componentViewOpen, setComponentViewOpen] = useState<boolean>(false)
-  const [componentViewClientX, setComponentViewClientX] = useState<number>(0)
-  const [componentViewClientY, setComponentViewClientY] = useState<number>(0)
+  const size = useSize(calenarRefContent)
+  const event$ = useEventEmitter<any>()
+
+  const [state, setState] = useSetState<State>({
+    loading: false,
+    selectDay: dayjs().format('YYYY-MM-DD'),
+    calendars: [],
+    marks: [],
+    components: [],
+    compOpen: false
+  })
 
   // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
   const { dataView, lunarView, fullCalendarLocal } = useSelector(function (state: any) {
     return state.system
   })
+
   useEffect(() => {
-    /* 更新calendar高度 */
-    setCenterHeight(calenarRefContent.current.offsetHeight - 20)
-    // 页面变化时获取浏览器窗口的大小
-    window.addEventListener('resize', resizeUpdate)
-    //加载日历数据
     initData()
-    return () => {
-      // 组件销毁时移除监听事件
-      window.removeEventListener('resize', resizeUpdate)
-    }
   }, [])
 
-  const resizeUpdate = () => {
-    // 通过事件对象获取浏览器窗口的高度
-    setCenterHeight(calenarRefContent.current.offsetHeight - 20)
-  }
-
   const initData = async () => {
-    setLoading(true)
+    setState({
+      loading: true
+    })
     let _calendars: any
     try {
       _calendars = await list()
     } catch (err) {
       console.log(err)
-      setLoading(false)
+      setState({
+        loading: false
+      })
       return
     }
-    setLoading(false)
+    setState({
+      loading: false
+    })
     if (!(_calendars && _calendars.length > 0)) return
-    setCalendars(_calendars)
+    setState({
+      calendars: _calendars
+    })
     /** 加载日程 */
     _queryComponent(_calendars, dayjs().startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs().endOf('month').format('YYYY-MM-DD HH:mm:ss'))
   }
@@ -84,7 +87,7 @@ const HomePage = () => {
 
   const antdCalendarDateCellRender = useCallback(
     (value: Dayjs) => {
-      if (marks.includes(value.format('YYYY-MM-DD')))
+      if (state.marks.includes(value.format('YYYY-MM-DD')))
         return (
           <div className={styles.mark}>
             <Badge status='default' />
@@ -92,12 +95,14 @@ const HomePage = () => {
         )
       return <></>
     },
-    [marks]
+    [state.marks]
   )
 
   const fullCalendarDateClick = (info: any) => {
     console.log('dateClick')
-    setSelectDay(dayjs(info.date).format('YYYY-MM-DD'))
+    setState({
+      selectDay: dayjs(info.date).format('YYYY-MM-DD')
+    })
   }
 
   const fullCalendarDayChage = (ty: any) => {
@@ -113,8 +118,10 @@ const HomePage = () => {
         api.today()
     }
     const day = dayjs(api.getDate()).format('YYYY-MM-DD')
-    const selecteDay = selectDay
-    setSelectDay(day)
+    const selecteDay = state.selectDay
+    setState({
+      selectDay: day
+    })
     _dateChageLoadComponent(day, selecteDay)
   }
 
@@ -125,8 +132,10 @@ const HomePage = () => {
   const antdCalendarSelect = (info: any) => {
     const api = calendarRef.current.getApi()
     const day = dayjs(info).format('YYYY-MM-DD')
-    const selecteDay = selectDay
-    setSelectDay(day)
+    const selecteDay = state.selectDay
+    setState({
+      selectDay: day
+    })
     api.gotoDate(day)
     api.select(day)
     _dateChageLoadComponent(day, selecteDay)
@@ -141,34 +150,26 @@ const HomePage = () => {
     updateDisplay(calendarId, display).catch((err) => {
       console.log(err)
     })
-    const _calendars = [...calendars]
+    const _calendars = [...state.calendars]
     const index = _calendars.findIndex((item) => item.id === calendarId)
     _calendars.splice(index, 1, { ..._calendars[index], display })
-    setCalendars(_calendars)
+    setState({
+      calendars: _calendars
+    })
   }
 
   const refresh = () => {
-    setCalendars([])
-    setComponents([])
-    setComponentId(undefined)
+    setState({
+      calendars: [],
+      components: []
+    })
     initData()
   }
 
-  const eventClick = (id: string, clientX: number, clientY: number) => {
-    //setComponentId(id)
-    //setCompOpen(true)
-    const { clientWidth, clientHeight } = doc.body
-    setComponentId(id)
-    setComponentViewOpen(true)
-    setComponentViewClientX(clientX + 480 > clientWidth ? clientWidth - 480 : clientX)
-    setComponentViewClientY(clientY + 420 > clientHeight ? clientHeight - 420 : clientY)
-  }
-
   const setComponentOpen = (open: boolean) => {
-    setCompOpen(open)
-    if (!open) {
-      setComponentId(undefined)
-    }
+    setState({
+      compOpen: open
+    })
   }
 
   /**
@@ -180,7 +181,7 @@ const HomePage = () => {
   const _dateChageLoadComponent = (day: string, selecteDay: string) => {
     const sameMonth = dayjs(selecteDay).isSame(day, 'month')
     if (sameMonth) return
-    _queryComponent(calendars, dayjs(day).startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs(day).endOf('month').format('YYYY-MM-DD HH:mm:ss'))
+    _queryComponent(state.calendars, dayjs(day).startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs(day).endOf('month').format('YYYY-MM-DD HH:mm:ss'))
   }
 
   /**
@@ -213,7 +214,9 @@ const HomePage = () => {
       .then((res) => {
         res.forEach((i) => (calendarComponents = calendarComponents.concat(i)))
         _fillMarkDay(calendarComponents)
-        setComponents(calendarComponents)
+        setState({
+          components: calendarComponents
+        })
       })
       .catch((err) => {
         console.log(err)
@@ -226,49 +229,52 @@ const HomePage = () => {
     components.forEach((comp) => {
       daySet.add(dayjs(comp.day).format('YYYY-MM-DD'))
     })
-    setMarks(Array.from(daySet))
+    setState({
+      marks: Array.from(daySet)
+    })
   }
 
   return (
     <>
       <Content className={styles.center}>
         <div className={styles.left}>
-          <Button type='primary' icon={<PlusOutlined />} block onClick={() => setCompOpen(true)}>
+          <Button
+            type='primary'
+            icon={<PlusOutlined />}
+            block
+            onClick={() =>
+              setState({
+                compOpen: true
+              })
+            }
+          >
             <FormattedMessage id='pages.component.button.add' />
           </Button>
           <ProCard hoverable bordered className={styles.calendar}>
-            <Calendar fullscreen={false} value={dayjs(selectDay)} onSelect={antdCalendarSelect} dateCellRender={antdCalendarDateCellRender} />
+            <Calendar fullscreen={false} value={dayjs(state.selectDay)} onSelect={antdCalendarSelect} dateCellRender={antdCalendarDateCellRender} />
           </ProCard>
-          <CalendarList loading={loading} calendars={calendars} calendarChageDisplay={calendarChageDisplay} refresh={refresh} />
+          <CalendarList loading={state.loading} calendars={state.calendars} calendarChageDisplay={calendarChageDisplay} refresh={refresh} />
         </div>
         <div className={styles.right} ref={calenarRefContent}>
           <div className={styles.calendar}>
             <RightCalendar
+              event$={event$}
               ref={calendarRef}
-              selectDay={selectDay}
-              centerHeight={centerHeight}
+              selectDay={state.selectDay}
+              centerHeight={size?.height || 0}
               dataView={dataView}
               lunarView={lunarView}
-              calendars={calendars}
-              components={components}
+              calendars={state.calendars}
+              components={state.components}
               fullCalendarDateClick={fullCalendarDateClick}
               fullCalendarDayChage={fullCalendarDayChage}
               fullCalendarLocal={fullCalendarLocal}
-              eventClick={eventClick}
-            ></RightCalendar>
+            />
           </div>
         </div>
       </Content>
-      <ComponentForm id={componentId} calendars={calendars} open={compOpen} setOpen={setComponentOpen} refresh={refresh} />
-      <ComponentView
-        id={componentId || ''}
-        open={componentViewOpen}
-        setOpen={() => {
-          setComponentViewOpen(false)
-        }}
-        clientX={componentViewClientX}
-        clientY={componentViewClientY}
-      />
+      <ComponentForm event$={event$} calendars={state.calendars} open={state.compOpen} setOpen={setComponentOpen} refresh={refresh} />
+      <ComponentView event$={event$} refresh={refresh} />
     </>
   )
 }

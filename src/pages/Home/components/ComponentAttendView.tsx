@@ -2,12 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-12-28 11:42:14
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-28 14:47:52
+ * @LastEditTime: 2022-12-29 09:14:52
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentAttendView.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
+import { FormattedMessage } from '@/.umi/plugin-locale'
 import { CheckOutlined, CloseOutlined, InfoOutlined, TeamOutlined } from '@ant-design/icons'
 import { Button, Col, Row, Tag } from 'antd'
 import { FC, useState, useEffect } from 'react'
@@ -35,7 +36,8 @@ const ComponentAttendView: FC<IPageOption> = ({ attends }) => {
       </Col>
       <Col span={22} className={styles.attend}>
         <div>
-          共邀请 {attends.length}人； 接受： {accept} ； 拒绝: {reject}
+          <FormattedMessage id='pages.component.view.invited' /> {attends.length} <FormattedMessage id='pages.component.view.person' />；
+          <FormattedMessage id='pages.component.view.accept' />： {accept} ； <FormattedMessage id='pages.component.view.reject' />: {reject}
         </div>
         <div>
           {users.map((item, index) => {
@@ -53,7 +55,7 @@ const ComponentAttendView: FC<IPageOption> = ({ attends }) => {
         </div>
         {attends.length > 20 && (
           <Button block type='link'>
-            更多
+            <FormattedMessage id='pages.component.view.more' />
           </Button>
         )}
       </Col>

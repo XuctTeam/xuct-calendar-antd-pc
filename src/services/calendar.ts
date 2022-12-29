@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:45:38
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 15:38:28
+ * @LastEditTime: 2022-12-29 09:50:13
  * @FilePath: \xuct-calendar-antd-pc\src\services\calendar.ts
  * @Description:
  *
@@ -131,5 +131,16 @@ export const queryComponentMembers = (createMemberId: string, componentId: strin
   return request<CALENDAR.Attend>('/cms/api/app/v1/component/attend/member', {
     method: 'get',
     params: { createMemberId, componentId }
+  })
+}
+
+/**
+ * 删除事项
+ * @param componentId
+ * @returns
+ */
+export const deleteComponent = (componentId: string) => {
+  return request<API.Response>(`/cms/api/app/v1/component/${componentId}`, {
+    method: 'delete'
   })
 }
