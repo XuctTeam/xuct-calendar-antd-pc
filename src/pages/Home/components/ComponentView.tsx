@@ -2,14 +2,14 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 17:18:22
+ * @LastEditTime: 2023-01-04 15:40:19
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { useIntl, useModel, FormattedMessage } from 'umi'
-import { Button, Col, message, Modal, Radio, Row, Skeleton, Space, Spin } from 'antd'
+import { Button, Col, Divider, message, Modal, Radio, Row, Select, Skeleton, Space, Spin } from 'antd'
 import { FC } from 'react'
 import { getComponentById, queryComponentMembers, deleteComponent } from '@/services/calendar'
 import dayjs from 'dayjs'
@@ -87,13 +87,14 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
 
   event$.useSubscription((values: any) => {
     const { action, data } = values
-    if (action !== 'eventClick') return
+    if (action !== 'event_view') return
     const { clientWidth, clientHeight } = doc.body
     const { id, x, y } = data
+    const height = state.attends.length > 20 ? 420 : 340
     setState({
       id,
       left: x + 480 > clientWidth ? clientWidth - 480 : x,
-      top: y + 450 > clientHeight ? clientHeight - 450 : y,
+      top: y + height > clientHeight ? clientHeight - height : y,
       visable: true
     })
     initData(id)
@@ -160,31 +161,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
     const createMember: CALENDAR.Attend | undefined = attends.find((i) => i.memberId === createMemberId)
     const attend: CALENDAR.Attend | undefined = attends.find((i) => i.memberId === initialState?.currentUser?.member.id)
     setState({
-      attends: [
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends,
-        ...attends
-      ],
+      attends,
       creatorMemberName: createMember?.name || '',
       attendStatus: attend?.status || 0
     })
@@ -208,7 +185,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
     })
     const { loading, top, left, visable, ...comp } = state
     event$.emit({
-      action: 'eventEdit',
+      action: 'event_edit',
       data: {
         ...comp
       }
@@ -236,7 +213,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
       footer={null}
     >
       <Spin tip='Loading...' spinning={state.loading}>
-        <div className={styles.body}>
+        <div className={styles.body} style={{ height: state.attends.length > 20 ? '320px' : '240px' }}>
           <div className={styles.container}>
             <Row className={`${styles.calendar} ${styles.cell}`}>
               <Col span={2}>
@@ -287,14 +264,17 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
                 <Col>{state.description}</Col>
               </Row>
             )}
-            <ComponentAttendView attends={state.attends}></ComponentAttendView>
+            {state.attends.length > 1 && <ComponentAttendView attends={state.attends}></ComponentAttendView>}
           </div>
           <div>
-            <Row className={styles.action}>
-              <Col span={12} offset={1}>
-                <Radio.Group
-                  size='small'
+            <Divider />
+            <Row>
+              <Col span={8}>
+                <Select
                   value={state.attendStatus}
+                  size='small'
+                  bordered={false}
+                  style={{ width: '100%' }}
                   options={
                     initialState?.currentUser?.member.id === state.creatorMemberId
                       ? [
@@ -308,19 +288,16 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
                           { label: init.formatMessage({ id: 'pages.component.view.unknow' }), value: 0 }
                         ]
                   }
-                  optionType='button'
-                  buttonStyle='solid'
                 />
               </Col>
-              <Col span={4} offset={6}>
-                <Space>
-                  <Button type='primary' size='small' onClick={editEvent}>
-                    <FormattedMessage id='pages.component.view.button.edit' />
-                  </Button>
-                  <Button type='primary' danger size='small' onClick={deleteEvent}>
-                    <FormattedMessage id='pages.component.view.button.delete' />
-                  </Button>
-                </Space>
+              <Col span={6} offset={10} className={styles.btns}>
+                <Button type='link' size='small' onClick={editEvent}>
+                  <FormattedMessage id='pages.component.view.button.edit' />
+                </Button>
+                <Divider type='vertical' />
+                <Button type='link' danger size='small' onClick={deleteEvent}>
+                  <FormattedMessage id='pages.component.view.button.delete' />
+                </Button>
               </Col>
             </Row>
           </div>

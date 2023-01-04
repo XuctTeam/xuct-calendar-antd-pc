@@ -2,13 +2,12 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 16:52:45
- * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentForm.tsx
+ * @LastEditTime: 2023-01-04 14:49:03
+ * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentEditForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 
-import { useIntl } from '@/.umi/plugin-locale'
 import { isChinese, dayWeekInMonth, dayInYear } from '@/utils/calendar'
 import {
   DrawerForm,
@@ -26,23 +25,22 @@ import {
 import { message, SelectProps } from 'antd'
 import dayjs from 'dayjs'
 import { FC, useRef, useState } from 'react'
-import { FormattedMessage } from 'umi'
+import { useIntl, FormattedMessage } from 'umi'
 import RepeatFormItem from './RepeatFormItem'
 import { saveOrUpdateComponent } from '@/services/calendar'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
-import { useRafTimeout, useTimeout } from 'ahooks'
 
 interface IPageOption {
   id?: string
-  open: boolean
+  visable: boolean
   calendars: CALENDAR.Calendar[]
-  setOpen: (open: any) => void
+  setVisable: (open: any) => void
   refresh: () => void
   event$: EventEmitter<Event.Action>
 }
 
-const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh, event$ }) => {
+const ComponentForm: FC<IPageOption> = ({ id, calendars, visable, setVisable, refresh, event$ }) => {
   const formRef = useRef<ProFormInstance>()
   const init = useIntl()
   const repeatRef = useRef<any>()
@@ -101,13 +99,32 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh,
     if (e) return
     setInitialValues(undefined)
     setRepeatInitialValues(undefined)
-    setOpen(false)
+    setVisable(false)
   }
 
   event$.useSubscription((values: Event.Action) => {
     const { action, data } = values
-    if (action !== 'eventEdit') return
-    setOpen(true)
+    if (!(action === 'event_edit' || action === 'event_create')) return
+    setVisable(true)
+    switch (action) {
+      case 'event_edit':
+        _componentEdit(data)
+        break
+      case 'event_create':
+        _componentCreate(data)
+        break
+    }
+  })
+
+  const _componentCreate = (data: any) => {
+    const { startStr, endStr, fullDay } = data
+    setInitialValues({
+      dtTime: [startStr, endStr],
+      fullDay
+    })
+  }
+
+  const _componentEdit = (data: any) => {
     const { dtstart, dtend, calendarId, alarmType, repeatStatus, repeatType, repeatInterval, repeatByday, repeatBymonth, repeatBymonthday, ...comp } = data
     let _alarmType
     switch (alarmType) {
@@ -129,7 +146,7 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh,
       repeatBymonth,
       repeatBymonthday
     })
-  })
+  }
 
   return (
     <DrawerForm<{
@@ -142,7 +159,7 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh,
       title={<FormattedMessage id='pages.component.add.title' />}
       formRef={formRef}
       autoFocusFirstInput
-      open={open}
+      open={visable}
       preserve
       initialValues={initialValues}
       drawerProps={{
@@ -152,26 +169,66 @@ const ComponentForm: FC<IPageOption> = ({ id, calendars, open, setOpen, refresh,
       onOpenChange={drawFormOpenChage}
       submitTimeout={2000}
       onFinish={async (values: any) => {
-        const { repeatStatus, dtTime, calendar, ...comp } = values
-        let repeatValues
-        if (repeatStatus === '8') {
-          repeatValues = repeatRef.current.repeatValues()
-          if (!repeatValues) {
-            return false
-          }
+        const { repeatStatus, dtTime, calendar, alarmTimes, fullDay, ...comp } = values
+        const dtStart = dayjs(dtTime[0]).toDate()
+        let repeatValues = {
+          repeatStatus: repeatStatus,
+          repeatType: '',
+          repeatInterval: 1,
+          repeatBymonthday: '',
+          repeatBymonth: '',
+          repeatByday: ''
+        }
+        switch (repeatStatus) {
+          case '8':
+            repeatValues = repeatRef.current.repeatValues()
+            break
+          case '1':
+            repeatValues.repeatType = 'DAILY'
+            break
+          case '2':
+            repeatValues.repeatType = 'WEEKLY'
+            repeatValues.repeatByday = '0:1,0:2,0:3,0:4,0:5'
+            break
+          case '3':
+            repeatValues.repeatType = 'WEEKLY'
+            repeatValues.repeatByday = '0:6,0:0'
+            break
+          case '4':
+            repeatValues.repeatType = 'WEEKLY'
+            repeatValues.repeatByday = '0:6'
+            break
+          case '5':
+            repeatValues.repeatType = 'MONTHLY'
+            repeatValues.repeatBymonthday = `${dayjs(dtStart).get('date')}`
+            break
+          case '6':
+            repeatValues.repeatType = 'MONTHLY'
+            repeatValues.repeatByday = Math.ceil(dtStart.getDate() / 7) + ':' + dayjs(dtStart).day()
+            break
+          case '7':
+            repeatValues.repeatType = 'YEARLY'
+            repeatValues.repeatBymonth = `${dayjs(dtStart).get('month') + 1}`
+            repeatValues.repeatBymonthday = `${dayjs(dtStart).get('date')}`
+            break
         }
         try {
           await saveOrUpdateComponent({
             ...comp,
-            ...(repeatValues || { repeatStatus: '0', alarmTimes: [] }),
-            ...{ calendarId: calendar, dtstart: dayjs(dtTime[0]).toDate(), dtend: dayjs(dtTime[1]).toDate() }
+            id: initialValues?.id,
+            fullDay: fullDay ? 1 : 0,
+            ...repeatValues,
+            alarmTimes: alarmTimes || [],
+            ...{ calendarId: calendar, dtstart: dtStart, dtend: dayjs(dtTime[1]).toDate() }
           })
         } catch (err) {
           console.log(err)
           return false
         }
-        message.success(init.formatMessage({ id: !id ? 'pages.calendar.mananger.component.add.success' : 'pages.calendar.mananger.component.edit.success' }))
-        setOpen(false)
+        message.success(
+          init.formatMessage({ id: !initialValues?.id ? 'pages.calendar.mananger.component.add.success' : 'pages.calendar.mananger.component.edit.success' })
+        )
+        setVisable(false)
         refresh()
         return true
       }}

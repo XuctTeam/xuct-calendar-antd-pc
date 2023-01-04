@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 14:29:17
+ * @LastEditTime: 2023-01-04 16:06:09
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -10,7 +10,7 @@
 
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { ProCard } from '@ant-design/pro-components'
-import { Button, Empty, message, Modal, notification, Spin } from 'antd'
+import { Button, Empty, message, Modal, Spin } from 'antd'
 import { FC, useState } from 'react'
 import { FormattedMessage, getIntl } from 'umi'
 import ColoredCheckboxes from './ColoredCheckboxes'
@@ -103,7 +103,7 @@ const CalendarList: FC<IPageOption> = (props) => {
           </Spin>
         </div>
       </ProCard>
-      <CalendarEditFrom open={formOpen} setOpen={changeFormOpen} refresh={refresh} id={calendarId}></CalendarEditFrom>
+      <CalendarEditFrom visable={formOpen} setVisable={changeFormOpen} refresh={refresh} id={calendarId}></CalendarEditFrom>
     </>
   )
 }

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:30
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 09:03:42
+ * @LastEditTime: 2023-01-04 13:13:27
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\index.ts
  * @Description:
  *
@@ -12,6 +12,6 @@ export { default as CalendarList } from './CalendarList'
 
 export { default as RightCalendar } from './RightCalendar'
 
-export { default as ComponentForm } from './ComponentForm'
+export { default as ComponentEditForm } from './ComponentEditForm'
 
 export { default as ComponentView } from './ComponentView'

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 15:06:18
+ * @LastEditTime: 2023-01-04 13:27:01
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -17,7 +17,7 @@ import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
 import dayjs, { Dayjs } from 'dayjs'
 import { ProCard } from '@ant-design/pro-components'
-import { CalendarList, RightCalendar, ComponentForm, ComponentView } from './components'
+import { CalendarList, RightCalendar, ComponentEditForm, ComponentView } from './components'
 import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
 import { useEventEmitter, useSetState, useSize } from 'ahooks'
 import styles from './index.less'
@@ -273,7 +273,7 @@ const HomePage = () => {
           </div>
         </div>
       </Content>
-      <ComponentForm event$={event$} calendars={state.calendars} open={state.compOpen} setOpen={setComponentOpen} refresh={refresh} />
+      <ComponentEditForm event$={event$} calendars={state.calendars} visable={state.compOpen} setVisable={setComponentOpen} refresh={refresh} />
       <ComponentView event$={event$} refresh={refresh} />
     </>
   )

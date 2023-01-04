@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 15:15:51
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-28 11:23:46
+ * @LastEditTime: 2023-01-04 14:47:11
  * @FilePath: \xuct-calendar-antd-pc\src\utils\calendar.ts
  * @Description:
  *
@@ -18,6 +18,8 @@ enum Lanuage {
 
   EN = 'en-US'
 }
+
+const Space = ' '
 
 /**
  * @param date 获取阴历日期
@@ -382,16 +384,17 @@ export const formateSameDayDuration = (fullDay: number, dtstart: Date, dtend: Da
   if (fullDay === 1) return init.formatMessage({ id: 'pages.compoennt.repeat.full.day' })
   let days = dayjs(dtend)
   let daye = dayjs(dtstart)
-  const day1 = days.format('YYYY-MM-DD') + ' ' + days.hour() + ':' + days.minute() + ':00'
-  const day2 = daye.format('YYYY-MM-DD') + ' ' + daye.hour() + ':' + daye.minute() + ':00'
+  const day1 = days.format('YYYY-MM-DD') + Space + days.hour() + ':' + days.minute() + ':00'
+  const day2 = daye.format('YYYY-MM-DD') + Space + daye.hour() + ':' + daye.minute() + ':00'
   days = dayjs(day1)
   daye = dayjs(day2)
   const diff: number = days.diff(daye, 'minute')
   if (diff === 0) return ''
-  if (diff < 60 && diff > 0) return diff + minText
+  if (diff < 60 && diff > 0) return diff + Space + minText
   if (diff === 60) return init.formatMessage({ id: 'pages.component.repeat.one.hour' })
   const hour = parseInt(diff / 60 + '')
-  return hour + init.formatMessage({ id: 'pages.component.repeat.hour' }) + (diff - hour * 60 > 0 ? diff - hour * 60 : diff) + minText
+  if (hour * 60 === diff) return hour + Space + init.formatMessage({ id: 'pages.component.repeat.hour' }) + 's'
+  return hour + Space + init.formatMessage({ id: 'pages.component.repeat.hour' }) + 's' + Space + (diff - hour * 60) + Space + minText
 }
 
 /**

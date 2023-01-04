@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-07 18:10:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-19 17:06:28
+ * @LastEditTime: 2023-01-04 16:05:04
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarEditFrom.tsx
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 import { FC, useEffect, useRef } from 'react'
 import {
-  ModalForm,
+  DrawerForm,
   ProForm,
   ProFormDependency,
   ProFormInstance,
@@ -28,13 +28,13 @@ import { Color } from '@/constants'
 
 interface IPageOption {
   id?: string
-  open: boolean
+  visable: boolean
   refresh: () => void
-  setOpen: (modalVisit: boolean) => void
+  setVisable: (modalVisit: boolean) => void
 }
 
 const CalendarEditFrom: FC<IPageOption> = (props) => {
-  const { id, open, refresh, setOpen } = props
+  const { id, visable, refresh, setVisable } = props
   const formRef = useRef<ProFormInstance>()
 
   const getCalendarColor = (): any[] => {
@@ -80,28 +80,6 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
     }
   ]
 
-  useEffect(() => {
-    if (!id) return
-    _setFilesVaules(id)
-  }, [id])
-
-  const _setFilesVaules = async (id: string) => {
-    const res = await getCalendar(id)
-    const { name, color, display, isShare, description, alarmType, alarmTime } = res as any as CALENDAR.Calendar
-    const initValues = {
-      name,
-      color,
-      display,
-      isShare,
-      description,
-      alarmType: `${alarmType}`
-    }
-    if (`${alarmType}` !== '0') {
-      initValues['alarmTime'] = `${alarmTime}`
-    }
-    formRef.current?.setFieldsValue(initValues)
-  }
-
   const saveOrUpdate = (values: any) => {
     const { display = true, alarmTime = 0, isShare = 0 } = values
     if (!id) {
@@ -122,7 +100,7 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
   }
 
   return (
-    <ModalForm<{
+    <DrawerForm<{
       name: string
       description: string
       display: number
@@ -132,14 +110,40 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
       title={<FormattedMessage id='pages.calendar.add.title' />}
       formRef={formRef}
       autoFocusFirstInput
-      open={open}
+      open={visable}
       preserve
-      modalProps={{
+      drawerProps={{
         destroyOnClose: true
       }}
       omitNil
-      onOpenChange={setOpen}
+      onOpenChange={setVisable}
       submitTimeout={2000}
+      params={{ id }}
+      request={async () => {
+        if (!id)
+          return {
+            name: '',
+            description: '',
+            display: 0,
+            alarmType: '',
+            alarmTime: ''
+          }
+        const res = await getCalendar(id)
+        const { name, color, display, isShare, description, alarmType, alarmTime } = res as any as CALENDAR.Calendar
+        const initValues = {
+          name,
+          color,
+          display,
+          isShare,
+          description,
+          alarmType: `${alarmType}`,
+          alarmTime: ''
+        }
+        if (`${alarmType}` !== '0') {
+          initValues['alarmTime'] = `${alarmTime}`
+        }
+        return initValues
+      }}
       onFinish={async (values: any) => {
         try {
           await saveOrUpdate(values)
@@ -210,7 +214,7 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
           }}
         </ProFormDependency>
       </ProForm.Group>
-    </ModalForm>
+    </DrawerForm>
   )
 }
 

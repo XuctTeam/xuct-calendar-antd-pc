@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-22 11:30:19
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 16:55:10
+ * @LastEditTime: 2023-01-04 14:00:04
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RepeatFormItem.tsx
  * @Description:
  *
@@ -88,13 +88,22 @@ const RepeatFormItem = forwardRef<any, IPageOption>(({ ...props }, ref) => {
 
   const initData = (values: any) => {
     const { repeatType, repeatInterval, repeatByday, repeatBymonth, repeatBymonthday } = values
-    const initValues = {
+    const initValues: any = {
       repeatType,
       repeatInterval,
-      selectedMonth: '1'
+      selectedMonth: '1',
+      selectedWeek: []
+    }
+
+    if (repeatType == 'WEEKLY') {
+      repeatByday.split(',').forEach((day: string) => {
+        const week = day.split(':')[1]
+        if (!week) return
+        initValues.selectedWeek.push(week)
+      })
     }
     if (repeatType == 'MONTHLY') {
-      if (repeatBymonth) {
+      if (repeatByday) {
         initValues.selectedMonth = '2'
       }
     }
@@ -191,6 +200,7 @@ const RepeatFormItem = forwardRef<any, IPageOption>(({ ...props }, ref) => {
       repeatInterval: state.repeatInterval,
       repeatType: 'MONTHLY',
       repeatBymonthday: '',
+      repeatBymonth: '',
       repeatByday: ''
     }
     if (state.selectedMonth) {

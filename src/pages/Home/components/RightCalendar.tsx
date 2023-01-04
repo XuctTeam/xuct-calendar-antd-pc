@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 15:05:44
+ * @LastEditTime: 2023-01-04 13:36:29
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -132,7 +132,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
     const { id } = info.event
     const { clientX, clientY } = info.jsEvent
     event$.emit({
-      action: 'eventClick',
+      action: 'event_view',
       data: {
         id,
         x: clientX,
@@ -142,7 +142,15 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   }
 
   const fullCalendarSelect = (info: any) => {
-    debugger
+    const { startStr, endStr, allDay } = info
+    event$.emit({
+      action: 'event_create',
+      data: {
+        startStr,
+        endStr,
+        fullDay: allDay
+      }
+    })
   }
 
   const convertToEvent = (components: CALENDAR.Component[]) => {

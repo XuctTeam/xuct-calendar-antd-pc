@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 17:38:36
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 18:41:07
+ * @LastEditTime: 2023-01-04 14:40:27
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\repeat.ts
  * @Description:
  *
@@ -30,8 +30,8 @@ export default {
   'pages.component.add.repeat.each.fri': 'Fri',
   'pages.component.add.repeat.each.sat': 'Sat',
   'pages.component.add.repeat.each.sun': 'Sun',
-  'pages.component.repeat.min': 'Min',
-  'pages.component.repeat.hour': 'Hour',
-  'pages.component.add.alarm.select.day': 'Day',
-  'pages.component.repeat.one.hour': 'An Hour'
+  'pages.component.repeat.min': 'minutes',
+  'pages.component.repeat.hour': 'hour',
+  'pages.component.add.alarm.select.day': 'day',
+  'pages.component.repeat.one.hour': 'an hour'
 }
