@@ -2,8 +2,8 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 09:37:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-16 15:16:24
- * @FilePath: \xuct-calendar-antd-pc\src\services\calendar\typings.d.ts
+ * @LastEditTime: 2023-01-05 10:46:52
+ * @FilePath: \xuct-calendar-antd-pc\src\types\api.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -53,13 +53,6 @@ declare namespace API {
   type FakeCaptcha = {
     code?: number
     status?: string
-  }
-
-  type LoginParams = {
-    username?: string
-    password?: string
-    autoLogin?: boolean
-    type?: string
   }
 
   type Response = {

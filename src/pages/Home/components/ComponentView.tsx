@@ -2,15 +2,15 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-04 15:40:19
+ * @LastEditTime: 2023-01-05 15:52:37
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { useIntl, useModel, FormattedMessage } from 'umi'
-import { Button, Col, Divider, message, Modal, Radio, Row, Select, Skeleton, Space, Spin } from 'antd'
-import { FC } from 'react'
+import { Button, Col, Divider, message, Modal, Row, Select, Spin } from 'antd'
+import { FC, useCallback } from 'react'
 import { getComponentById, queryComponentMembers, deleteComponent } from '@/services/calendar'
 import dayjs from 'dayjs'
 import { DifferentDay, SameDay } from '../ui'
@@ -88,19 +88,11 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
   event$.useSubscription((values: any) => {
     const { action, data } = values
     if (action !== 'event_view') return
-    const { clientWidth, clientHeight } = doc.body
     const { id, x, y } = data
-    const height = state.attends.length > 20 ? 420 : 340
-    setState({
-      id,
-      left: x + 480 > clientWidth ? clientWidth - 480 : x,
-      top: y + height > clientHeight ? clientHeight - height : y,
-      visable: true
-    })
-    initData(id)
+    initData(id, x, y)
   })
 
-  const initData = async (id: string) => {
+  const initData = async (id: string, x: number, y: number) => {
     setState({
       loading: true
     })
@@ -109,8 +101,10 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
       loading: false
     })
     if (!result || result.length !== 2) return
+    const attends = result[1] as any as CALENDAR.Attend[]
     _initComponent(result[0])
-    _initAttends(result[0].creatorMemberId, result[1] as any as CALENDAR.Attend[])
+    _initAttends(result[0].creatorMemberId, attends)
+    _initModalProp(id, x, y, attends.length)
   }
 
   const _initComponent = (component: CALENDAR.Component) => {
@@ -167,6 +161,21 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
     })
   }
 
+  const _initModalProp = (id: string, x: number, y: number, len: number) => {
+    const { clientWidth, clientHeight } = doc.body
+    let h = 340
+    if (len !== 1) {
+      const diff = Math.ceil(len / 5)
+      h += (diff > 4 ? 4 : diff) * 20 + 10 * diff
+    }
+    setState({
+      id,
+      left: x + 480 > clientWidth ? clientWidth - 480 : x,
+      top: y + h > clientHeight ? clientHeight - h : y,
+      visable: true
+    })
+  }
+
   const deleteEvent = () => {
     Modal.confirm({
       title: init.formatMessage({ id: 'pages.component.view.delete.title' }),
@@ -213,94 +222,90 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
       footer={null}
     >
       <Spin tip='Loading...' spinning={state.loading}>
-        <div className={styles.body} style={{ height: state.attends.length > 20 ? '320px' : '240px' }}>
-          <div className={styles.container}>
-            <Row className={`${styles.calendar} ${styles.cell}`}>
-              <Col span={2}>
-                <div className={styles.circle} style={{ background: `#${state.color}`, border: `#${state.color}` }} />
-              </Col>
-              <Col>
-                <div className={styles.summary}>{state.summary}</div>
-                {dayjs(state.dtstart).isSame(state.dtend, 'date') ? (
-                  <SameDay
-                    dtstart={state.dtstart}
-                    dtend={state.dtend}
-                    fullDay={state.fullDay}
-                    repeatStatus={state.repeatStatus}
-                    repeatType={state.repeatType}
-                    repeatByday={state.repeatByday}
-                    repeatBymonth={state.repeatBymonth}
-                    repeatBymonthday={state.repeatBymonthday}
-                    repeatInterval={state.repeatInterval}
-                    repeatUntil={state.repeatUntil}
-                  ></SameDay>
-                ) : (
-                  <DifferentDay
-                    dtstart={state.dtstart}
-                    dtend={state.dtend}
-                    fullDay={state.fullDay}
-                    repeatStatus={state.repeatStatus}
-                    repeatType={state.repeatType}
-                    repeatByday={state.repeatByday}
-                    repeatBymonth={state.repeatBymonth}
-                    repeatBymonthday={state.repeatBymonthday}
-                    repeatInterval={state.repeatInterval}
-                    repeatUntil={state.repeatUntil}
-                  ></DifferentDay>
-                )}
-              </Col>
-            </Row>
-            <Row className={styles.cell}>
-              <Col span={2}>
-                <UserOutlined />
-              </Col>
-              <Col>{state.creatorMemberName}</Col>
-            </Row>
-            {state.description && (
-              <Row className={styles.cell}>
-                <Col span={2}>
-                  <DiffOutlined />
-                </Col>
-                <Col>{state.description}</Col>
-              </Row>
-            )}
-            {state.attends.length > 1 && <ComponentAttendView attends={state.attends}></ComponentAttendView>}
-          </div>
-          <div>
-            <Divider />
-            <Row>
-              <Col span={8}>
-                <Select
-                  value={state.attendStatus}
-                  size='small'
-                  bordered={false}
-                  style={{ width: '100%' }}
-                  options={
-                    initialState?.currentUser?.member.id === state.creatorMemberId
-                      ? [
-                          { label: init.formatMessage({ id: 'pages.component.view.accept' }), value: 1 },
-                          { label: init.formatMessage({ id: 'pages.component.view.reject' }), value: 2, disabled: true },
-                          { label: init.formatMessage({ id: 'pages.component.view.unknow' }), value: 0, disabled: true }
-                        ]
-                      : [
-                          { label: init.formatMessage({ id: 'pages.component.view.accept' }), value: 1 },
-                          { label: init.formatMessage({ id: 'pages.component.view.reject' }), value: 2 },
-                          { label: init.formatMessage({ id: 'pages.component.view.unknow' }), value: 0 }
-                        ]
-                  }
-                />
-              </Col>
-              <Col span={6} offset={10} className={styles.btns}>
-                <Button type='link' size='small' onClick={editEvent}>
-                  <FormattedMessage id='pages.component.view.button.edit' />
-                </Button>
-                <Divider type='vertical' />
-                <Button type='link' danger size='small' onClick={deleteEvent}>
-                  <FormattedMessage id='pages.component.view.button.delete' />
-                </Button>
-              </Col>
-            </Row>
-          </div>
+        <div className={styles.container}>
+          <Row className={`${styles.calendar} ${styles.cell}`}>
+            <Col span={2}>
+              <div className={styles.circle} style={{ background: `#${state.color}`, border: `#${state.color}` }} />
+            </Col>
+            <Col>
+              <div className={styles.summary}>{state.summary}</div>
+              {dayjs(state.dtstart).isSame(state.dtend, 'date') ? (
+                <SameDay
+                  dtstart={state.dtstart}
+                  dtend={state.dtend}
+                  fullDay={state.fullDay}
+                  repeatStatus={state.repeatStatus}
+                  repeatType={state.repeatType}
+                  repeatByday={state.repeatByday}
+                  repeatBymonth={state.repeatBymonth}
+                  repeatBymonthday={state.repeatBymonthday}
+                  repeatInterval={state.repeatInterval}
+                  repeatUntil={state.repeatUntil}
+                ></SameDay>
+              ) : (
+                <DifferentDay
+                  dtstart={state.dtstart}
+                  dtend={state.dtend}
+                  fullDay={state.fullDay}
+                  repeatStatus={state.repeatStatus}
+                  repeatType={state.repeatType}
+                  repeatByday={state.repeatByday}
+                  repeatBymonth={state.repeatBymonth}
+                  repeatBymonthday={state.repeatBymonthday}
+                  repeatInterval={state.repeatInterval}
+                  repeatUntil={state.repeatUntil}
+                ></DifferentDay>
+              )}
+            </Col>
+          </Row>
+          <Row className={styles.cell}>
+            <Col span={2}>
+              <UserOutlined />
+            </Col>
+            <Col>{state.creatorMemberName}</Col>
+          </Row>
+          <Row className={styles.cell}>
+            <Col span={2}>
+              <DiffOutlined />
+            </Col>
+            <Col>{state.description || ''}</Col>
+          </Row>
+          {state.attends.length > 1 && <ComponentAttendView attends={state.attends}></ComponentAttendView>}
+        </div>
+        <div>
+          <Divider />
+          <Row>
+            <Col span={8}>
+              <Select
+                value={state.attendStatus}
+                size='small'
+                bordered={false}
+                style={{ width: '100%' }}
+                options={
+                  initialState?.currentUser?.member.id === state.creatorMemberId
+                    ? [
+                        { label: init.formatMessage({ id: 'pages.component.view.accept' }), value: 1 },
+                        { label: init.formatMessage({ id: 'pages.component.view.reject' }), value: 2, disabled: true },
+                        { label: init.formatMessage({ id: 'pages.component.view.unknow' }), value: 0, disabled: true }
+                      ]
+                    : [
+                        { label: init.formatMessage({ id: 'pages.component.view.accept' }), value: 1 },
+                        { label: init.formatMessage({ id: 'pages.component.view.reject' }), value: 2 },
+                        { label: init.formatMessage({ id: 'pages.component.view.unknow' }), value: 0 }
+                      ]
+                }
+              />
+            </Col>
+            <Col span={6} offset={10} className={styles.btns}>
+              <Button type='link' size='small' onClick={editEvent}>
+                <FormattedMessage id='pages.component.view.button.edit' />
+              </Button>
+              <Divider type='vertical' />
+              <Button type='link' danger size='small' onClick={deleteEvent}>
+                <FormattedMessage id='pages.component.view.button.delete' />
+              </Button>
+            </Col>
+          </Row>
         </div>
       </Spin>
     </Modal>

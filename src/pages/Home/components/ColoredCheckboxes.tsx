@@ -2,14 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:03
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 15:02:00
+ * @LastEditTime: 2023-01-05 14:39:09
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ColoredCheckboxes.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { EllipsisOutlined, ShareAltOutlined } from '@ant-design/icons'
-import { useEmotionCss } from '@ant-design/use-emotion-css'
 import { Checkbox, ConfigProvider, Dropdown, MenuProps } from 'antd'
 import { CheckboxChangeEvent } from 'antd/es/checkbox/Checkbox'
 import { FC } from 'react'
@@ -55,8 +54,7 @@ const StylesCheckbox: FC<IStyleOption> = ({ color, name, display, boxOnChange })
   )
 }
 
-const ColoredCheckboxes: FC<IPageOption> = (props) => {
-  const { id, color, name, display, calendarId, onChange, onEdit, onDelete } = props
+const ColoredCheckboxes: FC<IPageOption> = ({ id, color, name, display, calendarId, onChange, onEdit, onDelete }) => {
   const items: MenuProps['items'] = [
     {
       key: '1',

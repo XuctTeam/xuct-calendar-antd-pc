@@ -2,13 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-12-28 11:42:14
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 09:14:52
+ * @LastEditTime: 2023-01-05 14:55:49
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentAttendView.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { FormattedMessage } from '@/.umi/plugin-locale'
+import { FormattedMessage } from 'umi'
 import { CheckOutlined, CloseOutlined, InfoOutlined, TeamOutlined } from '@ant-design/icons'
 import { Button, Col, Row, Tag } from 'antd'
 import { FC, useState, useEffect } from 'react'
@@ -45,7 +45,7 @@ const ComponentAttendView: FC<IPageOption> = ({ attends }) => {
               <span key={index}>
                 <Tag
                   icon={item.status === 1 ? <CheckOutlined /> : item.status === 2 ? <CloseOutlined /> : <InfoOutlined />}
-                  color={item.status === 1 ? 'success' : item.status === 2 ? 'error' : 'processing'}
+                  color={item.status === 1 ? '#87d068' : item.status === 2 ? '#f50' : '#108ee9'}
                 >
                   {item.name}
                 </Tag>

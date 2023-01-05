@@ -2,13 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-12-07 18:10:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-04 16:05:04
+ * @LastEditTime: 2023-01-05 13:02:54
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarEditFrom.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { FC, useEffect, useRef } from 'react'
+import { FC, useRef } from 'react'
 import {
   DrawerForm,
   ProForm,
@@ -33,8 +33,7 @@ interface IPageOption {
   setVisable: (modalVisit: boolean) => void
 }
 
-const CalendarEditFrom: FC<IPageOption> = (props) => {
-  const { id, visable, refresh, setVisable } = props
+const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable }) => {
   const formRef = useRef<ProFormInstance>()
 
   const getCalendarColor = (): any[] => {
@@ -106,6 +105,7 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
       display: number
       alarmType: string
       alarmTime: string
+      color: string
     }>
       title={<FormattedMessage id='pages.calendar.add.title' />}
       formRef={formRef}
@@ -126,7 +126,8 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
             description: '',
             display: 0,
             alarmType: '',
-            alarmTime: ''
+            alarmTime: '',
+            color: 'ee0a24'
           }
         const res = await getCalendar(id)
         const { name, color, display, isShare, description, alarmType, alarmTime } = res as any as CALENDAR.Calendar
@@ -164,7 +165,7 @@ const CalendarEditFrom: FC<IPageOption> = (props) => {
         placeholder={getIntl().formatMessage({ id: 'pages.calendar.add.name.placeholder' })}
         rules={[{ required: true, message: <FormattedMessage id={'pages.calendar.add.name.error'} /> }]}
       />
-      <ProFormRadio.Group label={<FormattedMessage id={'pages.calendar.add.color.label'} />} name='color' initialValue='ee0a24' options={getCalendarColor()} />
+      <ProFormRadio.Group label={<FormattedMessage id={'pages.calendar.add.color.label'} />} name='color' options={getCalendarColor()} />
       <ProForm.Group>
         <ProFormSwitch
           name='display'

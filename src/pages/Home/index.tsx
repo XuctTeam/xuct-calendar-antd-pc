@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-04 13:27:01
+ * @LastEditTime: 2023-01-05 14:38:38
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -11,7 +11,7 @@
 
 import React, { useCallback } from 'react'
 import { useEffect, useRef } from 'react'
-import { Badge, Button, Calendar } from 'antd'
+import { Badge, Button, Calendar, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
@@ -21,6 +21,7 @@ import { CalendarList, RightCalendar, ComponentEditForm, ComponentView } from '.
 import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
 import { useEventEmitter, useSetState, useSize } from 'ahooks'
 import styles from './index.less'
+import CalendarEditFrom from './components/CalendarEditFrom'
 
 interface State {
   loading: boolean
@@ -28,7 +29,9 @@ interface State {
   calendars: CALENDAR.Calendar[]
   marks: string[]
   components: CALENDAR.DayCompoent[]
-  compOpen: boolean
+  compVisable: boolean
+  calendarVisable: boolean
+  calendarId?: string
 }
 
 const HomePage = () => {
@@ -43,7 +46,9 @@ const HomePage = () => {
     calendars: [],
     marks: [],
     components: [],
-    compOpen: false
+    compVisable: false,
+    calendarVisable: false,
+    calendarId: undefined
   })
 
   // 只要调用的dva中的state数据更新了 这里就能触发获取到最新数据
@@ -166,12 +171,6 @@ const HomePage = () => {
     initData()
   }
 
-  const setComponentOpen = (open: boolean) => {
-    setState({
-      compOpen: open
-    })
-  }
-
   /**
    * 判断是否是同一月
    * @param day
@@ -238,22 +237,21 @@ const HomePage = () => {
     <>
       <Content className={styles.center}>
         <div className={styles.left}>
-          <Button
-            type='primary'
-            icon={<PlusOutlined />}
-            block
-            onClick={() =>
-              setState({
-                compOpen: true
-              })
-            }
-          >
+          <Button type='primary' icon={<PlusOutlined />} block onClick={() => setState({ compVisable: true })}>
             <FormattedMessage id='pages.component.button.add' />
           </Button>
-          <ProCard hoverable bordered className={styles.calendar}>
+          <ProCard hoverable bordered>
             <Calendar fullscreen={false} value={dayjs(state.selectDay)} onSelect={antdCalendarSelect} dateCellRender={antdCalendarDateCellRender} />
           </ProCard>
-          <CalendarList loading={state.loading} calendars={state.calendars} calendarChageDisplay={calendarChageDisplay} refresh={refresh} />
+          <CalendarList
+            loading={state.loading}
+            calendars={state.calendars}
+            selectedCalendarChage={calendarChageDisplay}
+            refresh={refresh}
+            calendarOnEdit={(calendarId: string | undefined) => {
+              setState({ calendarVisable: true, calendarId })
+            }}
+          />
         </div>
         <div className={styles.right} ref={calenarRefContent}>
           <div className={styles.calendar}>
@@ -273,7 +271,27 @@ const HomePage = () => {
           </div>
         </div>
       </Content>
-      <ComponentEditForm event$={event$} calendars={state.calendars} visable={state.compOpen} setVisable={setComponentOpen} refresh={refresh} />
+      <CalendarEditFrom
+        visable={state.calendarVisable}
+        setVisable={(e) => {
+          if (!e) {
+            setState({ calendarVisable: e, calendarId: undefined })
+            return
+          }
+          setState({ calendarVisable: e })
+        }}
+        refresh={refresh}
+        id={state.calendarId}
+      />
+      <ComponentEditForm
+        event$={event$}
+        calendars={state.calendars}
+        visable={state.compVisable}
+        setVisable={(e) => {
+          setState({ compVisable: e })
+        }}
+        refresh={refresh}
+      />
       <ComponentView event$={event$} refresh={refresh} />
     </>
   )
