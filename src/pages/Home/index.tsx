@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-05 14:38:38
+ * @LastEditTime: 2023-01-06 17:45:25
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -17,7 +17,7 @@ import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
 import dayjs, { Dayjs } from 'dayjs'
 import { ProCard } from '@ant-design/pro-components'
-import { CalendarList, RightCalendar, ComponentEditForm, ComponentView } from './components'
+import { CalendarList, RightCalendar, ComponentEditForm, ComponentView, ComponentAttendChoose } from './components'
 import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
 import { useEventEmitter, useSetState, useSize } from 'ahooks'
 import styles from './index.less'
@@ -31,6 +31,7 @@ interface State {
   components: CALENDAR.DayCompoent[]
   compVisable: boolean
   calendarVisable: boolean
+  attendChooseVisable: boolean
   calendarId?: string
 }
 
@@ -38,7 +39,7 @@ const HomePage = () => {
   const calenarRefContent = useRef<any>()
   const calendarRef = React.createRef<any>()
   const size = useSize(calenarRefContent)
-  const event$ = useEventEmitter<any>()
+  const busEmitter = useEventEmitter<any>()
 
   const [state, setState] = useSetState<State>({
     loading: false,
@@ -48,6 +49,7 @@ const HomePage = () => {
     components: [],
     compVisable: false,
     calendarVisable: false,
+    attendChooseVisable: false,
     calendarId: undefined
   })
 
@@ -256,7 +258,7 @@ const HomePage = () => {
         <div className={styles.right} ref={calenarRefContent}>
           <div className={styles.calendar}>
             <RightCalendar
-              event$={event$}
+              busEmitter={busEmitter}
               ref={calendarRef}
               selectDay={state.selectDay}
               centerHeight={size?.height || 0}
@@ -284,15 +286,20 @@ const HomePage = () => {
         id={state.calendarId}
       />
       <ComponentEditForm
-        event$={event$}
+        busEmitter={busEmitter}
         calendars={state.calendars}
         visable={state.compVisable}
         setVisable={(e) => {
           setState({ compVisable: e })
         }}
+        onAttendChoose={() =>
+          setState({
+            attendChooseVisable: true
+          })
+        }
         refresh={refresh}
       />
-      <ComponentView event$={event$} refresh={refresh} />
+      <ComponentView busEmitter={busEmitter} refresh={refresh} />
     </>
   )
 }

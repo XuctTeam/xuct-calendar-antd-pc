@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 16:56:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-20 08:49:23
+ * @LastEditTime: 2023-01-06 16:44:45
  * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\Header.tsx
  * @Description:
  *
@@ -10,37 +10,68 @@
  */
 import { FC, useState } from 'react'
 import { Header } from 'antd/lib/layout/layout'
-import { Space } from 'antd'
+import { Divider, Popover, Space } from 'antd'
 import AvatarDropdown from '@/components/AvatarDropdown'
-import { SettingOutlined } from '@ant-design/icons'
+import { AppstoreAddOutlined, SettingOutlined } from '@ant-design/icons'
 import SettingForm from './SettingForm'
+import { useSetState } from 'ahooks'
+
 import styles from './header.less'
 
 interface IPageOption {
   setLoading: (loading: boolean) => void
 }
 
-const HeaderContainer: FC<IPageOption> = (props) => {
-  const { setLoading } = props
-  const [setOpen, setSetOpen] = useState<boolean>(false)
+interface State {
+  visable: boolean
+}
+
+const applicationContent = () => {
+  return (
+    <Space>
+      <div>123123123</div>
+    </Space>
+  )
+}
+
+const HeaderContainer: FC<IPageOption> = ({ setLoading }) => {
+  const [state, setSetate] = useSetState<State>({
+    visable: false
+  })
 
   return (
     <>
       <Header className={styles.header}>
         <div className='logo'>123123</div>
         <div className={styles.right}>
-          <Space>
-            <div className={styles.menu} onClick={() => setSetOpen(true)}>
+          <Space size='small'>
+            <Popover placement='bottom' trigger='click' content={applicationContent()}>
+              <div className={styles.menu}>
+                <AppstoreAddOutlined />
+              </div>
+            </Popover>
+
+            <div
+              className={styles.menu}
+              onClick={() =>
+                setSetate({
+                  visable: true
+                })
+              }
+            >
               <SettingOutlined />
             </div>
-            <AvatarDropdown menu setLoading={setLoading} />
           </Space>
+          <Divider type='vertical' style={{ height: '20px' }} />
+          <AvatarDropdown menu setLoading={setLoading} />
         </div>
       </Header>
       <SettingForm
-        open={setOpen}
+        open={state.visable}
         setOpen={() => {
-          setSetOpen(false)
+          setSetate({
+            visable: false
+          })
         }}
       ></SettingForm>
     </>

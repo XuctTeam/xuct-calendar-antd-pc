@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-04 13:36:29
+ * @LastEditTime: 2023-01-06 17:45:58
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -33,11 +33,11 @@ interface IPageOption {
   components: CALENDAR.DayCompoent[]
   fullCalendarDayChage: (ty: number) => void
   fullCalendarDateClick: (data: any) => void
-  event$: EventEmitter<Event.Action>
+  busEmitter: EventEmitter<Event.Action>
 }
 
 const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
-  const { centerHeight, selectDay, fullCalendarLocal, dataView, lunarView, calendars, components, event$ } = props
+  const { centerHeight, selectDay, fullCalendarLocal, dataView, lunarView, calendars, components, busEmitter } = props
   const { fullCalendarDayChage, fullCalendarDateClick } = props
   const disableLunarView = !isChinese() || lunarView === '0'
   const [events, setEvents] = useState<any[]>([])
@@ -131,7 +131,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
   const fullCalendarEventClick = (info: any) => {
     const { id } = info.event
     const { clientX, clientY } = info.jsEvent
-    event$.emit({
+    busEmitter.emit({
       action: 'event_view',
       data: {
         id,
@@ -143,7 +143,7 @@ const RightCalendar = React.forwardRef<any, IPageOption>((props, ref: any) => {
 
   const fullCalendarSelect = (info: any) => {
     const { startStr, endStr, allDay } = info
-    event$.emit({
+    busEmitter.emit({
       action: 'event_create',
       data: {
         startStr,

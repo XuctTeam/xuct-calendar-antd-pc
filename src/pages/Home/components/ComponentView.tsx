@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-05 15:52:37
+ * @LastEditTime: 2023-01-06 17:51:19
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 import { useIntl, useModel, FormattedMessage } from 'umi'
 import { Button, Col, Divider, message, Modal, Row, Select, Spin } from 'antd'
-import { FC, useCallback } from 'react'
+import { FC } from 'react'
 import { getComponentById, queryComponentMembers, deleteComponent } from '@/services/calendar'
 import dayjs from 'dayjs'
 import { DifferentDay, SameDay } from '../ui'
@@ -22,7 +22,7 @@ import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 
 interface IPageOption {
   refresh: () => void
-  event$: EventEmitter<Event.Action>
+  busEmitter: EventEmitter<Event.Action>
 }
 
 interface State {
@@ -54,7 +54,7 @@ interface State {
 }
 const doc = window.document
 
-const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
+const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
   const init = useIntl()
   const { initialState } = useModel('@@initialState')
   const [state, setState] = useSetState<State>({
@@ -85,7 +85,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
     top: 0
   })
 
-  event$.useSubscription((values: any) => {
+  busEmitter.useSubscription((values: any) => {
     const { action, data } = values
     if (action !== 'event_view') return
     const { id, x, y } = data
@@ -193,7 +193,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, event$ }) => {
       visable: false
     })
     const { loading, top, left, visable, ...comp } = state
-    event$.emit({
+    busEmitter.emit({
       action: 'event_edit',
       data: {
         ...comp
