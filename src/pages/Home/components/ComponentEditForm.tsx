@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-06 18:03:33
+ * @LastEditTime: 2023-01-10 14:27:58
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentEditForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -24,30 +24,43 @@ import {
 } from '@ant-design/pro-components'
 import { message, SelectProps } from 'antd'
 import dayjs from 'dayjs'
-import { FC, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useIntl, FormattedMessage } from 'umi'
 import RepeatFormItem from './RepeatFormItem'
 import { saveOrUpdateComponent } from '@/services/calendar'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import ComponentAttendChoose from './ComponentAttendChoose'
+import { useSetState } from 'ahooks'
 
 interface IPageOption {
   visable: boolean
   calendars: CALENDAR.Calendar[]
   setVisable: (open: any) => void
   refresh: () => void
+  groups?: GROUP.TreeMember[]
   busEmitter: EventEmitter<Event.Action>
 }
 
-const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refresh, busEmitter }) => {
+interface State {
+  initialValues: any
+  repeatInitialValues: any
+  attendVisable: boolean
+  attends?: CALENDAR.Attend[]
+}
+
+const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, refresh }: IPageOption) => {
   const formRef = useRef<ProFormInstance>()
   const init = useIntl()
   const repeatRef = useRef<any>()
   const chinese = isChinese()
-  const [initialValues, setInitialValues] = useState<any>()
-  const [repeatInitialValues, setRepeatInitialValues] = useState<any>()
-  const [attendVisable, setAttendVisable] = useState<boolean>(false)
+
+  const [state, setState] = useSetState<State>({
+    initialValues: undefined,
+    repeatInitialValues: undefined,
+    attendVisable: false,
+    attends: []
+  })
 
   const calendarItems: SelectProps['options'] = calendars.map((item) => {
     return {
@@ -97,12 +110,17 @@ const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refres
     }
   ]
 
-  const drawFormOpenChage = (e: any) => {
-    if (e) return
-    setInitialValues(undefined)
-    setRepeatInitialValues(undefined)
-    setVisable(false)
-  }
+  useEffect(() => {
+    if (!visable) {
+      setState({
+        initialValues: undefined,
+        repeatInitialValues: undefined,
+        attends: []
+      })
+    }
+  }, [visable])
+
+  const attendChooseSet = () => {}
 
   busEmitter.useSubscription((values: Event.Action) => {
     const { action, data } = values
@@ -120,33 +138,41 @@ const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refres
 
   const _componentCreate = (data: any) => {
     const { startStr, endStr, fullDay } = data
-    setInitialValues({
-      dtTime: [startStr, endStr],
-      fullDay
+    setState({
+      initialValues: {
+        dtTime: [startStr, endStr],
+        fullDay
+      }
     })
   }
 
   const _componentEdit = (data: any) => {
-    const { dtstart, dtend, calendarId, alarmType, repeatStatus, repeatType, repeatInterval, repeatByday, repeatBymonth, repeatBymonthday, ...comp } = data
+    const { attends, dtstart, dtend, calendarId, alarmType, repeatStatus, repeatType, repeatInterval, repeatByday, repeatBymonth, repeatBymonthday, ...comp } =
+      data
     let _alarmType
     switch (alarmType) {
       default:
         _alarmType = '0'
     }
-    setInitialValues({
-      ...comp,
-      calendar: calendarId,
-      alarmType: _alarmType,
-      repeatStatus,
-      dtTime: [dtstart, dtend]
+    setState({
+      initialValues: {
+        ...comp,
+        calendar: calendarId,
+        alarmType: _alarmType,
+        repeatStatus,
+        dtTime: [dtstart, dtend]
+      },
+      attends
     })
     if (repeatStatus !== '8') return
-    setRepeatInitialValues({
-      repeatType,
-      repeatInterval,
-      repeatByday,
-      repeatBymonth,
-      repeatBymonthday
+    setState({
+      repeatInitialValues: {
+        repeatType,
+        repeatInterval,
+        repeatByday,
+        repeatBymonth,
+        repeatBymonthday
+      }
     })
   }
 
@@ -164,12 +190,12 @@ const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refres
         autoFocusFirstInput
         open={visable}
         preserve
-        initialValues={initialValues}
+        initialValues={state.initialValues}
         drawerProps={{
           destroyOnClose: true
         }}
         omitNil
-        onOpenChange={drawFormOpenChage}
+        onOpenChange={setVisable}
         submitTimeout={2000}
         onFinish={async (values: any) => {
           const { repeatStatus, dtTime, calendar, alarmTimes, fullDay, ...comp } = values
@@ -218,7 +244,7 @@ const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refres
           try {
             await saveOrUpdateComponent({
               ...comp,
-              id: initialValues?.id,
+              id: state.initialValues?.id,
               fullDay: fullDay ? 1 : 0,
               ...repeatValues,
               alarmTimes: alarmTimes || [],
@@ -229,7 +255,9 @@ const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refres
             return false
           }
           message.success(
-            init.formatMessage({ id: !initialValues?.id ? 'pages.calendar.mananger.component.add.success' : 'pages.calendar.mananger.component.edit.success' })
+            init.formatMessage({
+              id: !state.initialValues?.id ? 'pages.calendar.mananger.component.add.success' : 'pages.calendar.mananger.component.edit.success'
+            })
           )
           setVisable(false)
           refresh()
@@ -376,7 +404,7 @@ const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refres
           {({ repeatStatus, dtTime }) => {
             if (repeatStatus !== '8') return <></>
             const selectedDate = !dtTime ? new Date() : dayjs(dtTime[0]).toDate()
-            return <RepeatFormItem selectedDate={selectedDate} ref={repeatRef} initialValues={repeatInitialValues} />
+            return <RepeatFormItem selectedDate={selectedDate} ref={repeatRef} initialValues={state.repeatInitialValues} />
           }}
         </ProFormDependency>
         <ProForm.Group>
@@ -409,14 +437,11 @@ const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refres
 
         <ProFormText
           width='xl'
-          name='name'
-          required
-          dependencies={[['contract', 'name']]}
-          addonAfter={<a onClick={() => setAttendVisable(true)}>点击查看更多</a>}
-          label='签约客户名称'
-          tooltip='最长为 24 位'
-          placeholder='请输入名称'
-          rules={[{ required: true, message: '这是必填项' }]}
+          name='memberIds'
+          disabled
+          addonAfter={<a onClick={() => setState({ attendVisable: true })}>{<FormattedMessage id='pages.component.add.attend.add.button' />}</a>}
+          label={<FormattedMessage id='pages.component.add.attend.label' />}
+          placeholder={init.formatMessage({ id: 'pages.component.add.attend.placeholder' })}
         />
 
         <ProFormTextArea
@@ -426,7 +451,17 @@ const ComponentForm: FC<IPageOption> = ({ calendars, visable, setVisable, refres
           placeholder={init.formatMessage({ id: 'pages.component.add.description.placeholder' })}
         />
       </DrawerForm>
-      <ComponentAttendChoose visable={attendVisable} setVisable={() => setAttendVisable(false)} />
+      <ComponentAttendChoose
+        visable={state.attendVisable}
+        setVisable={(e) =>
+          setState({
+            attendVisable: e
+          })
+        }
+        groups={groups}
+        attends={state.attends}
+        attendChooseSet={attendChooseSet}
+      />
     </>
   )
 }

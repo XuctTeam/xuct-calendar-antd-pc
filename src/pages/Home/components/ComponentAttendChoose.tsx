@@ -2,110 +2,194 @@
  * @Author: Derek Xu
  * @Date: 2023-01-06 17:26:57
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-06 17:36:36
+ * @LastEditTime: 2023-01-10 14:27:36
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentAttendChoose.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
-import React, { FC, useState } from 'react'
-import { Transfer, Tree, theme, Modal } from 'antd'
-import type { TransferDirection, TransferItem } from 'antd/es/transfer'
+import { Tree, Modal, Row, Col, Tag, Card, Button, Empty } from 'antd'
 import type { DataNode } from 'antd/es/tree'
+import { useSetState } from 'ahooks'
+import React, { useEffect } from 'react'
+import styles from './ComponentAttendChoose.less'
+import { FormattedMessage } from '@/.umi/plugin-locale'
 
 interface IPageOption {
   visable: boolean
-  setVisable: () => void
+  setVisable: (visable: boolean) => void
+  groups?: GROUP.TreeMember[]
+  attends?: CALENDAR.Attend[]
+  attendChooseSet: (attends: CALENDAR.Attend[]) => void
 }
 
-interface TreeTransferProps {
-  dataSource: DataNode[]
-  targetKeys: string[]
-  onChange: (targetKeys: string[], direction: TransferDirection, moveKeys: string[]) => void
+interface State {
+  treeData: DataNode[]
+  checkedKeys: React.Key[]
+  allMembers: Map<string, GROUP.GroupMember>
 }
 
-// Customize Table Transfer
-const isChecked = (selectedKeys: (string | number)[], eventKey: string | number) => selectedKeys.includes(eventKey)
+const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendChooseSet }: IPageOption) => {
+  const [state, setState] = useSetState<State>({
+    treeData: [],
+    checkedKeys: [],
+    allMembers: new Map<string, GROUP.GroupMember>()
+  })
 
-const generateTree = (treeNodes: DataNode[] = [], checkedKeys: string[] = []): DataNode[] =>
-  treeNodes.map(({ children, ...props }) => ({
-    ...props,
-    disabled: checkedKeys.includes(props.key as string),
-    children: generateTree(children, checkedKeys)
-  }))
+  useEffect(() => {
+    if (!visable) {
+      setState({
+        checkedKeys: [],
+        allMembers: new Map<string, GROUP.GroupMember>()
+      })
+      return
+    }
+    _init()
+  }, [visable, attends])
 
-const TreeTransfer = ({ dataSource, targetKeys, ...restProps }: TreeTransferProps) => {
-  const { token } = theme.useToken()
+  const _init = () => {
+    if (!groups || groups?.length === 0) return
+    const _treeData: DataNode[] = []
+    const _attendsSet = new Set(attends?.map((item) => item.memberId))
+    const _selectedKey: string[] = []
+    const allMembers: Map<string, GROUP.GroupMember> = new Map()
 
-  const transferDataSource: TransferItem[] = []
-  function flatten(list: DataNode[] = []) {
-    list.forEach((item) => {
-      transferDataSource.push(item as TransferItem)
-      flatten(item.children)
+    groups.forEach((item) => {
+      const node: DataNode = {
+        title: item.groupName,
+        key: 'G'.concat(item.groupId),
+        children: []
+      }
+      item.members.forEach((m) => {
+        node.children?.push({
+          title: m.name,
+          key: item.groupId + 'M' + m.memberId
+        })
+        const _m = { ...m }
+        if (_attendsSet.has(m.memberId)) {
+          _selectedKey.push(item.groupId + 'M' + m.memberId)
+          _m.checked = true
+        }
+        allMembers.set(_m.memberId, _m)
+      })
+      _treeData.push(node)
+    })
+    setState({
+      treeData: _treeData,
+      checkedKeys: _selectedKey,
+      allMembers
     })
   }
-  flatten(dataSource)
 
-  return (
-    <Transfer
-      {...restProps}
-      targetKeys={targetKeys}
-      dataSource={transferDataSource}
-      className='tree-transfer'
-      render={(item) => item.title!}
-      showSelectAll={false}
-    >
-      {({ direction, onItemSelect, selectedKeys }) => {
-        if (direction === 'left') {
-          const checkedKeys = [...selectedKeys, ...targetKeys]
-          return (
-            <div style={{ padding: token.paddingXS }}>
-              <Tree
-                blockNode
-                checkable
-                checkStrictly
-                defaultExpandAll
-                checkedKeys={checkedKeys}
-                treeData={generateTree(dataSource, targetKeys)}
-                onCheck={(_, { node: { key } }) => {
-                  onItemSelect(key as string, !isChecked(checkedKeys, key))
-                }}
-                onSelect={(_, { node: { key } }) => {
-                  onItemSelect(key as string, !isChecked(checkedKeys, key))
-                }}
-              />
-            </div>
-          )
-        }
-      }}
-    </Transfer>
-  )
-}
+  const onCheck = (checkedKeysValue: any) => {
+    const _all = new Set((checkedKeysValue as string[]).filter((i) => i.includes('M')).map((item) => item.split('M')[1]))
+    const _newMemberMaps = new Map<string, GROUP.GroupMember>()
+    Array.from(state.allMembers.values()).forEach((item) => {
+      const _m = { ...item, checked: false }
+      if (_all.has(_m.memberId)) {
+        _m.checked = true
+      }
+      _newMemberMaps.set(_m.memberId, _m)
+    })
+    setState({
+      checkedKeys: checkedKeysValue,
+      allMembers: _newMemberMaps
+    })
+  }
 
-const treeData: DataNode[] = [
-  { key: '0-0', title: '0-0' },
-  {
-    key: '0-1',
-    title: '0-1',
-    children: [
-      { key: '0-1-0', title: '0-1-0' },
-      { key: '0-1-1', title: '0-1-1' }
-    ]
-  },
-  { key: '0-2', title: '0-2' },
-  { key: '0-3', title: '0-3' },
-  { key: '0-4', title: '0-4' }
-]
+  const cleaAll = () => {
+    const _newMemberMaps = new Map<string, GROUP.GroupMember>()
+    Array.from(state.allMembers.values()).forEach((item) => {
+      const _m = { ...item, checked: false }
+      _newMemberMaps.set(_m.memberId, _m)
+    })
+    setState({
+      checkedKeys: [],
+      allMembers: _newMemberMaps
+    })
+  }
 
-const ComponentAttendChoose: FC<IPageOption> = ({ visable, setVisable }) => {
-  const [targetKeys, setTargetKeys] = useState<string[]>([])
-  const onChange = (keys: string[]) => {
-    setTargetKeys(keys)
+  const okSelected = () => {
+    const memberIds = (state.checkedKeys as string[]).filter((i) => i.valueOf).map((item) => item.split('M')[1])
+    if (memberIds.length === 0) {
+      setVisable(false)
+      return
+    }
+    const attends: CALENDAR.Attend[] = []
+    memberIds.forEach((i) => {
+      const m = state.allMembers.get(i)
+      if (!m) {
+        return
+      }
+      const { name, memberId, avatar } = m
+      attends.push({
+        name,
+        memberId,
+        avatar,
+        status: 0
+      })
+    })
+    attendChooseSet(attends)
+    setVisable(false)
   }
 
   return (
-    <Modal title='Basic Modal' open={visable} onCancel={setVisable}>
-      <TreeTransfer dataSource={treeData} targetKeys={targetKeys} onChange={onChange} />;
+    <Modal
+      title={<FormattedMessage id='pages.component.add.attend.add.form.title' />}
+      open={visable}
+      onCancel={() => setVisable(false)}
+      width={800}
+      style={{ zIndex: 9999 }}
+      destroyOnClose
+      onOk={okSelected}
+      transitionName=''
+    >
+      <Row className={styles.container} gutter={10}>
+        <Col span={10}>
+          {state.treeData.length === 0 ? (
+            <div className={styles.empty}>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            </div>
+          ) : (
+            <Tree checkable defaultExpandAll onCheck={onCheck} checkedKeys={state.checkedKeys} treeData={state.treeData} blockNode height={500} />
+          )}
+        </Col>
+        <Col span={14}>
+          <div className={styles.right}>
+            <div className={styles.action}>
+              <span></span>
+              <Button
+                size='small'
+                type='link'
+                onClick={() => {
+                  cleaAll()
+                }}
+              >
+                <FormattedMessage id='pages.component.add.attend.add.form.clean' />
+              </Button>
+            </div>
+            <div className={styles.selected}>
+              {Array.from(state.allMembers.values())
+                .filter((i) => i.checked)
+                .map((item) => {
+                  return (
+                    <Tag
+                      color='#87d068'
+                      key={item.memberId}
+                      closable
+                      onClose={(e) => {
+                        e.preventDefault()
+                        //handleClose(tag)
+                      }}
+                    >
+                      {item.name}
+                    </Tag>
+                  )
+                })}
+            </div>
+          </div>
+        </Col>
+      </Row>
     </Modal>
   )
 }

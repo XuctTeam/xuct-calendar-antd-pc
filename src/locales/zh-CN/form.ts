@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 17:42:48
+ * @LastEditTime: 2023-01-09 17:33:55
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\form.ts
  * @Description:
  *
@@ -81,17 +81,14 @@ export default {
   'pages.component.add.location.placeholder': '请输入地点',
   'pages.component.add.dtstart.label': '时间',
   'pages.component.add.dtstart.require': '时间不能为空',
-
   'pages.component.add.description.label': '描述',
   'pages.component.add.description.placeholder': '请输入描述',
   'pages.component.add.repeat.label': '重复',
   'pages.component.add.repeat.require': '重复必须选择',
   'pages.component.add.repeat.norepeat': '不重复',
-
   'pages.component.add.repeat.custom': '自定义',
   'pages.component.add.repeat.until.label': '截止',
   'pages.component.add.repeat.until.require': '截止时间必须选择',
-
   'pages.component.add.alarm.type.label': '提醒方式',
   'pages.component.add.alarm.type.rquire': '提醒方式不能为空',
   'pages.component.add.alarm.select.none': '不提醒',
@@ -100,5 +97,10 @@ export default {
   'pages.component.add.alarm.select.official.accounts': '公众号',
   'pages.component.add.alarm.time.label': '提醒时间',
   'pages.component.add.alarm.time.rquire': '提醒时间不能为空',
-  'pages.component.add.alarm.select.label': '提前'
+  'pages.component.add.alarm.select.label': '提前',
+  'pages.component.add.attend.label': '邀请人',
+  'pages.component.add.attend.placeholder': '请选择',
+  'pages.component.add.attend.add.button': '添加',
+  'pages.component.add.attend.add.form.title': '添加邀请人',
+  'pages.component.add.attend.add.form.clean': '清除'
 }

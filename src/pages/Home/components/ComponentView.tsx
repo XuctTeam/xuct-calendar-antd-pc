@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-06 17:51:19
+ * @LastEditTime: 2023-01-09 10:50:15
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
@@ -220,8 +220,9 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
       mask={false}
       destroyOnClose={true}
       footer={null}
+      transitionName=''
     >
-      <Spin tip='Loading...' spinning={state.loading}>
+      <Spin spinning={state.loading}>
         <div className={styles.container}>
           <Row className={`${styles.calendar} ${styles.cell}`}>
             <Col span={2}>

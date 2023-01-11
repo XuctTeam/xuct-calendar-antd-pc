@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 17:43:17
+ * @LastEditTime: 2023-01-09 17:33:32
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\form.ts
  * @Description:
  *
@@ -85,7 +85,6 @@ export default {
   'pages.component.add.repeat.label': 'Repert',
   'pages.component.add.repeat.require': 'Repeat must select',
   'pages.component.add.repeat.norepeat': 'Do not repeat',
-
   'pages.component.add.repeat.custom': 'Custom',
   'pages.component.add.repeat.until.label': 'Until',
   'pages.component.add.repeat.until.require': 'Until is required',
@@ -98,5 +97,10 @@ export default {
   'pages.component.add.alarm.select.official.accounts': 'Official Accounts',
   'pages.component.add.alarm.time.label': 'AlarmTime',
   'pages.component.add.alarm.time.rquire': 'AlarmTime is required',
-  'pages.component.add.alarm.select.label': 'Before'
+  'pages.component.add.alarm.select.label': 'Before',
+  'pages.component.add.attend.label': 'Attends',
+  'pages.component.add.attend.placeholder': 'Please Choose',
+  'pages.component.add.attend.add.button': 'Add',
+  'pages.component.add.attend.add.form.title': 'AddAttends',
+  'pages.component.add.attend.add.form.clean': 'Clean'
 }

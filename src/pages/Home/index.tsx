@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-06 17:45:25
+ * @LastEditTime: 2023-01-09 13:16:57
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -11,17 +11,18 @@
 
 import React, { useCallback } from 'react'
 import { useEffect, useRef } from 'react'
-import { Badge, Button, Calendar, Space } from 'antd'
+import { Badge, Button, Calendar } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { connect, FormattedMessage, useSelector } from 'umi'
 import { PlusOutlined } from '@ant-design/icons'
 import dayjs, { Dayjs } from 'dayjs'
 import { ProCard } from '@ant-design/pro-components'
-import { CalendarList, RightCalendar, ComponentEditForm, ComponentView, ComponentAttendChoose } from './components'
-import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
 import { useEventEmitter, useSetState, useSize } from 'ahooks'
+import { CalendarList, RightCalendar, ComponentEditForm, ComponentView, CalendarEditFrom } from './components'
+import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
+import { groupTree } from '@/services/group'
+
 import styles from './index.less'
-import CalendarEditFrom from './components/CalendarEditFrom'
 
 interface State {
   loading: boolean
@@ -33,6 +34,7 @@ interface State {
   calendarVisable: boolean
   attendChooseVisable: boolean
   calendarId?: string
+  groups: GROUP.TreeMember[]
 }
 
 const HomePage = () => {
@@ -47,6 +49,7 @@ const HomePage = () => {
     calendars: [],
     marks: [],
     components: [],
+    groups: [],
     compVisable: false,
     calendarVisable: false,
     attendChooseVisable: false,
@@ -85,6 +88,8 @@ const HomePage = () => {
     })
     /** 加载日程 */
     _queryComponent(_calendars, dayjs().startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs().endOf('month').format('YYYY-MM-DD HH:mm:ss'))
+    /** 加载通讯录 */
+    _queryGroup()
   }
 
   // const select = (info: any) => {
@@ -235,6 +240,16 @@ const HomePage = () => {
     })
   }
 
+  const _queryGroup = () => {
+    groupTree()
+      .then((res) => {
+        setState({ groups: res as any as GROUP.TreeMember[] })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   return (
     <>
       <Content className={styles.center}>
@@ -289,14 +304,10 @@ const HomePage = () => {
         busEmitter={busEmitter}
         calendars={state.calendars}
         visable={state.compVisable}
+        groups={state.groups}
         setVisable={(e) => {
           setState({ compVisable: e })
         }}
-        onAttendChoose={() =>
-          setState({
-            attendChooseVisable: true
-          })
-        }
         refresh={refresh}
       />
       <ComponentView busEmitter={busEmitter} refresh={refresh} />
