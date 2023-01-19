@@ -2,23 +2,23 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-09 10:50:15
+ * @LastEditTime: 2023-01-19 18:08:46
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { useIntl, useModel, FormattedMessage } from 'umi'
-import { Button, Col, Divider, message, Modal, Row, Select, Spin } from 'antd'
-import { FC } from 'react'
-import { getComponentById, queryComponentMembers, deleteComponent } from '@/services/calendar'
-import dayjs from 'dayjs'
-import { DifferentDay, SameDay } from '../ui'
+import { deleteComponent, getComponentById, queryComponentMembers } from '@/services/calendar'
 import { DiffOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons'
-import ComponentAttendView from './ComponentAttendView'
 import { useSetState } from 'ahooks'
-import styles from './ComponentView.less'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
+import { Button, Col, Divider, message, Modal, Row, Select, Spin } from 'antd'
+import dayjs from 'dayjs'
+import { FC } from 'react'
+import { FormattedMessage, useIntl, useModel } from 'umi'
+import { DifferentDay, SameDay } from '../ui'
+import ComponentAttendView from './ComponentAttendView'
+import styles from './ComponentView.less'
 
 interface IPageOption {
   refresh: () => void
@@ -204,10 +204,10 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
   const _deleteEvent = async () => {
     await deleteComponent(state.id)
     message.success(init.formatMessage({ id: 'pages.component.view.delete.success' }))
-    refresh()
     setState({
       visable: false
     })
+    refresh()
   }
 
   return (

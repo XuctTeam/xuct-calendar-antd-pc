@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 09:54:00
+ * @LastEditTime: 2023-01-19 17:59:01
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -39,7 +39,7 @@ export default {
   'pages.modify.passowrd.success': 'Modify success, Please use New pass login!',
 
   'pages.component.button.add': 'Add Component',
-  'pages.calendar.manager.title': 'My Calendar',
+  'pages.calendar.manager.title': 'Calendar',
   'pages.calendar.today.button': 'Today',
   'pages.calendar.manager.button.edit': 'Edit',
   'pages.calendar.manager.button.share': 'Share',
@@ -53,7 +53,7 @@ export default {
   'pages.person.center.avatar.button': 'Save',
   'pages.calendar.mananger.component.add.success': 'Add Component Success',
   'pages.calendar.mananger.component.edit.success': 'Edit Component Success',
-  'pages.component.view.title': 'CompView',
+  'pages.component.view.title': 'View',
   'pages.component.view.invited': 'Invited',
   'pages.component.view.person': 'persons',
   'pages.component.view.accept': 'Accept',

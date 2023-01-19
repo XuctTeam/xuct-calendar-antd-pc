@@ -2,18 +2,18 @@
  * @Author: Derek Xu
  * @Date: 2023-01-06 17:26:57
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-10 14:27:36
+ * @LastEditTime: 2023-01-19 17:49:14
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentAttendChoose.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
-import { Tree, Modal, Row, Col, Tag, Card, Button, Empty } from 'antd'
-import type { DataNode } from 'antd/es/tree'
+import { FormattedMessage } from '@/.umi/plugin-locale'
 import { useSetState } from 'ahooks'
+import { Button, Col, Empty, Modal, Row, Tag, Tree } from 'antd'
+import type { DataNode } from 'antd/es/tree'
 import React, { useEffect } from 'react'
 import styles from './ComponentAttendChoose.less'
-import { FormattedMessage } from '@/.umi/plugin-locale'
 
 interface IPageOption {
   visable: boolean
@@ -138,14 +138,14 @@ const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendCho
       title={<FormattedMessage id='pages.component.add.attend.add.form.title' />}
       open={visable}
       onCancel={() => setVisable(false)}
-      width={800}
+      width={1000}
       style={{ zIndex: 9999 }}
       destroyOnClose
       onOk={okSelected}
       transitionName=''
     >
       <Row className={styles.container} gutter={10}>
-        <Col span={10}>
+        <Col span={14}>
           {state.treeData.length === 0 ? (
             <div className={styles.empty}>
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -154,7 +154,7 @@ const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendCho
             <Tree checkable defaultExpandAll onCheck={onCheck} checkedKeys={state.checkedKeys} treeData={state.treeData} blockNode height={500} />
           )}
         </Col>
-        <Col span={14}>
+        <Col span={10}>
           <div className={styles.right}>
             <div className={styles.action}>
               <span></span>

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-05 11:05:43
+ * @LastEditTime: 2023-01-19 17:37:42
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -87,7 +87,6 @@ export const rootContainer = (container: any) => {
     if (dataView === '0') {
       dayjs.updateLocale(getDayJsLocal(), { weekStart: Number.parseInt(dataView) })
     }
-    return
   }
   if (dataView === '1') {
     dayjs.updateLocale(getDayJsLocal(), { weekStart: Number.parseInt(dataView) })
@@ -101,6 +100,5 @@ export const rootContainer = (container: any) => {
   //     {container}
   //   </ConfigProvider>
   // )
-
   return React.createElement(ConfigProvider, null, container)
 }

@@ -2,16 +2,16 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 15:15:51
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-04 14:47:11
+ * @LastEditTime: 2023-01-19 17:55:44
  * @FilePath: \xuct-calendar-antd-pc\src\utils\calendar.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import solarLunar from 'solarlunar-es'
+import { Num, RRule, WeekDay, WeekDayEn } from '@/constants'
 import dayjs from 'dayjs'
-import { getLocale, getIntl } from 'umi'
-import { RRule, WeekDay, WeekDayEn, Num } from '@/constants'
+import solarLunar from 'solarlunar-es'
+import { getIntl, getLocale } from 'umi'
 
 enum Lanuage {
   ZH = 'zh-CN',
@@ -227,7 +227,7 @@ const _formatMonthlyText = (repeatInterval: number, repeatStatus: string, repeat
     return (
       init.formatMessage({ id: 'pages.component.add.repeat.every.month' }) +
       ' （' +
-      (chinese ? repeatByday : _toEnNum(Number.parseInt(repeatBymonthday))) +
+      (chinese ? repeatBymonthday + '日' : _toEnNum(Number.parseInt(repeatBymonthday))) +
       '）'
     )
   }
@@ -393,7 +393,7 @@ export const formateSameDayDuration = (fullDay: number, dtstart: Date, dtend: Da
   if (diff < 60 && diff > 0) return diff + Space + minText
   if (diff === 60) return init.formatMessage({ id: 'pages.component.repeat.one.hour' })
   const hour = parseInt(diff / 60 + '')
-  if (hour * 60 === diff) return hour + Space + init.formatMessage({ id: 'pages.component.repeat.hour' }) + 's'
+  if (hour * 60 === diff) return hour + Space + init.formatMessage({ id: 'pages.component.repeat.hour' })
   return hour + Space + init.formatMessage({ id: 'pages.component.repeat.hour' }) + 's' + Space + (diff - hour * 60) + Space + minText
 }
 
