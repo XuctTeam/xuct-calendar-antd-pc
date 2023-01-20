@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-09 17:33:55
+ * @LastEditTime: 2023-01-20 10:25:22
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\form.ts
  * @Description:
  *
@@ -91,6 +91,7 @@ export default {
   'pages.component.add.repeat.until.require': '截止时间必须选择',
   'pages.component.add.alarm.type.label': '提醒方式',
   'pages.component.add.alarm.type.rquire': '提醒方式不能为空',
+  'pages.component.add.alarm.type.placeholder': '请选择',
   'pages.component.add.alarm.select.none': '不提醒',
   'pages.component.add.alarm.select.inner.message': '站内信',
   'pages.component.add.alarm.select.email': '邮箱',

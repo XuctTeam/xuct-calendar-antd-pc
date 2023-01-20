@@ -2,13 +2,15 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-10 14:27:58
+ * @LastEditTime: 2023-01-20 11:08:22
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentEditForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 
-import { isChinese, dayWeekInMonth, dayInYear } from '@/utils/calendar'
+import { saveOrUpdateComponent } from '@/services/calendar'
+import { dayInYear, dayWeekInMonth, isChinese } from '@/utils/calendar'
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import {
   DrawerForm,
   ProForm,
@@ -22,16 +24,14 @@ import {
   ProFormText,
   ProFormTextArea
 } from '@ant-design/pro-components'
+import { useSetState } from 'ahooks'
+import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { message, SelectProps } from 'antd'
 import dayjs from 'dayjs'
 import { useEffect, useRef } from 'react'
-import { useIntl, FormattedMessage } from 'umi'
-import RepeatFormItem from './RepeatFormItem'
-import { saveOrUpdateComponent } from '@/services/calendar'
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
-import { EventEmitter } from 'ahooks/lib/useEventEmitter'
+import { FormattedMessage, useIntl } from 'umi'
 import ComponentAttendChoose from './ComponentAttendChoose'
-import { useSetState } from 'ahooks'
+import RepeatFormItem from './RepeatFormItem'
 
 interface IPageOption {
   visable: boolean
@@ -147,10 +147,33 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
   }
 
   const _componentEdit = (data: any) => {
-    const { attends, dtstart, dtend, calendarId, alarmType, repeatStatus, repeatType, repeatInterval, repeatByday, repeatBymonth, repeatBymonthday, ...comp } =
-      data
+    const {
+      attends,
+      dtstart,
+      dtend,
+      calendarId,
+      alarmType,
+      alarmTimes,
+      repeatStatus,
+      repeatType,
+      repeatInterval,
+      repeatByday,
+      repeatBymonth,
+      repeatUntil,
+      repeatBymonthday,
+      ...comp
+    } = data
     let _alarmType
     switch (alarmType) {
+      case 'INTERNAL_MESSAGE':
+        _alarmType = '1'
+        break
+      case 'MAIL':
+        _alarmType = '2'
+        break
+      case 'OFFICIAL_ACCOUNT':
+        _alarmType = '3'
+        break
       default:
         _alarmType = '0'
     }
@@ -158,7 +181,9 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
       initialValues: {
         ...comp,
         calendar: calendarId,
+        alarmTimes: alarmTimes ? alarmTimes.split(',') : [],
         alarmType: _alarmType,
+        repeatUntil: repeatUntil || '',
         repeatStatus,
         dtTime: [dtstart, dtend]
       },
@@ -247,7 +272,7 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
               id: state.initialValues?.id,
               fullDay: fullDay ? 1 : 0,
               ...repeatValues,
-              alarmTimes: alarmTimes || [],
+              alarmTimes: alarmTimes ? (alarmTimes instanceof Array ? alarmTimes : [alarmTimes]) : [],
               ...{ calendarId: calendar, dtstart: dtStart, dtend: dayjs(dtTime[1]).toDate() }
             })
           } catch (err) {
@@ -279,6 +304,15 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
           fieldProps={{
             optionItemRender(item) {
               return <span style={{ color: `#${item.color}` }}>{item.label}</span>
+            },
+            onChange(val) {
+              const _calendar = calendars.find((item) => item.calendarId === val)
+              if (_calendar) {
+                formRef.current?.setFieldsValue({
+                  alarmType: _calendar.alarmType.toString(),
+                  alarmTimes: _calendar.alarmTime.toString()
+                })
+              }
             }
           }}
           placeholder={init.formatMessage({ id: 'pages.component.add.calendar.placeholder' })}
@@ -386,17 +420,17 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
           </ProFormDependency>
           <ProFormDependency name={['repeatStatus']}>
             {({ repeatStatus }) => {
-              if (repeatStatus && repeatStatus !== '0') {
-                return (
-                  <ProFormDatePicker
-                    width='sm'
-                    name='repeatUntil'
-                    label={<FormattedMessage id='pages.component.add.repeat.until.label' />}
-                    rules={[{ required: true, message: init.formatMessage({ id: 'pages.component.add.repeat.until.require' }) }]}
-                  />
-                )
+              if (!(repeatStatus && repeatStatus !== '0')) {
+                return <></>
               }
-              return <></>
+              return (
+                <ProFormDatePicker
+                  width='sm'
+                  name='repeatUntil'
+                  label={<FormattedMessage id='pages.component.add.repeat.until.label' />}
+                  rules={[{ required: true, message: init.formatMessage({ id: 'pages.component.add.repeat.until.require' }) }]}
+                />
+              )
             }}
           </ProFormDependency>
         </ProForm.Group>
@@ -413,8 +447,10 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
             width='sm'
             label={<FormattedMessage id='pages.component.add.alarm.type.label' />}
             options={alarmTypeItem}
+            placeholder={init.formatMessage({ id: 'pages.component.add.alarm.type.placeholder' })}
             rules={[{ required: true, message: init.formatMessage({ id: 'pages.component.add.alarm.type.rquire' }) }]}
           />
+
           <ProFormDependency name={['alarmType']}>
             {({ alarmType }) => {
               if (!alarmType || alarmType === '0') return <></>

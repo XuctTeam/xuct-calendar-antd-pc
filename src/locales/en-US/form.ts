@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-09 17:33:32
+ * @LastEditTime: 2023-01-20 10:11:19
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\form.ts
  * @Description:
  *
@@ -91,6 +91,7 @@ export default {
   'pages.component.add.repeat.each.label': 'Each',
   'pages.component.add.alarm.type.label': 'AlarmType',
   'pages.component.add.alarm.type.rquire': 'AlarmType is required',
+  'pages.component.add.alarm.type.placeholder': 'Please Choose',
   'pages.component.add.alarm.select.none': 'No',
   'pages.component.add.alarm.select.inner.message': 'Inner Message',
   'pages.component.add.alarm.select.email': 'Email',

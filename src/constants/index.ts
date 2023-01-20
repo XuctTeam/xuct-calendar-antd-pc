@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 13:04:50
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-28 09:33:18
+ * @LastEditTime: 2023-01-20 09:26:11
  * @FilePath: \xuct-calendar-antd-pc\src\constants\index.ts
  * @Description:
  *
@@ -66,6 +66,13 @@ export const Num = {
   Second: '2nd',
   Third: '3rd',
   Other: 'th'
+}
+
+export const Chinese = {
+  FIRST: '第',
+  NU: '个',
+  START: '开始',
+  END: '结束'
 }
 
 export const Color = ['ee0a24', '2eb82e', 'ffaa00', '3399ff', '990000', 'bb33ff', '3366cc', 'c68c53', '006600', 'ff99dd']

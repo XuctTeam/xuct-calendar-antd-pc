@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 10:10:43
+ * @LastEditTime: 2023-01-20 15:08:12
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -39,7 +39,7 @@ export default {
   'pages.modify.passowrd.success': '修改成功，请用新密码登录',
 
   'pages.component.button.add': '创建日程',
-  'pages.calendar.manager.title': '我的日历',
+  'pages.calendar.manager.title': '日历',
   'pages.calendar.today.button': '今日',
   'pages.calendar.manager.button.edit': '编辑',
   'pages.calendar.manager.button.share': '分享',

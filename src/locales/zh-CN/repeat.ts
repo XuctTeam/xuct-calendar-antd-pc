@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 17:38:40
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 18:32:42
+ * @LastEditTime: 2023-01-20 09:28:38
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\repeat.ts
  * @Description:
  *
@@ -33,5 +33,7 @@ export default {
   'pages.component.repeat.min': '分',
   'pages.component.repeat.hour': '小时',
   'pages.component.add.alarm.select.day': '天',
-  'pages.component.repeat.one.hour': '1小时'
+  'pages.component.repeat.one.hour': '1小时',
+  'pages.component.times.start': '开始',
+  'pages.component.times.end': '结束'
 }

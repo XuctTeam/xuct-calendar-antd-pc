@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-19 18:08:46
+ * @LastEditTime: 2023-01-20 11:25:49
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
@@ -46,6 +46,7 @@ interface State {
   creatorMemberName: string
   description: string
   alarmType: string
+  alarmTimes: string
   attends: CALENDAR.Attend[]
   attendStatus: number
   visable: boolean
@@ -78,6 +79,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
     creatorMemberName: '',
     description: '',
     alarmType: '',
+    alarmTimes: '',
     attends: [],
     attendStatus: 0,
     visable: false,
@@ -120,6 +122,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
       repeatUntil,
       repeatInterval,
       calendarId,
+      alarmTimes,
       repeatType,
       repeatByday,
       repeatBymonth,
@@ -147,7 +150,8 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
       description,
       repeatBymonthday: repeatBymonthday || '',
       creatorMemberId,
-      alarmType
+      alarmType,
+      alarmTimes: alarmTimes || ''
     })
   }
 
@@ -163,7 +167,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
 
   const _initModalProp = (id: string, x: number, y: number, len: number) => {
     const { clientWidth, clientHeight } = doc.body
-    let h = 340
+    let h = 350
     if (len !== 1) {
       const diff = Math.ceil(len / 5)
       h += (diff > 4 ? 4 : diff) * 20 + 10 * diff
@@ -213,7 +217,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
   return (
     <Modal
       title={init.formatMessage({ id: 'pages.component.view.title' })}
-      style={{ position: 'absolute', top: state.top + 'px', left: state.left + 'px' }}
+      style={{ position: 'absolute', top: state.top + 'px', left: state.left + 'px', zIndex: 999 }}
       open={state.visable}
       onCancel={() => setState({ visable: false })}
       width={460}
@@ -229,7 +233,11 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
               <div className={styles.circle} style={{ background: `#${state.color}`, border: `#${state.color}` }} />
             </Col>
             <Col>
-              <div className={styles.summary}>{state.summary}</div>
+              <span className={styles.summary}>{state.summary}</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col offset={2}>
               {dayjs(state.dtstart).isSame(state.dtend, 'date') ? (
                 <SameDay
                   dtstart={state.dtstart}
@@ -281,7 +289,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
                 value={state.attendStatus}
                 size='small'
                 bordered={false}
-                style={{ width: '100%' }}
+                style={{ width: '100px' }}
                 options={
                   initialState?.currentUser?.member.id === state.creatorMemberId
                     ? [

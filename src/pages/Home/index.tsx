@@ -2,30 +2,30 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-09 13:16:57
+ * @LastEditTime: 2023-01-20 15:18:37
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 
-import React, { useCallback } from 'react'
-import { useEffect, useRef } from 'react'
-import { Badge, Button, Calendar } from 'antd'
-import { Content } from 'antd/lib/layout/layout'
-import { connect, FormattedMessage, useSelector } from 'umi'
-import { PlusOutlined } from '@ant-design/icons'
-import dayjs, { Dayjs } from 'dayjs'
-import { ProCard } from '@ant-design/pro-components'
-import { useEventEmitter, useSetState, useSize } from 'ahooks'
-import { CalendarList, RightCalendar, ComponentEditForm, ComponentView, CalendarEditFrom } from './components'
 import { componentsDaysById, list, updateDisplay } from '@/services/calendar'
 import { groupTree } from '@/services/group'
+import { PlusOutlined } from '@ant-design/icons'
+import { ProCard } from '@ant-design/pro-components'
+import { useEventEmitter, useSetState, useSize } from 'ahooks'
+import { Badge, Button, Calendar } from 'antd'
+import { Content } from 'antd/lib/layout/layout'
+import dayjs, { Dayjs } from 'dayjs'
+import React, { useCallback, useEffect, useRef } from 'react'
+import { connect, FormattedMessage, useSelector } from 'umi'
+import { CalendarEditFrom, CalendarList, ComponentEditForm, ComponentView, RightCalendar } from './components'
 
 import styles from './index.less'
 
 interface State {
   loading: boolean
+  compLoading: boolean
   selectDay: any
   calendars: CALENDAR.Calendar[]
   marks: string[]
@@ -45,6 +45,7 @@ const HomePage = () => {
 
   const [state, setState] = useSetState<State>({
     loading: false,
+    compLoading: false,
     selectDay: dayjs().format('YYYY-MM-DD'),
     calendars: [],
     marks: [],
@@ -149,7 +150,6 @@ const HomePage = () => {
       selectDay: day
     })
     api.gotoDate(day)
-    api.select(day)
     _dateChageLoadComponent(day, selecteDay)
   }
 
@@ -197,6 +197,9 @@ const HomePage = () => {
    * @param end
    */
   const _queryComponent = (calList: CALENDAR.Calendar[], start: string, end: string) => {
+    setState({
+      compLoading: true
+    })
     let pList: Array<Promise<any>> = []
     calList.forEach((item: any) => {
       pList.push(
@@ -221,11 +224,15 @@ const HomePage = () => {
         res.forEach((i) => (calendarComponents = calendarComponents.concat(i)))
         _fillMarkDay(calendarComponents)
         setState({
-          components: calendarComponents
+          components: calendarComponents,
+          compLoading: false
         })
       })
       .catch((err) => {
         console.log(err)
+        setState({
+          compLoading: false
+        })
       })
   }
 
@@ -273,6 +280,7 @@ const HomePage = () => {
         <div className={styles.right} ref={calenarRefContent}>
           <div className={styles.calendar}>
             <RightCalendar
+              loading={state.compLoading}
               busEmitter={busEmitter}
               ref={calendarRef}
               selectDay={state.selectDay}

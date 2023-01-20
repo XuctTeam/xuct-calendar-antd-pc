@@ -2,18 +2,18 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 16:52:13
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-13 16:02:16
- * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\PasswordForm.tsx
+ * @LastEditTime: 2023-01-20 13:38:06
+ * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\PasswordForm.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
+import { updatePassword } from '@/services/user'
+import { checkPassowrd } from '@/utils'
 import { ModalForm, ProFormInstance, ProFormText } from '@ant-design/pro-components'
 import { message } from 'antd'
-import { FormattedMessage, getIntl } from 'umi'
-import { checkPassowrd } from '@/utils'
 import { useRef } from 'react'
-import { updatePassword } from '@/services/user'
+import { FormattedMessage, getIntl } from 'umi'
 
 interface IPageOption {
   open: boolean
@@ -55,7 +55,8 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
         return true
       }}
       modalProps={{
-        destroyOnClose: true
+        destroyOnClose: true,
+        centered: true
       }}
     >
       <ProFormText.Password

@@ -2,25 +2,25 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-20 08:47:30
- * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\AvatarDropdown.tsx
+ * @LastEditTime: 2023-01-20 09:48:30
+ * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 
+import HeaderDropdown from '@/components/HeaderDropdown'
+import { logout } from '@/services/login'
 import { ExclamationCircleOutlined, LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { setAlpha } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css'
 import { Avatar, Modal, Spin } from 'antd'
-import { setAlpha } from '@ant-design/pro-components'
+import { ItemType } from 'antd/es/menu/hooks/useItems'
 import { stringify } from 'querystring'
 import type { MenuInfo } from 'rc-menu/lib/interface'
 import React, { useCallback, useState } from 'react'
 import { flushSync } from 'react-dom'
-import HeaderDropdown from '@/components/HeaderDropdown'
-import { useModel, history, useIntl } from 'umi'
-import { logout } from '@/services/login'
+import { history, useIntl, useModel } from 'umi'
 import PasswordForm from './PasswordForm'
-import { ItemType } from 'antd/es/menu/hooks/useItems'
 import UserInfoForm from './UserInfoForm'
 
 export type GlobalHeaderRightProps = {
@@ -160,6 +160,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
       title: init.formatMessage({ id: 'pages.modal.commit.title' }),
       icon: <ExclamationCircleOutlined />,
       content: init.formatMessage({ id: 'pages.logout.content' }),
+      centered: true,
       onOk: () => {
         quitLogin()
       }

@@ -2,13 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 15:15:51
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-19 17:55:44
+ * @LastEditTime: 2023-01-20 09:33:33
  * @FilePath: \xuct-calendar-antd-pc\src\utils\calendar.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { Num, RRule, WeekDay, WeekDayEn } from '@/constants'
+import { Chinese, Num, RRule, WeekDay, WeekDayEn } from '@/constants'
 import dayjs from 'dayjs'
 import solarLunar from 'solarlunar-es'
 import { getIntl, getLocale } from 'umi'
@@ -238,7 +238,7 @@ const _formatMonthlyText = (repeatInterval: number, repeatStatus: string, repeat
     return (
       init.formatMessage({ id: 'pages.component.add.repeat.every.month' }) +
       '（' +
-      (chinese ? '第' + monthDays[0] + '个' : _toEnNum(Number.parseInt(monthDays[0]))) +
+      (chinese ? Chinese.FIRST + monthDays[0] + Chinese.NU : _toEnNum(Number.parseInt(monthDays[0]))) +
       ' ' +
       week +
       '）'
@@ -269,7 +269,7 @@ const _formatMonthlyText = (repeatInterval: number, repeatStatus: string, repeat
     return (
       init.formatMessage({ id: 'pages.component.add.repeat.every.month' }) +
       '（' +
-      (chinese ? '第' + monthDays[0] + '个' : _toEnNum(Number.parseInt(monthDays[0])) + monthDays[1]) +
+      (chinese ? Chinese.FIRST + monthDays[0] + Chinese.NU : _toEnNum(Number.parseInt(monthDays[0])) + monthDays[1]) +
       '）'
     )
   }
@@ -278,7 +278,7 @@ const _formatMonthlyText = (repeatInterval: number, repeatStatus: string, repeat
     repeatInterval +
     init.formatMessage({ id: 'pages.component.repeat.frequency.month' }) +
     '（' +
-    (chinese ? '第' + monthDays[0] + '个' : _toEnNum(Number.parseInt(monthDays[0]))) +
+    (chinese ? Chinese.FIRST + monthDays[0] + Chinese.NU : _toEnNum(Number.parseInt(monthDays[0]))) +
     getWeekDay(Number.parseInt(monthDays[1])) +
     '）'
   )
@@ -348,16 +348,13 @@ const _formatYearlyText = (repeatInterval: number, repeatBymonth: string, repeat
  */
 export const formatDifferentDayTime = (type: number, fullDay: number, date: Date): string => {
   const chinese = isChinese()
-  if (chinese) {
-    if (type === 1) {
-      return dayjs(date).format(fullDay === 0 ? 'YYYY年MM月DD日 HH:mm' : 'YYYY年MM月DD日') + ' 开始'
-    }
-    return dayjs(date).format(fullDay === 0 ? 'YYYY年MM月DD日 HH:mm' : 'YYYY年MM月DD日') + ' 结束'
-  }
-  if (type === 1) {
-    return dayjs(date).format(fullDay === 0 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD日') + ' Start'
-  }
-  return dayjs(date).format(fullDay === 0 ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD日') + ' End'
+  const init = getIntl()
+
+  return (
+    dayjs(date).format(fullDay === 0 ? (chinese ? 'YYYY年MM月DD日 HH小时mm分' : 'YYYY-MM-DD HH:mm') : chinese ? 'YYYY年MM月DD日' : 'YYYY-MM-DD') +
+    ' ' +
+    init.formatMessage({ id: type === 1 ? 'pages.component.times.start' : 'pages.component.times.end' })
+  )
 }
 
 /**
@@ -370,7 +367,9 @@ export const formatDifferentDayTime = (type: number, fullDay: number, date: Date
 export const formatSameDayTime = (fullDay: number, dtstart: Date, dtend: Date): string => {
   const chinese = isChinese()
   const day: string = dayjs(dtstart).format(chinese ? 'YYYY年MM月DD日' : 'YYYY-MM-DD') + '（' + getWeekDay(dayjs(dtend).get('day')) + '）'
-  if (fullDay === 1) return day
+  if (fullDay === 1) {
+    return day
+  }
   return day + dayjs(dtstart).format('HH:mm') + '-' + dayjs(dtend).format('HH:mm')
 }
 
@@ -394,7 +393,7 @@ export const formateSameDayDuration = (fullDay: number, dtstart: Date, dtend: Da
   if (diff === 60) return init.formatMessage({ id: 'pages.component.repeat.one.hour' })
   const hour = parseInt(diff / 60 + '')
   if (hour * 60 === diff) return hour + Space + init.formatMessage({ id: 'pages.component.repeat.hour' })
-  return hour + Space + init.formatMessage({ id: 'pages.component.repeat.hour' }) + 's' + Space + (diff - hour * 60) + Space + minText
+  return hour + Space + init.formatMessage({ id: 'pages.component.repeat.hour' }) + Space + (diff - hour * 60) + Space + minText
 }
 
 /**
