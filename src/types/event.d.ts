@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-29 15:04:10
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-04 13:22:36
+ * @LastEditTime: 2023-01-29 17:39:32
  * @FilePath: \xuct-calendar-antd-pc\src\types\event.d.ts
  * @Description:
  *
@@ -11,7 +11,7 @@
 
 declare namespace Event {
   type Action = {
-    action: 'event_view' | 'event_edit' | 'event_create'
+    action: 'calendar_share' | 'event_view' | 'event_edit' | 'event_create'
     data: any
   }
 }

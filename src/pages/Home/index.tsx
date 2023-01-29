@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-20 15:18:37
+ * @LastEditTime: 2023-01-29 17:42:45
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -19,7 +19,7 @@ import { Content } from 'antd/lib/layout/layout'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { connect, FormattedMessage, useSelector } from 'umi'
-import { CalendarEditFrom, CalendarList, ComponentEditForm, ComponentView, RightCalendar } from './components'
+import { CalendarEditFrom, CalendarList, CalendarShareView, ComponentEditForm, ComponentView, RightCalendar } from './components'
 
 import styles from './index.less'
 
@@ -32,6 +32,7 @@ interface State {
   components: CALENDAR.DayCompoent[]
   compVisable: boolean
   calendarVisable: boolean
+  calendarShareVisable: boolean
   attendChooseVisable: boolean
   calendarId?: string
   groups: GROUP.TreeMember[]
@@ -53,6 +54,7 @@ const HomePage = () => {
     groups: [],
     compVisable: false,
     calendarVisable: false,
+    calendarShareVisable: false,
     attendChooseVisable: false,
     calendarId: undefined
   })
@@ -272,6 +274,7 @@ const HomePage = () => {
             calendars={state.calendars}
             selectedCalendarChage={calendarChageDisplay}
             refresh={refresh}
+            busEmitter={busEmitter}
             calendarOnEdit={(calendarId: string | undefined) => {
               setState({ calendarVisable: true, calendarId })
             }}
@@ -308,6 +311,7 @@ const HomePage = () => {
         refresh={refresh}
         id={state.calendarId}
       />
+      <CalendarShareView busEmitter={busEmitter} />
       <ComponentEditForm
         busEmitter={busEmitter}
         calendars={state.calendars}

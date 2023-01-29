@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-20 11:08:22
+ * @LastEditTime: 2023-01-29 18:03:35
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentEditForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -30,8 +30,8 @@ import { message, SelectProps } from 'antd'
 import dayjs from 'dayjs'
 import { useEffect, useRef } from 'react'
 import { FormattedMessage, useIntl } from 'umi'
+import { RepeatFormItem } from '../ui'
 import ComponentAttendChoose from './ComponentAttendChoose'
-import RepeatFormItem from './RepeatFormItem'
 
 interface IPageOption {
   visable: boolean
@@ -56,7 +56,10 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
   const chinese = isChinese()
 
   const [state, setState] = useSetState<State>({
-    initialValues: undefined,
+    initialValues: {
+      repeatStatus: '0',
+      alarmType: '0'
+    },
     repeatInitialValues: undefined,
     attendVisable: false,
     attends: []
@@ -113,7 +116,10 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
   useEffect(() => {
     if (!visable) {
       setState({
-        initialValues: undefined,
+        initialValues: {
+          repeatStatus: '0',
+          alarmType: '0'
+        },
         repeatInitialValues: undefined,
         attends: []
       })
@@ -135,7 +141,6 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
         break
     }
   })
-
   const _componentCreate = (data: any) => {
     const { startStr, endStr, fullDay } = data
     setState({
@@ -183,7 +188,7 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
         calendar: calendarId,
         alarmTimes: alarmTimes ? alarmTimes.split(',') : [],
         alarmType: _alarmType,
-        repeatUntil: repeatUntil || '',
+        repeatUntil: repeatUntil || new Date(),
         repeatStatus,
         dtTime: [dtstart, dtend]
       },

@@ -2,30 +2,32 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-05 12:40:00
+ * @LastEditTime: 2023-01-29 17:47:32
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 
+import { deleteCalendar } from '@/services/calendar'
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { ProCard } from '@ant-design/pro-components'
+import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { Button, Empty, message, Modal, Spin } from 'antd'
 import { FC } from 'react'
 import { FormattedMessage, getIntl } from 'umi'
-import ColoredCheckboxes from './ColoredCheckboxes'
-import { deleteCalendar } from '@/services/calendar'
 import styles from '../index.less'
+import { ColoredCheckboxes } from '../ui'
 
 interface IPageOption {
   loading: boolean
   calendars: CALENDAR.Calendar[]
+  busEmitter: EventEmitter<Event.Action>
   selectedCalendarChage: (calendarId: string, display: number) => void
   calendarOnEdit: (id: string | undefined) => void
   refresh: () => void
 }
 
-const CalendarList: FC<IPageOption> = ({ loading, calendars, selectedCalendarChage, refresh, calendarOnEdit }) => {
+const CalendarList: FC<IPageOption> = ({ loading, calendars, busEmitter, selectedCalendarChage, refresh, calendarOnEdit }) => {
   const checkboxCheck = (id: string, checked: boolean) => {
     selectedCalendarChage(id, !checked ? 0 : 1)
   }
@@ -41,6 +43,8 @@ const CalendarList: FC<IPageOption> = ({ loading, calendars, selectedCalendarCha
       }
     })
   }
+
+  const calendarOnShare = (id: string) => {}
 
   const _deleteCalendar = (calendarId: string) => {
     deleteCalendar(calendarId)
@@ -79,6 +83,7 @@ const CalendarList: FC<IPageOption> = ({ loading, calendars, selectedCalendarCha
                   onChange={checkboxCheck}
                   onEdit={calendarOnEdit}
                   onDelete={calendarOnDelete}
+                  calendarOnShare={calendarOnShare}
                 ></ColoredCheckboxes>
               )
             })

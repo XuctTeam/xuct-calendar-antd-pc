@@ -2,13 +2,14 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-20 15:08:12
+ * @LastEditTime: 2023-01-29 16:31:28
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 export default {
+  'pages.layouts.userLayout.logo': '楚日历',
   'pages.layouts.userLayout.title': '让您与他们的工作更有效、更轻松',
   'pages.login.accountLogin.tab': '账户密码登录',
   'pages.login.accountLogin.errorMessage': '错误的用户名和密码(admin/ant.design)',

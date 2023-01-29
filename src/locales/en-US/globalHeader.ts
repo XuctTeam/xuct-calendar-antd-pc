@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:19:54
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 14:31:58
+ * @LastEditTime: 2023-01-29 16:44:15
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\globalHeader.ts
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -16,7 +16,7 @@ export default {
   'component.globalHeader.notification': 'Notification',
 
   'component.globalHeader.welcome': 'Welcome',
-  'component.globalHeader.menu.home': 'Home',
+  'component.globalHeader.menu.setting': 'Setting',
   'component.globalHeader.menu.group': 'Group',
   'component.globalHeader.menu.person': 'PersonCenter',
   'component.globalHeader.modify.password': 'Pasword',

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-20 11:25:49
+ * @LastEditTime: 2023-01-29 17:46:14
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
@@ -16,8 +16,7 @@ import { Button, Col, Divider, message, Modal, Row, Select, Spin } from 'antd'
 import dayjs from 'dayjs'
 import { FC } from 'react'
 import { FormattedMessage, useIntl, useModel } from 'umi'
-import { DifferentDay, SameDay } from '../ui'
-import ComponentAttendView from './ComponentAttendView'
+import { ComponentAttendView, DifferentDay, SameDay } from '../ui'
 import styles from './ComponentView.less'
 
 interface IPageOption {

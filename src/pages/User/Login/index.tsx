@@ -2,21 +2,21 @@
  * @Description:
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:40:11
- * @LastEditTime: 2022-12-13 13:55:18
+ * @LastEditTime: 2023-01-29 13:56:04
  * @LastEditors: Derek Xu
  */
+import sessionStore from '@/cache'
+import Footer from '@/components/Footer'
+import { AUTHORIZATION } from '@/constants'
+import { sendLoginSmsCode, usernameLogin } from '@/services/login'
+import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
+import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
+import { useEmotionCss } from '@ant-design/use-emotion-css'
 import { message, Tabs } from 'antd'
 import React, { useState } from 'react'
 import { flushSync } from 'react-dom'
-import Footer from '@/components/Footer'
-import { usernameLogin, sendLoginSmsCode } from '@/services/login'
-import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
-import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
 import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi'
-import sessionStore from '@/cache'
-import { AUTHORIZATION } from '@/constants'
 import styles from './index.less'
-import { useEmotionCss } from '@ant-design/use-emotion-css'
 
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
@@ -108,7 +108,7 @@ const Login: React.FC = () => {
       <div className={styles.content}>
         <LoginForm
           logo={<img alt='logo' src='/logo.png' />}
-          title='楚日历'
+          title={<FormattedMessage id='pages.layouts.userLayout.logo' />}
           subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
           initialValues={{
             autoLogin: true
@@ -195,7 +195,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <MobileOutlined className={styles.prefixIcon} />
                 }}
-                name='mobile'
+                name='phone'
                 placeholder={intl.formatMessage({
                   id: 'pages.login.phoneNumber.placeholder',
                   defaultMessage: '手机号'
@@ -235,6 +235,7 @@ const Login: React.FC = () => {
                     defaultMessage: '获取验证码'
                   })
                 }}
+                phoneName='phone'
                 name='captcha'
                 rules={[
                   {

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-20 09:48:30
+ * @LastEditTime: 2023-01-29 16:15:08
  * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -25,7 +25,6 @@ import UserInfoForm from './UserInfoForm'
 
 export type GlobalHeaderRightProps = {
   menu?: boolean
-  setLoading: (loading: boolean) => void
 }
 
 const Name = () => {
@@ -68,7 +67,7 @@ const AvatarLogo = () => {
   return <Avatar size='small' className={avatarClassName} src={currentUser?.member.avatar} alt='avatar' />
 }
 
-const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) => {
+const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   const [passOpen, setPassOpen] = useState<boolean>(false)
   const [infoOpen, setInfoOpen] = useState<boolean>(false)
   const init = useIntl()
@@ -168,15 +167,12 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, setLoading }) 
   }
 
   const quitLogin = useCallback(async () => {
-    setLoading(true)
     try {
       await logout()
     } catch (err) {
       console.log(err)
-      setLoading(false)
       return
     }
-    setLoading(false)
     flushSync(() => {
       setInitialState((s) => ({ ...s, currentUser: undefined }))
     })

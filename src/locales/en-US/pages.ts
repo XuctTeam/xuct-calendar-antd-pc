@@ -2,14 +2,15 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-19 17:59:01
+ * @LastEditTime: 2023-01-29 14:07:53
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 export default {
-  'pages.layouts.userLayout.title': 'Ant Design is the most influential web design specification in Xihu district',
+  'pages.layouts.userLayout.logo': 'Chu Calendar',
+  'pages.layouts.userLayout.title': 'Make your work with them more effective and easier',
   'pages.login.accountLogin.tab': 'Account Login',
   'pages.login.accountLogin.errorMessage': 'Incorrect username/password(admin/ant.design)',
   'pages.login.failure': 'Login failed, please try again!',

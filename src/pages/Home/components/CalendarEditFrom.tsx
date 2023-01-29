@@ -2,13 +2,15 @@
  * @Author: Derek Xu
  * @Date: 2022-12-07 18:10:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-09 13:15:51
+ * @LastEditTime: 2023-01-29 16:10:25
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarEditFrom.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { FC, useRef } from 'react'
+import { Color } from '@/constants'
+import { getCalendar, saveCalendar, updateCalendar } from '@/services/calendar'
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import {
   DrawerForm,
   ProForm,
@@ -21,10 +23,8 @@ import {
   ProFormTextArea
 } from '@ant-design/pro-components'
 import { message } from 'antd'
-import { FormattedMessage, getIntl } from 'umi'
-import { saveCalendar, updateCalendar, getCalendar } from '@/services/calendar'
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
-import { Color } from '@/constants'
+import { FC, useRef } from 'react'
+import { FormattedMessage, useIntl } from 'umi'
 
 interface IPageOption {
   id?: string
@@ -35,6 +35,7 @@ interface IPageOption {
 
 const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable }) => {
   const formRef = useRef<ProFormInstance>()
+  const init = useIntl()
 
   const getCalendarColor = (): any[] => {
     return Color.map((item) => {
@@ -45,7 +46,7 @@ const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable })
     })
   }
 
-  const alartTyleSelect = [
+  const alarmTyleSelect = [
     {
       value: '0',
       label: <FormattedMessage id={'pages.calendar.add.alarmtype.select.none'} />
@@ -125,7 +126,7 @@ const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable })
             name: '',
             description: '',
             display: 0,
-            alarmType: '',
+            alarmType: '0',
             alarmTime: '',
             color: 'ee0a24'
           }
@@ -148,7 +149,7 @@ const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable })
       onFinish={async (values: any) => {
         try {
           await saveOrUpdate(values)
-          message.success(getIntl().formatMessage({ id: !id ? 'pages.calendar.mananger.add.success' : 'pages.calendar.mananger.edit.success' }))
+          message.success(init.formatMessage({ id: !id ? 'pages.calendar.mananger.add.success' : 'pages.calendar.mananger.edit.success' }))
           refresh()
         } catch (err) {
           console.log(err)
@@ -162,7 +163,7 @@ const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable })
         required
         label={<FormattedMessage id={'pages.calendar.add.name.label'} />}
         tooltip='最长为 24 位'
-        placeholder={getIntl().formatMessage({ id: 'pages.calendar.add.name.placeholder' })}
+        placeholder={init.formatMessage({ id: 'pages.calendar.add.name.placeholder' })}
         rules={[{ required: true, message: <FormattedMessage id={'pages.calendar.add.name.error'} /> }]}
       />
       <ProFormRadio.Group label={<FormattedMessage id={'pages.calendar.add.color.label'} />} name='color' options={getCalendarColor()} />
@@ -181,17 +182,11 @@ const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable })
           unCheckedChildren={<CloseOutlined />}
         />
       </ProForm.Group>
-      <ProFormTextArea
-        width='lg'
-        name='description'
-        label={<FormattedMessage id={'pages.calendar.add.description.label'} />}
-        placeholder={getIntl().formatMessage({ id: 'pages.calendar.add.description.placeholder' })}
-      />
 
       <ProForm.Group key='group'>
         <ProFormSelect
           required
-          options={alartTyleSelect}
+          options={alarmTyleSelect}
           width='sm'
           name='alarmType'
           label={<FormattedMessage id={'pages.calendar.add.alarmtype.label'} />}
@@ -215,6 +210,12 @@ const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable })
           }}
         </ProFormDependency>
       </ProForm.Group>
+      <ProFormTextArea
+        width='lg'
+        name='description'
+        label={<FormattedMessage id={'pages.calendar.add.description.label'} />}
+        placeholder={init.formatMessage({ id: 'pages.calendar.add.description.placeholder' })}
+      />
     </DrawerForm>
   )
 }
