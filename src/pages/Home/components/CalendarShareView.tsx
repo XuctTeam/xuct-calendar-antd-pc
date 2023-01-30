@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-01-29 17:00:56
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 17:49:45
+ * @LastEditTime: 2023-01-30 13:17:51
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarShareView.tsx
  * @Description:
  *
@@ -31,13 +31,14 @@ const CalendarShareView: FC<IPageOption> = ({ busEmitter }) => {
     const { action, data } = values
     if (action !== 'calendar_share') return
     const { calendarId } = data
+    console.log(calendarId)
     setState({
       visable: true
     })
   })
 
   return (
-    <Modal title='Basic Modal' open={state.visable}>
+    <Modal title='Basic Modal' open={state.visable} onCancel={() => setState({ visable: false })} footer={null}>
       <p>Some contents...</p>
       <p>Some contents...</p>
       <p>Some contents...</p>

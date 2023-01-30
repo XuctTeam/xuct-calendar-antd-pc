@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-02 16:39:55
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 17:47:32
+ * @LastEditTime: 2023-01-30 13:18:30
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarList.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -14,7 +14,7 @@ import { ProCard } from '@ant-design/pro-components'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
 import { Button, Empty, message, Modal, Spin } from 'antd'
 import { FC } from 'react'
-import { FormattedMessage, getIntl } from 'umi'
+import { FormattedMessage, getIntl, useIntl } from 'umi'
 import styles from '../index.less'
 import { ColoredCheckboxes } from '../ui'
 
@@ -28,15 +28,16 @@ interface IPageOption {
 }
 
 const CalendarList: FC<IPageOption> = ({ loading, calendars, busEmitter, selectedCalendarChage, refresh, calendarOnEdit }) => {
+  const init = useIntl()
   const checkboxCheck = (id: string, checked: boolean) => {
     selectedCalendarChage(id, !checked ? 0 : 1)
   }
 
   const calendarOnDelete = (id: string) => {
     Modal.confirm({
-      title: getIntl().formatMessage({ id: 'pages.calendar.manager.modal.delete.title' }),
+      title: init.formatMessage({ id: 'pages.calendar.manager.modal.delete.title' }),
       icon: <ExclamationCircleOutlined />,
-      content: getIntl().formatMessage({ id: 'pages.calendar.manager.modal.delete.content' }),
+      content: init.formatMessage({ id: 'pages.calendar.manager.modal.delete.content' }),
       okType: 'danger',
       onOk: () => {
         _deleteCalendar(id)
@@ -44,7 +45,14 @@ const CalendarList: FC<IPageOption> = ({ loading, calendars, busEmitter, selecte
     })
   }
 
-  const calendarOnShare = (id: string) => {}
+  const calendarOnShare = (calendarId: string) => {
+    busEmitter.emit({
+      action: 'calendar_share',
+      data: {
+        calendarId
+      }
+    })
+  }
 
   const _deleteCalendar = (calendarId: string) => {
     deleteCalendar(calendarId)
