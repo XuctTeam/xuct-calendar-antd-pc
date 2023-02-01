@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:45:38
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-29 09:50:13
+ * @LastEditTime: 2023-02-01 18:11:52
  * @FilePath: \xuct-calendar-antd-pc\src\services\calendar.ts
  * @Description:
  *
@@ -78,6 +78,20 @@ export const getCalendar = (calendarId: string) => {
 export const deleteCalendar = (calendarId: string) => {
   return request<API.Response>('/cms/api/app/v1/calendar', {
     method: 'delete',
+    params: {
+      calendarId
+    }
+  })
+}
+
+/**
+ * @description: 日历共享
+ * @param calendarId
+ * @returns
+ */
+export const shareCalendar = (calendarId: string) => {
+  return request<CALENDAR.Calendar>('/cms/api/app/v1/calendar/shared', {
+    method: 'get',
     params: {
       calendarId
     }

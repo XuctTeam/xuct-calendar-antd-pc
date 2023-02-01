@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:03
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-30 13:11:15
+ * @LastEditTime: 2023-02-01 18:15:56
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\ui\ColoredCheckboxes.tsx
  * @Description:
  *
@@ -103,7 +103,7 @@ const ColoredCheckboxes: FC<IPageOption> = ({ id, color, name, display, calendar
   return (
     <div className={styles.cell}>
       <div className={styles.bg}>
-        <ShareAltOutlined style={{ fontSize: '16px' }} onClick={() => calendarOnShare(id)} />
+        <ShareAltOutlined style={{ fontSize: '16px' }} onClick={() => calendarOnShare(calendarId)} />
         <div className={styles.space}></div>
         <Dropdown menu={{ items }} placement='topRight' trigger={['contextMenu']} arrow={{ pointAtCenter: true }}>
           <EllipsisOutlined style={{ fontSize: '20px' }} />
