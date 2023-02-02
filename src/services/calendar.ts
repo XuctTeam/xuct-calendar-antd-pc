@@ -90,7 +90,7 @@ export const deleteCalendar = (calendarId: string) => {
  * @returns
  */
 export const shareCalendar = (calendarId: string) => {
-  return request<CALENDAR.Calendar>('/cms/api/app/v1/calendar/shared', {
+  return request<CALENDAR.Share>('/cms/api/app/v1/calendar/shared', {
     method: 'get',
     params: {
       calendarId

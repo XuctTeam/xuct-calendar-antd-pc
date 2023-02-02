@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 16:31:28
+ * @LastEditTime: 2023-02-02 18:20:56
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -41,6 +41,7 @@ export default {
 
   'pages.component.button.add': '创建日程',
   'pages.calendar.manager.title': '日历',
+  'pages.calendar.share.title': '分享',
   'pages.calendar.today.button': '今日',
   'pages.calendar.manager.button.edit': '编辑',
   'pages.calendar.manager.button.share': '分享',
@@ -50,6 +51,8 @@ export default {
   'pages.calendar.manager.modal.delete.title': '确认删除？',
   'pages.calendar.manager.modal.delete.content': '删除后日历中的日程将会被删除',
   'pages.calendar.mananger.delete.success': '删除成功',
+  'pages.calendar.manager.share.or': '或',
+  'pages.calendar.manager.share.button': '复制链接',
 
   'pages.person.center.avatar.button': '保存',
   'pages.calendar.mananger.component.add.success': '新增事项成功',

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-01 23:48:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-27 16:30:51
+ * @LastEditTime: 2023-02-02 18:16:13
  * @FilePath: \xuct-calendar-antd-pc\src\types\calendar.d.ts
  * @Description:
  *
@@ -65,5 +65,10 @@ declare namespace CALENDAR {
     avatar?: string
     memberId: string
     status: number
+  }
+
+  type Share = {
+    name: string
+    shortUrl: string
   }
 }
