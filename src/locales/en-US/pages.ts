@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-02 18:19:54
+ * @LastEditTime: 2023-02-16 19:10:31
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -53,6 +53,7 @@ export default {
   'pages.calendar.mananger.delete.success': 'Delete Success',
   'pages.calendar.manager.share.or': 'Or',
   'pages.calendar.manager.share.button': 'Copy link',
+  'pages.calendar.manager.share.copy.success': 'Copy Success',
 
   'pages.person.center.avatar.button': 'Save',
   'pages.calendar.mananger.component.add.success': 'Add Component Success',

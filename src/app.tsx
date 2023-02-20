@@ -2,26 +2,26 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-19 17:37:42
+ * @LastEditTime: 2023-02-20 21:05:48
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { ConfigProvider, theme } from 'antd'
 import store from '@/cache'
-import defaultSettings from '../config/defaultSettings'
-import { Settings as LayoutSettings } from '@ant-design/pro-components'
 import { userInfo } from '@/services/user'
-import { requestConfig } from './requestConfig'
-import { history } from 'umi'
+import { Settings as LayoutSettings } from '@ant-design/pro-components'
+import { ConfigProvider } from 'antd'
 import 'antd/dist/reset.css'
+import { history } from 'umi'
+import defaultSettings from '../config/defaultSettings'
+import { requestConfig } from './requestConfig'
 
 /**
  * v5.0日期类国际化
  */
 import dayjs from 'dayjs'
-import 'dayjs/locale/zh-cn'
 import 'dayjs/locale/en'
+import 'dayjs/locale/zh-cn'
 import updateLocale from 'dayjs/plugin/updateLocale'
 import React from 'react'
 import { getDayJsLocal, isChinese } from './utils/calendar'
@@ -29,6 +29,7 @@ dayjs.extend(updateLocale)
 
 //const isDev = process.env.NODE_ENV === 'development'
 const loginPath = '/user/login'
+const findPassPath = '/user/findpass'
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -53,7 +54,7 @@ export async function getInitialState(): Promise<{
     return undefined
   }
   // 如果不是登录页面，执行
-  if (window.location.pathname !== loginPath) {
+  if (!(window.location.pathname === loginPath || window.location.pathname === findPassPath)) {
     const currentUser = await fetchUserInfo()
     return {
       fetchUserInfo,

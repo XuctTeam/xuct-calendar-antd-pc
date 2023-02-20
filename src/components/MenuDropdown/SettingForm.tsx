@@ -2,8 +2,8 @@
  * @Author: Derek Xu
  * @Date: 2022-12-14 14:26:04
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-21 17:48:40
- * @FilePath: \xuct-calendar-antd-pc\src\layouts\components\SettingForm.tsx
+ * @LastEditTime: 2023-02-16 19:57:53
+ * @FilePath: \xuct-calendar-antd-pc\src\components\MenuDropdown\SettingForm.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -57,7 +57,7 @@ const SettingForm: FC<IPageOption> = ({ open, setOpen, dispatch }) => {
   }
 
   return (
-    <Modal open={open} title={<FormattedMessage id='pages.setting.title' />} footer={null} onCancel={setOpen}>
+    <Modal open={open} title={<FormattedMessage id='pages.setting.title' />} footer={null} onCancel={setOpen} centered>
       <div className={styles.cell}>
         <span>
           <FormattedMessage id='pages.person.center.lanuage.title' />

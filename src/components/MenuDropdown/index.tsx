@@ -2,71 +2,99 @@
  * @Author: Derek Xu
  * @Date: 2023-01-29 16:33:09
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 16:48:24
+ * @LastEditTime: 2023-02-17 06:47:27
  * @FilePath: \xuct-calendar-antd-pc\src\components\MenuDropdown\index.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
-import { AppstoreAddOutlined, SettingOutlined, TeamOutlined } from '@ant-design/icons'
+import { AppstoreAddOutlined, createFromIconfontCN } from '@ant-design/icons'
 import { useSetState } from 'ahooks'
-import { Dropdown, MenuProps } from 'antd'
-import { FormattedMessage } from 'umi'
+import { Popover, Space } from 'antd'
+import { FC } from 'react'
+import { FormattedMessage, Link } from 'umi'
 import styles from './index.less'
 import SettingForm from './SettingForm'
 
+interface IPageOption {}
+
 interface State {
   visable: boolean
+  menuVisable: boolean
 }
 
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: <FormattedMessage id='component.globalHeader.menu.setting' />,
-    icon: <SettingOutlined />
-  },
-  {
-    key: '2',
-    label: <FormattedMessage id='component.globalHeader.menu.group' />,
-    icon: <TeamOutlined />
-  },
-  {
-    key: '3',
-    label: 'Item 3',
-    icon: <SettingOutlined />
-  }
-]
+const IconFont = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/c/font_2980920_rdoc7lrrkn.js'
+})
 
-export default function index() {
+const MenuDropdown: FC<IPageOption> = () => {
   const [state, setSetate] = useSetState<State>({
-    visable: false
+    visable: false,
+    menuVisable: false
   })
 
-  const onClick: MenuProps['onClick'] = ({ key }) => {
+  const itemClick = (key: string) => {
     //message.info(`Click on item ${key}`)
     switch (key) {
       case '1':
         setSetate({
-          visable: true
+          visable: true,
+          menuVisable: false
         })
         break
     }
   }
 
+  const menu = () => {
+    return (
+      <div className={styles.menu_content}>
+        <ul>
+          <li className={styles.item} onClick={() => itemClick('1')}>
+            <Space>
+              <IconFont type='page-icon-shezhi' />
+              <span>
+                <FormattedMessage id='component.globalHeader.menu.setting' />
+              </span>
+            </Space>
+          </li>
+          <li className={styles.item}>
+            <Link target='_blank' to={'/group'} rel='opener'>
+              <Space>
+                <IconFont type='page-icon-zu5889' />
+                <span>
+                  <FormattedMessage id='component.globalHeader.menu.group' />
+                </span>
+              </Space>
+            </Link>
+          </li>
+          <li className={styles.item}>123123</li>
+        </ul>
+      </div>
+    )
+  }
+
   return (
     <>
-      <Dropdown
-        trigger={['click']}
-        placement='bottom'
-        menu={{
-          items,
-          onClick
+      <Popover
+        placement='bottomRight'
+        trigger='click'
+        content={menu}
+        open={state.menuVisable}
+        arrow={false}
+        onOpenChange={(e) => {
+          setSetate({ menuVisable: e })
         }}
       >
         <div className={styles.menu}>
-          <AppstoreAddOutlined />
+          <AppstoreAddOutlined
+            onClick={() =>
+              setSetate({
+                menuVisable: !state.menuVisable
+              })
+            }
+          />
         </div>
-      </Dropdown>
+      </Popover>
       <SettingForm
         open={state.visable}
         setOpen={() => {
@@ -78,3 +106,5 @@ export default function index() {
     </>
   )
 }
+
+export default MenuDropdown

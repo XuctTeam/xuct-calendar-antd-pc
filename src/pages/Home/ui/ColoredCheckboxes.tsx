@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-22 10:39:03
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-01 18:15:56
+ * @LastEditTime: 2023-02-16 19:56:33
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\ui\ColoredCheckboxes.tsx
  * @Description:
  *
@@ -71,14 +71,14 @@ const ColoredCheckboxes: FC<IPageOption> = ({ id, color, name, display, calendar
         </a>
       )
     },
-    {
-      key: '2',
-      label: (
-        <a target='_blank' rel='noopener noreferrer' href='https://www.aliyun.com'>
-          <FormattedMessage id='pages.calendar.manager.button.share' />
-        </a>
-      )
-    },
+    // {
+    //   key: '2',
+    //   label: (
+    //     <a target='_blank' rel='noopener noreferrer' href='https://www.aliyun.com'>
+    //       <FormattedMessage id='pages.calendar.manager.button.share' />
+    //     </a>
+    //   )
+    // },
     {
       key: '3',
       label: (

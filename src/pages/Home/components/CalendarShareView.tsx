@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-01-29 17:00:56
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-02 18:20:31
+ * @LastEditTime: 2023-02-16 19:11:11
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarShareView.tsx
  * @Description:
  *
@@ -13,7 +13,8 @@ import { FormattedMessage } from '@/.umi/plugin-locale'
 import { shareCalendar } from '@/services/calendar'
 import { useSetState } from 'ahooks'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
-import { Button, Divider, Input, Modal, Space } from 'antd'
+import { Button, Divider, Input, message, Modal, Space } from 'antd'
+import copy from 'copy-to-clipboard'
 import { FC } from 'react'
 import { useIntl } from 'umi'
 
@@ -61,6 +62,11 @@ const CalendarShareView: FC<IPageOption> = ({ busEmitter }) => {
       })
   }
 
+  const copyUrl = () => {
+    copy(state.shortUrl)
+    message.success(init.formatMessage({ id: 'pages.calendar.manager.share.copy.success' }))
+  }
+
   return (
     <Modal
       title={init.formatMessage({ id: 'pages.calendar.share.title' }) + `${state.title}`}
@@ -73,7 +79,7 @@ const CalendarShareView: FC<IPageOption> = ({ busEmitter }) => {
       </Divider>
       <Space>
         <Input value={state.shortUrl} disabled style={{ width: '300px' }} />
-        <Button type='primary'>
+        <Button type='primary' onClick={copyUrl}>
           <FormattedMessage id='pages.calendar.manager.share.button' />
         </Button>
       </Space>

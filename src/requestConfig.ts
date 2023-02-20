@@ -9,6 +9,9 @@ const requestInterceptor = (url: any, options: any): any => {
   if (!match) {
     /* 非登录接口都要通过token请求 */
     if (!url.includes('/oauth2/token')) {
+      const t = store.getItem('access_token')
+      console.log(3333333333333333)
+      console.log(t)
       options.headers['Authorization'] = store.getItem('access_token')
     } else {
       options.headers['Authorization'] = 'Basic ' + `${APP_CLIENT}`

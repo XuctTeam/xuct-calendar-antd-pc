@@ -2,7 +2,7 @@
  * @Description:
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:40:11
- * @LastEditTime: 2023-01-29 13:56:04
+ * @LastEditTime: 2023-02-18 16:39:25
  * @LastEditors: Derek Xu
  */
 import sessionStore from '@/cache'
@@ -15,7 +15,7 @@ import { useEmotionCss } from '@ant-design/use-emotion-css'
 import { message, Tabs } from 'antd'
 import React, { useState } from 'react'
 import { flushSync } from 'react-dom'
-import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi'
+import { FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi'
 import styles from './index.less'
 
 const ActionIcons = () => {
@@ -258,13 +258,14 @@ const Login: React.FC = () => {
             <ProFormCheckbox noStyle name='autoLogin'>
               <FormattedMessage id='pages.login.rememberMe' defaultMessage='自动登录' />
             </ProFormCheckbox>
-            <a
+            <Link
+              to={{ pathname: '/user/findpass' }}
               style={{
                 float: 'right'
               }}
             >
               <FormattedMessage id='pages.login.forgotPassword' defaultMessage='忘记密码' />
-            </a>
+            </Link>
           </div>
         </LoginForm>
       </div>

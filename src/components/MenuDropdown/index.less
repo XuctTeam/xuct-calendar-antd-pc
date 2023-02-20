@@ -1,5 +1,5 @@
 .menu {
-  width: 40px;
+  width: 30px;
   height: 40px;
   display: flex;
   align-items: center;
@@ -10,4 +10,40 @@
 .menu:hover {
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.025);
+}
+
+.menu_content {
+  width: 200px;
+  height: 300px;
+
+  ul {
+    padding-inline-start: 4px !important;
+  }
+
+  .item {
+    font-weight: normal;
+    line-height: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 4px;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    span {
+      font-size: 16px;
+      color: black;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+      margin-top: 16px;
+    }
+  }
+
+  .item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
 }

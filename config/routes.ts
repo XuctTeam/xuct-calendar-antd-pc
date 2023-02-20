@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-12-12 14:33:58
+ * @LastEditTime: 2023-02-20 20:58:29
  * @FilePath: \xuct-calendar-antd-pc\config\routes.ts
  * @Description:
  *
@@ -27,9 +27,22 @@ export default [
         name: 'login',
         path: '/user/login',
         component: './User/Login'
+      },
+      {
+        name: 'findpass',
+        path: '/user/findpass',
+        component: './User/Findpass'
       }
     ]
   },
+
+  {
+    path: '/group',
+    name: 'group',
+    Comment: './Group',
+    layout: false
+  },
+  
   {
     path: '/home',
     name: 'home',
