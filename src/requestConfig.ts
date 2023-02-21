@@ -1,7 +1,7 @@
+import store from '@/cache'
 import { notification } from 'antd'
 import { getIntl, RequestConfig } from 'umi'
 import { SECURITY_OAUTH2_IGNORE_URL } from './constants/url'
-import store from '@/cache'
 
 /** 请求拦截 */
 const requestInterceptor = (url: any, options: any): any => {
@@ -9,12 +9,9 @@ const requestInterceptor = (url: any, options: any): any => {
   if (!match) {
     /* 非登录接口都要通过token请求 */
     if (!url.includes('/oauth2/token')) {
-      const t = store.getItem('access_token')
-      console.log(3333333333333333)
-      console.log(t)
       options.headers['Authorization'] = store.getItem('access_token')
     } else {
-      options.headers['Authorization'] = 'Basic ' + `${APP_CLIENT}`
+      options.headers['Authorization'] = 'Basic ' + process.env.APP_CLIENT
     }
   }
   return {
@@ -109,7 +106,7 @@ const errorHandler = (error: any, opts: any) => {
  */
 export const requestConfig: RequestConfig = {
   timeout: 3000, //请求超时时间
-  baseURL: `${API_URL}`,
+  baseURL: process.env.API_URL,
   // prefix: process.env.NODE_ENV === "production" ? config.baseurl :'notification/', // 统一的请求前缀
 
   // 自定义端口规范(可以对后端返回的数据格式按照我们的需求进行处理)

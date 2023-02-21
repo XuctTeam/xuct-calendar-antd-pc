@@ -9,7 +9,7 @@
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { updatePassword } from '@/services/user'
-import { checkPassowrd } from '@/utils'
+import stringUtils from '@/utils/stringutils'
 import { ModalForm, ProFormInstance, ProFormText } from '@ant-design/pro-components'
 import { message } from 'antd'
 import { useRef } from 'react'
@@ -28,7 +28,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
     if (!value) {
       return callback(getIntl().formatMessage({ id: 'pages.modify.password.require' }))
     }
-    const result = checkPassowrd(value)
+    const result = stringUtils.checkPassowrd(value)
     if (!result) {
       return callback(getIntl().formatMessage({ id: 'pages.modify.password.format' }))
     }

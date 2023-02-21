@@ -1,10 +1,40 @@
 .container {
+  position: absolute;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: auto;
+  height: 100%;
+  background: #fff;
+  background-image: linear-gradient(-45deg, #fff, #f0f2f5, #fff, #dbdee2, #fff, #dbdee2, #f0f2f5, #fff);
+  overflow: hidden;
   //background-image: url('@/assets/login/login_bg.png');
-  background-repeat: no-repeat;
+  //background-repeat: no-repeat;
+}
+
+.container::before {
+  content: '';
+  display: block;
+  width: 60vw;
+  height: 60vw;
+  border-radius: 60vw;
+  position: absolute;
+  left: -30vw;
+  top: -30vw;
+  box-shadow: rgb(0 0 0 / 20%) 0 0 10vw;
+  background-image: linear-gradient(90deg, #d0d5da, #d0d5da, #fff);
+}
+
+.container::after {
+  content: '';
+  display: block;
+  width: 44vw;
+  height: 44vw;
+  border-radius: 44vw;
+  position: absolute;
+  right: -22vw;
+  bottom: -22vw;
+  box-shadow: rgb(0 0 0 / 20%) 0 0 10vw;
+  background-image: linear-gradient(#fff, #d0d5da, #d0d5da);
 }
 
 .lang {
@@ -21,9 +51,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  //padding: 32px 0;
-  align-items: flex-end;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon {

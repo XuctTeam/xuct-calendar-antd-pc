@@ -9,39 +9,9 @@ body,
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: #fff;
-  font-size: 14px;
-  overflow: hidden;
-  background-image: linear-gradient(-45deg, #fff, #f0f2f5, #fff, #dbdee2, #fff, #dbdee2, #f0f2f5, #fff);
-}
-
-body::before {
-  content: '';
-  display: block;
-  width: 60vw;
-  height: 60vw;
-  border-radius: 60vw;
-  position: absolute;
-  left: -30vw;
-  top: -30vw;
-  box-shadow: rgb(0 0 0 / 20%) 0 0 10vw;
-  background-image: linear-gradient(90deg, #d0d5da, #d0d5da, #fff);
-}
-
-body::after {
-  content: '';
-  display: block;
-  width: 44vw;
-  height: 44vw;
-  border-radius: 44vw;
-  position: absolute;
-  right: -22vw;
-  bottom: -22vw;
-  box-shadow: rgb(0 0 0 / 20%) 0 0 10vw;
-  background-image: linear-gradient(#fff, #d0d5da, #d0d5da);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /*滚动条的宽度*/
@@ -87,12 +57,6 @@ canvas {
   display: block;
 }
 
-body {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 ul,
 ol {
   list-style: none;
@@ -118,7 +82,7 @@ ol {
 /* 业务系统覆盖antd 样式 */
 .ant-pro-form-login-container {
   justify-content: center;
-  color: #fff;
+  //color: #fff;
   //width: 420px;
   //margin-right: 200px;
 
@@ -148,19 +112,6 @@ ol {
   align-items: center;
   margin-top: 10px;
 }
-
-.ant-pro-form-login-main {
-  //background-image: url('@/assets/login/form_bg.png');
-  // background-size: 100% 100%;
-  // border-radius: 10px;
-  // box-shadow: 0 2px 8px 0 rgba(7, 17, 27, 0.06);
-  // height: 380px !important;
-  // padding: 20px;
-}
-
-// .ant-pro-form-login-desc {
-//   color: #fff;
-// }
 
 .ant-layout .ant-layout-header {
   padding-inline: 10px !important;

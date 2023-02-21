@@ -2,12 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:10:12
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-20 21:05:48
+ * @LastEditTime: 2023-02-21 18:16:35
  * @FilePath: \xuct-calendar-antd-pc\src\app.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import store from '@/cache'
+import { NP_AUTH_URL } from '@/constants/url'
 import { userInfo } from '@/services/user'
 import { Settings as LayoutSettings } from '@ant-design/pro-components'
 import { ConfigProvider } from 'antd'
@@ -29,7 +30,6 @@ dayjs.extend(updateLocale)
 
 //const isDev = process.env.NODE_ENV === 'development'
 const loginPath = '/user/login'
-const findPassPath = '/user/findpass'
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -53,8 +53,9 @@ export async function getInitialState(): Promise<{
     }
     return undefined
   }
+  const _authIndex = NP_AUTH_URL.findIndex((noAuthUrl) => noAuthUrl === location.pathname)
   // 如果不是登录页面，执行
-  if (!(window.location.pathname === loginPath || window.location.pathname === findPassPath)) {
+  if (_authIndex === -1) {
     const currentUser = await fetchUserInfo()
     return {
       fetchUserInfo,

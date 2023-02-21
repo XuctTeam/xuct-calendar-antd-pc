@@ -80,31 +80,3 @@ const base64_encode = (str: string) => {
   }
   return string
 }
-
-/**
- * 正则判断电话号码
- * @param phone
- * @returns
- */
-export const checkMobile = (phone: string): boolean => {
-  return /^1[3|4|5|8][0-9]\d{4,8}$/.test(phone)
-}
-
-/**
- * 正则验证邮箱
- * @param email
- * @returns
- */
-export const checkEmail = (email: string): boolean => {
-  return /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/.test(email)
-}
-
-/**
- * 正则校验密码
- *
- * @param password
- * @returns
- */
-export const checkPassowrd = (password: string): boolean => {
-  return /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}$/.test(password)
-}

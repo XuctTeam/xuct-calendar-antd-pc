@@ -2,17 +2,18 @@
  * @Description:
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:40:11
- * @LastEditTime: 2023-02-18 16:39:25
+ * @LastEditTime: 2023-02-21 17:36:49
  * @LastEditors: Derek Xu
  */
 import sessionStore from '@/cache'
+import CaptchaInput from '@/components/CaptchaInput/CaptchaInput'
 import Footer from '@/components/Footer'
 import { AUTHORIZATION } from '@/constants'
 import { sendLoginSmsCode, usernameLogin } from '@/services/login'
 import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css'
-import { message, Tabs } from 'antd'
+import { Form, message, Tabs } from 'antd'
 import React, { useState } from 'react'
 import { flushSync } from 'react-dom'
 import { FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi'
@@ -184,6 +185,22 @@ const Login: React.FC = () => {
                   }
                 ]}
               />
+              <Form.Item
+                name='captchaComp'
+                rules={[
+                  {
+                    validateTrigger: 'onBlur',
+                    validator: async (rule, value) => {
+                      // console.log(rule)
+                      // if (stringUtil.isEmpty()) {
+                      //   throw new Error('请输入验证码!')
+                      // }
+                    }
+                  }
+                ]}
+              >
+                <CaptchaInput />
+              </Form.Item>
             </>
           )}
 

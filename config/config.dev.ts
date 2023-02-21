@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 14:55:59
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-30 17:09:19
+ * @LastEditTime: 2023-02-21 17:53:49
  * @FilePath: \xuct-calendar-antd-pc\config\config.dev.ts
  * @Description:
  *
@@ -16,8 +16,15 @@ import { defineConfig } from 'umi'
  */
 export default defineConfig({
   define: {
-    APP_CLIENT: 'YXBwOmFwcA==',
-    API_URL: '/rest', // API地址
-    IMAGE_URL: 'https://images.xuct.net.cn/'
+    'process.env': {
+      NODE_ENV: 'dev',
+      UMI_ENV: 'dev',
+      // 客户端认证
+      APP_CLIENT: 'YXBwOmFwcA==',
+      /* SERVICE服务地址 */
+      API_URL: '/rest',
+      /* 图片服务器地址 */
+      IMAGE_URL: 'https://images.xuct.net.cn/'
+    }
   }
 })
