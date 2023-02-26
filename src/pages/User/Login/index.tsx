@@ -1,23 +1,39 @@
 /*
+ * @Author: Derek Xu
+ * @Date: 2023-02-22 09:10:44
+ * @LastEditors: Derek Xu
+ * @LastEditTime: 2023-02-26 18:09:32
+ * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Login\index.tsx
+ * @Description:
+ * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
+ */
+/*
  * @Description:
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:40:11
- * @LastEditTime: 2023-02-21 17:36:49
+ * @LastEditTime: 2023-02-24 14:34:46
  * @LastEditors: Derek Xu
  */
 import sessionStore from '@/cache'
-import CaptchaInput from '@/components/CaptchaInput/CaptchaInput'
+import CaptchaInput from '@/components/CaptchaInput'
 import Footer from '@/components/Footer'
 import { AUTHORIZATION } from '@/constants'
 import { sendLoginSmsCode, usernameLogin } from '@/services/login'
+import stringUtil from '@/utils/stringutils'
 import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css'
-import { Form, message, Tabs } from 'antd'
-import React, { useState } from 'react'
+import { useSetState } from 'ahooks'
+import { Alert, Form, message, Tabs } from 'antd'
+import React, { useEffect, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi'
 import styles from './index.less'
+
+interface ILoginType {
+  status: number
+  error: string
+}
 
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
@@ -65,11 +81,39 @@ const Lang = () => {
   )
 }
 
+const LoginMessage: React.FC<{
+  content: string
+}> = ({ content }) => {
+  return (
+    <Alert
+      style={{
+        marginBottom: 24
+      }}
+      message={content}
+      type='error'
+      showIcon
+    />
+  )
+}
+
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account')
   const { initialState, setInitialState } = useModel('@@initialState')
+  const timerRef = useRef<number>(0)
+  const [loginType, setLoginType] = useSetState<ILoginType>({
+    status: 0,
+    error: ''
+  })
 
   const intl = useIntl()
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current > 0) {
+        window.clearTimeout(timerRef.current)
+      }
+    }
+  }, [])
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.()
@@ -98,9 +142,36 @@ const Login: React.FC = () => {
         const urlParams = new URL(window.location.href).searchParams
         history.push(urlParams.get('redirect') || '/')
       }, 1500)
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
+      const { response } = error
+      _setErrorMessage(response)
     }
+  }
+
+  const _resetErrorMessage = () => {
+    if (timerRef.current > 0) {
+      window.clearTimeout(timerRef.current)
+    }
+    setLoginType({
+      status: 0
+    })
+  }
+
+  const _setErrorMessage = (response: any) => {
+    const { data } = response
+    const { message } = data
+
+    setLoginType({
+      status: 1,
+      error: message
+    })
+
+    timerRef.current = window.setTimeout(() => {
+      setLoginType({
+        status: 0
+      })
+    }, 5000)
   }
 
   return (
@@ -116,6 +187,7 @@ const Login: React.FC = () => {
           }}
           actions={[<FormattedMessage key='loginWith' id='pages.login.loginWith' defaultMessage='其他登录方式' />, <ActionIcons key='icons' />]}
           onFinish={async (values) => {
+            _resetErrorMessage()
             await handleSubmit(values as API.LoginParams)
           }}
         >
@@ -140,15 +212,7 @@ const Login: React.FC = () => {
               }
             ]}
           />
-          {/* 
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)'
-              })}
-            />
-          )} */}
+          {loginType.status === 1 && type === 'account' && <LoginMessage content={loginType.error} />}
           {type === 'account' && (
             <>
               <ProFormText
@@ -157,10 +221,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user'
-                })}
+                placeholder={intl.formatMessage({ id: 'pages.login.username.placeholder' })}
                 rules={[
                   {
                     required: true,
@@ -170,14 +231,8 @@ const Login: React.FC = () => {
               />
               <ProFormText.Password
                 name='password'
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined className={styles.prefixIcon} />
-                }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.password.placeholder',
-                  defaultMessage: '密码: ant.design'
-                })}
+                fieldProps={{ size: 'large', prefix: <LockOutlined className={styles.prefixIcon} /> }}
+                placeholder={intl.formatMessage({ id: 'pages.login.password.placeholder' })}
                 rules={[
                   {
                     required: true,
@@ -186,15 +241,15 @@ const Login: React.FC = () => {
                 ]}
               />
               <Form.Item
-                name='captchaComp'
+                name='captcha'
                 rules={[
                   {
                     validateTrigger: 'onBlur',
                     validator: async (rule, value) => {
-                      // console.log(rule)
-                      // if (stringUtil.isEmpty()) {
-                      //   throw new Error('请输入验证码!')
-                      // }
+                      console.log(rule)
+                      if (!value || stringUtil.isEmpty(value.captchaCode)) {
+                        throw new Error(intl.formatMessage({ id: 'pages.login.img.captcha.required' }))
+                      }
                     }
                   }
                 ]}
@@ -204,7 +259,7 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {/* {status === 'error' && loginType === 'mobile' && <LoginMessage content='验证码错误' />} */}
+          {loginType.status === 1 && type === 'mobile' && <LoginMessage content='验证码错误' />}
           {type === 'mobile' && (
             <>
               <ProFormText
@@ -242,15 +297,9 @@ const Login: React.FC = () => {
                 })}
                 captchaTextRender={(timing, count) => {
                   if (timing) {
-                    return `${count} ${intl.formatMessage({
-                      id: 'pages.getCaptchaSecondText',
-                      defaultMessage: '获取验证码'
-                    })}`
+                    return `${count} ${intl.formatMessage({ id: 'pages.getCaptchaSecondText' })}`
                   }
-                  return intl.formatMessage({
-                    id: 'pages.login.phoneLogin.getVerificationCode',
-                    defaultMessage: '获取验证码'
-                  })
+                  return intl.formatMessage({ id: 'pages.login.phoneLogin.getVerificationCode' })
                 }}
                 phoneName='phone'
                 name='captcha'
@@ -262,9 +311,29 @@ const Login: React.FC = () => {
                 ]}
                 onGetCaptcha={async (phone) => {
                   const result = await sendLoginSmsCode(phone)
-                  if (result.code === 200) message.success('获取验证码成功！验证码为：1234')
+                  debugger
+                  if (result.code === 200) {
+                    message.success('获取验证码成功！验证码为：1234')
+                  }
                 }}
               />
+
+              <ProFormText
+                name='username'
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined className={'prefixIcon'} />
+                }}
+                placeholder={'用户名: admin or user'}
+                rules={[
+                  {
+                    required: true,
+                    message: '请输入用户名!'
+                  }
+                ]}
+              />
+
+              {/* <ProFormSlider name='slider' /> */}
             </>
           )}
           <div

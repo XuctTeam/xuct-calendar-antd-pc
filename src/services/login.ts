@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 09:37:41
  * @LastEditors: Derek Xu
- * @LastEditTime: 2022-11-23 18:28:57
+ * @LastEditTime: 2023-02-26 16:37:23
  * @FilePath: \xuct-calendar-antd-pc\src\services\login.ts
  * @Description:
  *
@@ -54,18 +54,19 @@ const _loginByUsername = (body: API.LoginParams, options?: { [key: string]: any 
     username: user.username,
     password: user.password
   })
-  return request<API.LoginResult>(`/uaa/oauth2/token?grant_type=app&scope=server&login_type=password`, {
+  return request<API.LoginResult>(`/uaa/oauth2/token?grant_type=password&scope=server&code=${body.captcha?.captchaCode}&randomStr=${body.captcha?.captchaKey}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
+    skipErrorHandler: true,
     data: dataObj,
     ...(options || {})
   })
 }
 
 const _loginByPhone = (body: API.LoginPhoneParam) => {
-  return request<API.LoginResult>(`/uaa/oauth2/token?grant_type=app&scope=server&phone=${body.mobile}&code=${body.captcha}&login_type=phone`, {})
+  return request<API.LoginResult>(`/uaa/oauth2/token?grant_type=phone&scope=server&phone=${body.mobile}&code=${body.captcha?.captchaCode}`, {})
 }
 
 export { usernameLogin }

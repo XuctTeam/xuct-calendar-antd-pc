@@ -2,25 +2,32 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 09:37:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-05 10:46:52
+ * @LastEditTime: 2023-02-26 16:34:46
  * @FilePath: \xuct-calendar-antd-pc\src\types\api.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 declare namespace API {
+
+  type UserNameCatcha = {
+    captchaCode: string,
+    captchaKey: string
+  }
+
   type LoginParams = {
     username?: string
     password?: string
     autoLogin?: boolean
-    type?: string
+    type?: string,
+    captcha?: UserNameCatcha 
   }
 
   type LoginPhoneParam = {
     autoLogin?: boolean
-    captcha?: string
     mobile?: string
-    type?: string
+    type?: string,
+    captcha?: UserNameCatcha
   }
 
   type LoginResult = {

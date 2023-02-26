@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-16 19:10:50
+ * @LastEditTime: 2023-02-25 17:11:06
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -18,7 +18,9 @@ export default {
   'pages.login.username.placeholder': '请输入用户名',
   'pages.login.username.required': '用户名是必填项！',
   'pages.login.password.placeholder': '请输入密码',
-  'pages.login.password.required': '密码是必填项！',
+  'pages.login.password.required': '请输入密码！',
+  'pages.login.img.captcha.placeholder': '请输入验证码',
+  'pages.login.img.captcha.required': '请输入验证码！',
   'pages.login.phoneLogin.tab': '手机号登录',
   'pages.login.phoneLogin.errorMessage': '验证码错误',
   'pages.login.phoneNumber.placeholder': '请输入手机号！',
@@ -69,5 +71,20 @@ export default {
   'pages.component.view.button.delete': '删除',
   'pages.component.view.delete.title': '删除事项',
   'pages.component.view.delete.content': '是否删除事项',
-  'pages.component.view.delete.success': '删除成功'
+  'pages.component.view.delete.success': '删除成功',
+
+  //找回密码
+  'pages.findpass.find.pass': '找回密码',
+  'pages.findpass.reset.pass': '重置密码',
+  'pages.findpass.find.success': '重置成功',
+  'pages.findpass.next': '下一步',
+  'pages.findpass.previous': '上一步',
+  'pages.findpass.toLogin': '登录',
+  'pages.findpass.username.placeholder': '请输入邮箱或手机号',
+  'pages.findpass.username.required': '邮箱或手机号不能为空',
+  'pages.findpass.captcha.placeholder': '请输入验证码',
+  'pages.findpass.captcha.required': '验证码不能为空',
+  'pages.findpass.get.captcha.button': '获取验证码'
+  
+  
 }

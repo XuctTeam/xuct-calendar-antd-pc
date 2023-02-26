@@ -12,7 +12,7 @@ export default {
   'code.message.error': '错误信息',
   'code.message.bad.request': '业务系统错误',
   'code.message.unauthorized': '访问权限错误',
-  'code.message.request.params.error': '请求参数错误',
+  'code.message.login.captcha.error': '验证码错误',
   'code.message.not.found': '请求参数错误',
   'code.message.token.expire': '登录已过期',
   'code.message.service.error': '服务器异常',

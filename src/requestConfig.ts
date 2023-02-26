@@ -34,7 +34,7 @@ const codeMessage: any = {
   400: 'code.message.bad.request',
   401: 'code.message.unauthorized',
   424: 'code.message.token.expire',
-  428: 'code.message.request.params.error',
+  428: 'code.message.login.captcha.error',
   404: 'code.message.not.found',
   500: 'code.message.service.error',
   502: 'code.message.getway.error',

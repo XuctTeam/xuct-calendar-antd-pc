@@ -4,12 +4,12 @@ export default class stringUtils {
    * @param str
    * @returns {boolean}
    */
-  static isNull(str: string) {
+  static isEmpty(str: string) {
     return str == null || str.length === 0 || str === ''
   }
 
   static isNotEmpty(str: string) {
-    return !this.isNull(str)
+    return !this.isEmpty(str)
   }
 
   /**

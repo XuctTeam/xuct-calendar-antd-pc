@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-16 19:10:31
+ * @LastEditTime: 2023-02-25 17:11:26
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -17,8 +17,10 @@ export default {
   'pages.login.success': 'Login successful!',
   'pages.login.username.placeholder': 'Username: admin or user',
   'pages.login.username.required': 'Please input your username!',
-  'pages.login.password.placeholder': 'Password: ant.design',
+  'pages.login.password.placeholder': 'Password',
   'pages.login.password.required': 'Please input your password!',
+  'pages.login.img.captcha.placeholder': 'Captcha',
+  'pages.login.img.captcha.required': 'Please input Image Captcha!',
   'pages.login.phoneLogin.tab': 'Phone Login',
   'pages.login.phoneLogin.errorMessage': 'Verification Code Error',
   'pages.login.phoneNumber.placeholder': 'Phone Number',
@@ -69,5 +71,18 @@ export default {
   'pages.component.view.button.delete': 'Del',
   'pages.component.view.delete.title': 'DelEvent',
   'pages.component.view.delete.content': 'Confirm Delete Event',
-  'pages.component.view.delete.success': 'Delete Success'
+  'pages.component.view.delete.success': 'Delete Success',
+
+  //找回密码
+  'pages.findpass.find.pass': 'Find Pass',
+  'pages.findpass.reset.pass': 'Reset Pass',
+  'pages.findpass.find.success': 'Find Pass Success',
+  'pages.findpass.next': 'Next',
+  'pages.findpass.previous': 'Previous',
+  'pages.findpass.toLogin': 'Login',
+  'pages.findpass.username.placeholder': 'please input email or phone',
+  'pages.findpass.username.required': 'email or phone can not empty!',
+  'pages.findpass.captcha.placeholder': 'please input captcha',
+  'pages.findpass.captcha.required': 'Captcha can not empty!',
+  'pages.findpass.get.captcha.button': 'Get Captcha'
 }
