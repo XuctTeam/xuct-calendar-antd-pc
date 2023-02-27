@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-25 17:11:06
+ * @LastEditTime: 2023-02-27 21:08:04
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -35,6 +35,8 @@ export default {
   'pages.login.submit': '登录',
   'pages.login.loginWith': '其他登录方式 :',
   'pages.login.registerAccount': '注册账户',
+  'pages.login.slider.tips': '请按住滑块，拖动到最右边',
+  'pages.login.slider.required': '请把滑块拖动最右边！',
 
   'pages.loading.title': '加载中...',
   'pages.modal.commit.title': '提示',
@@ -51,15 +53,15 @@ export default {
   'pages.calendar.mananger.add.success': '新增成功',
   'pages.calendar.mananger.edit.success': '编辑成功',
   'pages.calendar.manager.modal.delete.title': '确认删除？',
-  'pages.calendar.manager.modal.delete.content': '删除后日历中的日程将会被删除',
-  'pages.calendar.mananger.delete.success': '删除成功',
+  'pages.calendar.manager.modal.delete.content': '删除后日历中的日程将会被删除！',
+  'pages.calendar.mananger.delete.success': '删除成功！',
   'pages.calendar.manager.share.or': '或',
   'pages.calendar.manager.share.button': '复制链接',
-  'pages.calendar.manager.share.copy.success': '复制成功',
+  'pages.calendar.manager.share.copy.success': '复制成功！',
 
   'pages.person.center.avatar.button': '保存',
-  'pages.calendar.mananger.component.add.success': '新增事项成功',
-  'pages.calendar.mananger.component.edit.success': '编辑事项成功',
+  'pages.calendar.mananger.component.add.success': '新增事项成功！',
+  'pages.calendar.mananger.component.edit.success': '编辑事项成功！',
   'pages.component.view.title': '事项详情',
   'pages.component.view.invited': '共邀请',
   'pages.component.view.person': '人',
@@ -71,19 +73,19 @@ export default {
   'pages.component.view.button.delete': '删除',
   'pages.component.view.delete.title': '删除事项',
   'pages.component.view.delete.content': '是否删除事项',
-  'pages.component.view.delete.success': '删除成功',
+  'pages.component.view.delete.success': '删除成功！',
 
   //找回密码
   'pages.findpass.find.pass': '找回密码',
   'pages.findpass.reset.pass': '重置密码',
-  'pages.findpass.find.success': '重置成功',
+  'pages.findpass.find.success': '重置成功！',
   'pages.findpass.next': '下一步',
   'pages.findpass.previous': '上一步',
   'pages.findpass.toLogin': '登录',
   'pages.findpass.username.placeholder': '请输入邮箱或手机号',
-  'pages.findpass.username.required': '邮箱或手机号不能为空',
+  'pages.findpass.username.required': '邮箱或手机号不能为空！',
   'pages.findpass.captcha.placeholder': '请输入验证码',
-  'pages.findpass.captcha.required': '验证码不能为空',
+  'pages.findpass.captcha.required': '验证码不能为空！',
   'pages.findpass.get.captcha.button': '获取验证码'
   
   

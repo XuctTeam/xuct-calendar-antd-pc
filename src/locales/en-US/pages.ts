@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-25 17:11:26
+ * @LastEditTime: 2023-02-27 21:05:55
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -35,6 +35,8 @@ export default {
   'pages.login.submit': 'Login',
   'pages.login.loginWith': 'Login with :',
   'pages.login.registerAccount': 'Register Account',
+  'pages.login.slider.tips': 'Hold down and drag to the far right',
+  'pages.login.slider.required': 'Please complete the slide verification',
 
   'pages.loading.title': 'Loading...',
   'pages.modal.commit.title': 'Confirm',
@@ -84,5 +86,5 @@ export default {
   'pages.findpass.username.required': 'email or phone can not empty!',
   'pages.findpass.captcha.placeholder': 'please input captcha',
   'pages.findpass.captcha.required': 'Captcha can not empty!',
-  'pages.findpass.get.captcha.button': 'Get Captcha'
+  'pages.findpass.get.captcha.button': 'Get Captcha',
 }

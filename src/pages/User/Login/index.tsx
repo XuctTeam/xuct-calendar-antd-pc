@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-02-22 09:10:44
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-27 13:43:40
+ * @LastEditTime: 2023-02-27 21:45:38
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Login\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -18,7 +18,7 @@ import sessionStore from '@/cache'
 import CaptchaInput from '@/components/CaptchaInput'
 import Footer from '@/components/Footer'
 import { AUTHORIZATION } from '@/constants'
-import { sendLoginSmsCode, usernameLogin } from '@/services/login'
+import { usernameLogin } from '@/services/login'
 import stringUtil from '@/utils/stringutils'
 import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
@@ -101,11 +101,11 @@ const Login: React.FC = () => {
   const [type, setType] = useState<string>('account')
   const { initialState, setInitialState } = useModel('@@initialState')
   const timerRef = useRef<number>(0)
+  const [form] = Form.useForm()
   const [loginType, setLoginType] = useSetState<ILoginType>({
     status: 0,
     error: ''
   })
-
   const intl = useIntl()
 
   useEffect(() => {
@@ -183,6 +183,7 @@ const Login: React.FC = () => {
           logo={<img alt='logo' src='/logo.png' />}
           title={<FormattedMessage id='pages.layouts.userLayout.logo' />}
           subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
+          form={form}
           initialValues={{
             autoLogin: true
           }}
@@ -206,10 +207,7 @@ const Login: React.FC = () => {
               },
               {
                 key: 'mobile',
-                label: intl.formatMessage({
-                  id: 'pages.login.phoneLogin.tab',
-                  defaultMessage: '手机号登录'
-                })
+                label: intl.formatMessage({ id: 'pages.login.phoneLogin.tab' })
               }
             ]}
           />
@@ -276,27 +274,29 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: <FormattedMessage id='pages.login.phoneNumber.required' defaultMessage='请输入手机号！' />
+                    message: <FormattedMessage id='pages.login.phoneNumber.required' />
                   },
                   {
                     pattern: /^1\d{10}$/,
-                    message: <FormattedMessage id='pages.login.phoneNumber.invalid' defaultMessage='手机号格式错误！' />
+                    message: <FormattedMessage id='pages.login.phoneNumber.invalid' />
                   }
                 ]}
               />
               <Form.Item
-                name='sliderVerify'
+                name='slider'
+                style={{ lineHeight: '0.5' }}
                 rules={[
                   {
                     required: true,
-                    message: 'Please complete the slide verification!'
+                    message: <FormattedMessage id='pages.login.slider.required' />
                   }
                 ]}
               >
                 <ReactSliderVerify
                   width={326}
-                  height={34}
+                  height={40}
                   barWidth={50}
+                  tips={<FormattedMessage id='pages.login.slider.tips' />}
                   bgColor='-webkit-gradient(linear,left top,right top,color-stop(0,#4d4d4d),color-stop(.4,#4d4d4d),color-stop(.5,#fff),color-stop(.6,#4d4d4d),color-stop(1,#4d4d4d))'
                 />
               </Form.Item>
@@ -325,11 +325,18 @@ const Login: React.FC = () => {
                   }
                 ]}
                 onGetCaptcha={async (phone) => {
-                  const result = await sendLoginSmsCode(phone)
-                  debugger
-                  if (result.code === 200) {
-                    message.success('获取验证码成功！验证码为：1234')
+                  const slider = form.getFieldValue('slider')
+                  if (!!!slider) {
+                    message.error(intl.formatMessage({ id: 'pages.login.slider.required' }))
+                    return Promise.reject()
                   }
+                  form.setFieldValue('slider' , undefined)
+
+                  // const result = await sendLoginSmsCode(phone)
+                  // debugger
+                  // if (result.code === 200) {
+                  //   message.success('获取验证码成功！验证码为：1234')
+                  // }
                 }}
               />
             </>
