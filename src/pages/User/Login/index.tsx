@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-02-22 09:10:44
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-26 18:09:32
+ * @LastEditTime: 2023-02-27 13:43:40
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Login\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -27,6 +27,7 @@ import { useSetState } from 'ahooks'
 import { Alert, Form, message, Tabs } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
+import ReactSliderVerify from 'react-slider-verify'
 import { FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi'
 import styles from './index.less'
 
@@ -283,6 +284,23 @@ const Login: React.FC = () => {
                   }
                 ]}
               />
+              <Form.Item
+                name='sliderVerify'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please complete the slide verification!'
+                  }
+                ]}
+              >
+                <ReactSliderVerify
+                  width={326}
+                  height={34}
+                  barWidth={50}
+                  bgColor='-webkit-gradient(linear,left top,right top,color-stop(0,#4d4d4d),color-stop(.4,#4d4d4d),color-stop(.5,#fff),color-stop(.6,#4d4d4d),color-stop(1,#4d4d4d))'
+                />
+              </Form.Item>
+
               <ProFormCaptcha
                 fieldProps={{
                   size: 'large',
@@ -291,10 +309,7 @@ const Login: React.FC = () => {
                 captchaProps={{
                   size: 'large'
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.captcha.placeholder',
-                  defaultMessage: '请输入验证码'
-                })}
+                placeholder={intl.formatMessage({ id: 'pages.login.captcha.placeholder' })}
                 captchaTextRender={(timing, count) => {
                   if (timing) {
                     return `${count} ${intl.formatMessage({ id: 'pages.getCaptchaSecondText' })}`
@@ -317,23 +332,6 @@ const Login: React.FC = () => {
                   }
                 }}
               />
-
-              <ProFormText
-                name='username'
-                fieldProps={{
-                  size: 'large',
-                  prefix: <UserOutlined className={'prefixIcon'} />
-                }}
-                placeholder={'用户名: admin or user'}
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入用户名!'
-                  }
-                ]}
-              />
-
-              {/* <ProFormSlider name='slider' /> */}
             </>
           )}
           <div

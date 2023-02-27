@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-02-21 17:13:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-26 17:11:10
+ * @LastEditTime: 2023-02-27 13:42:32
  * @FilePath: \xuct-calendar-antd-pc\src\components\CaptchaInput\index.tsx
  * @Description:
  *
@@ -74,7 +74,8 @@ const CaptchaInput: React.FC<CaptchaInputProps> = ({ value = {}, onChange }) => 
     height: '36px',
     verticalAlign: 'middle',
     padding: '0px 0px 0px 0px',
-    marginTop: '2px'
+    marginTop: '2px',
+    cursor: 'pointer'
   }
 
   return (
