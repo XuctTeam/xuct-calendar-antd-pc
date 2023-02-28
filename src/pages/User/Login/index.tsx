@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-02-22 09:10:44
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-27 21:45:38
+ * @LastEditTime: 2023-02-28 13:52:41
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Login\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -17,6 +17,7 @@
 import sessionStore from '@/cache'
 import CaptchaInput from '@/components/CaptchaInput'
 import Footer from '@/components/Footer'
+import SliderVerify from '@/components/SliderVerify'
 import { AUTHORIZATION } from '@/constants'
 import { usernameLogin } from '@/services/login'
 import stringUtil from '@/utils/stringutils'
@@ -25,9 +26,9 @@ import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-de
 import { useEmotionCss } from '@ant-design/use-emotion-css'
 import { useSetState } from 'ahooks'
 import { Alert, Form, message, Tabs } from 'antd'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { flushSync } from 'react-dom'
-import ReactSliderVerify from 'react-slider-verify'
+
 import { FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi'
 import styles from './index.less'
 
@@ -100,21 +101,12 @@ const LoginMessage: React.FC<{
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account')
   const { initialState, setInitialState } = useModel('@@initialState')
-  const timerRef = useRef<number>(0)
   const [form] = Form.useForm()
+  const intl = useIntl()
   const [loginType, setLoginType] = useSetState<ILoginType>({
     status: 0,
     error: ''
   })
-  const intl = useIntl()
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current > 0) {
-        window.clearTimeout(timerRef.current)
-      }
-    }
-  }, [])
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.()
@@ -150,10 +142,7 @@ const Login: React.FC = () => {
     }
   }
 
-  const _resetErrorMessage = () => {
-    if (timerRef.current > 0) {
-      window.clearTimeout(timerRef.current)
-    }
+  const resetErrorMessage = () => {
     setLoginType({
       status: 0
     })
@@ -167,12 +156,6 @@ const Login: React.FC = () => {
       status: 1,
       error: message
     })
-
-    timerRef.current = window.setTimeout(() => {
-      setLoginType({
-        status: 0
-      })
-    }, 5000)
   }
 
   return (
@@ -189,7 +172,7 @@ const Login: React.FC = () => {
           }}
           actions={[<FormattedMessage key='loginWith' id='pages.login.loginWith' defaultMessage='其他登录方式' />, <ActionIcons key='icons' />]}
           onFinish={async (values) => {
-            _resetErrorMessage()
+            resetErrorMessage()
             await handleSubmit(values as API.LoginParams)
           }}
         >
@@ -287,18 +270,17 @@ const Login: React.FC = () => {
                 style={{ lineHeight: '0.5' }}
                 rules={[
                   {
-                    required: true,
-                    message: <FormattedMessage id='pages.login.slider.required' />
+                    validateTrigger: 'onBlur',
+                    validator: async (rule, value) => {
+                      console.log(value)
+                      if (!value || !value.status) {
+                        throw new Error(intl.formatMessage({ id: 'pages.login.slider.required' }))
+                      }
+                    }
                   }
                 ]}
               >
-                <ReactSliderVerify
-                  width={326}
-                  height={40}
-                  barWidth={50}
-                  tips={<FormattedMessage id='pages.login.slider.tips' />}
-                  bgColor='-webkit-gradient(linear,left top,right top,color-stop(0,#4d4d4d),color-stop(.4,#4d4d4d),color-stop(.5,#fff),color-stop(.6,#4d4d4d),color-stop(1,#4d4d4d))'
-                />
+                <SliderVerify />
               </Form.Item>
 
               <ProFormCaptcha
@@ -325,12 +307,9 @@ const Login: React.FC = () => {
                   }
                 ]}
                 onGetCaptcha={async (phone) => {
-                  const slider = form.getFieldValue('slider')
-                  if (!!!slider) {
-                    message.error(intl.formatMessage({ id: 'pages.login.slider.required' }))
-                    return Promise.reject()
-                  }
-                  form.setFieldValue('slider' , undefined)
+                  await form.validateFields(['slider'])
+                  const sliderValue = form.getFieldValue('slider')
+                  debugger
 
                   // const result = await sendLoginSmsCode(phone)
                   // debugger
