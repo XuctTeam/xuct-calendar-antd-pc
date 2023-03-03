@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 16:15:08
+ * @LastEditTime: 2023-03-03 16:32:24
  * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -39,6 +39,7 @@ const Name = () => {
       lineHeight: '48px',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
+      color: '#fff',
       [`@media only screen and (max-width: ${token.screenMD}px)`]: {
         display: 'none'
       }
@@ -82,7 +83,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
       cursor: 'pointer',
       borderRadius: token.borderRadius,
       '&:hover': {
-        backgroundColor: token.colorBgTextHover
+        backgroundColor: '#252a3d'
       }
     }
   })

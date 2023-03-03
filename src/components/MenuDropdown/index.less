@@ -1,15 +1,18 @@
 .menu {
-  width: 30px;
+  width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: #fff;
+  border-radius: 6px;
 }
 
 .menu:hover {
   opacity: 1;
-  background-color: rgba(0, 0, 0, 0.025);
+  //background-color: rgba(0, 0, 0, 0.025);
+  background-color: #252a3d;
 }
 
 .menu_content {
@@ -22,24 +25,44 @@
 
   .item {
     font-weight: normal;
-    line-height: 50px;
     cursor: pointer;
     transition: all 0.2s;
     border-radius: 4px;
-    padding: 0 10px;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    padding: 10px 20px;
 
-    span {
-      font-size: 16px;
-      color: black;
+    .action {
+      font-size: 14px;
+      font-weight: 400;
+      color: #3d4757;
+      line-height: 20px;
+      display: block;
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+    }
+
+    .action span:last-child {
+      font-size: 12px;
+      font-weight: 400;
+      color: #949aae;
+      line-height: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
     }
 
     svg {
-      width: 24px;
-      height: 24px;
-      margin-top: 16px;
+      width: 30px;
+      height: 30px;
+      display: block;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
     }
   }
 

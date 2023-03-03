@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-01-29 16:33:09
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-17 06:47:27
+ * @LastEditTime: 2023-03-03 15:39:29
  * @FilePath: \xuct-calendar-antd-pc\src\components\MenuDropdown\index.tsx
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 import { AppstoreAddOutlined, createFromIconfontCN } from '@ant-design/icons'
 import { useSetState } from 'ahooks'
-import { Popover, Space } from 'antd'
+import { Popover } from 'antd'
 import { FC } from 'react'
 import { FormattedMessage, Link } from 'umi'
 import styles from './index.less'
@@ -50,21 +50,27 @@ const MenuDropdown: FC<IPageOption> = () => {
       <div className={styles.menu_content}>
         <ul>
           <li className={styles.item} onClick={() => itemClick('1')}>
-            <Space>
-              <IconFont type='page-icon-shezhi' />
+            <IconFont type='page-icon-shezhi' />
+            <div className={styles.action}>
               <span>
                 <FormattedMessage id='component.globalHeader.menu.setting' />
               </span>
-            </Space>
+              <span>
+                <FormattedMessage id='component.globalHeader.menu.setting.desc' />
+              </span>
+            </div>
           </li>
           <li className={styles.item}>
             <Link target='_blank' to={'/group'} rel='opener'>
-              <Space>
-                <IconFont type='page-icon-zu5889' />
+              <IconFont type='page-icon-zu5889' />
+              <div className={styles.action}>
                 <span>
-                  <FormattedMessage id='component.globalHeader.menu.group' />
+                  <FormattedMessage id='component.globalHeader.menu.address' />
                 </span>
-              </Space>
+                <span>
+                  <FormattedMessage id='component.globalHeader.menu.address.desc' />
+                </span>
+              </div>
             </Link>
           </li>
           <li className={styles.item}>123123</li>

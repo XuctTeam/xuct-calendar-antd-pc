@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-16 22:19:54
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 16:44:05
+ * @LastEditTime: 2023-03-03 15:38:35
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\globalHeader.ts
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -17,7 +17,9 @@ export default {
 
   'component.globalHeader.welcome': '欢迎',
   'component.globalHeader.menu.setting': '偏好设置',
-  'component.globalHeader.menu.group': '我的群组',
+  'component.globalHeader.menu.setting.desc': '使用个人习惯',
+  'component.globalHeader.menu.address': '通讯录',
+  'component.globalHeader.menu.address.desc': '多人参与事件',
   'component.globalHeader.menu.person': '个人中心',
   'component.globalHeader.modify.password': '修改密码',
   'component.globalHeader.user': '个人中心',
