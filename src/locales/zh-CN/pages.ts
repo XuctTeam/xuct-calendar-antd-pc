@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-27 21:08:04
+ * @LastEditTime: 2023-03-03 10:12:26
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -29,6 +29,7 @@ export default {
   'pages.login.captcha.placeholder': '请输入验证码！',
   'pages.login.captcha.required': '验证码是必填项！',
   'pages.login.phoneLogin.getVerificationCode': '获取验证码',
+  'pages.login.phone.sms.success': '发送短信成功!',
   'pages.getCaptchaSecondText': '秒后重新获取',
   'pages.login.rememberMe': '自动登录',
   'pages.login.forgotPassword': '忘记密码 ?',
@@ -87,6 +88,4 @@ export default {
   'pages.findpass.captcha.placeholder': '请输入验证码',
   'pages.findpass.captcha.required': '验证码不能为空！',
   'pages.findpass.get.captcha.button': '获取验证码'
-  
-  
 }

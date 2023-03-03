@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-02-22 09:10:44
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-28 13:52:41
+ * @LastEditTime: 2023-03-03 11:14:25
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Login\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -19,7 +19,7 @@ import CaptchaInput from '@/components/CaptchaInput'
 import Footer from '@/components/Footer'
 import SliderVerify from '@/components/SliderVerify'
 import { AUTHORIZATION } from '@/constants'
-import { usernameLogin } from '@/services/login'
+import { sendLoginSmsCode, usernameLogin } from '@/services/login'
 import stringUtil from '@/utils/stringutils'
 import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
@@ -35,6 +35,7 @@ import styles from './index.less'
 interface ILoginType {
   status: number
   error: string
+  codeError: number
 }
 
 const ActionIcons = () => {
@@ -105,7 +106,8 @@ const Login: React.FC = () => {
   const intl = useIntl()
   const [loginType, setLoginType] = useSetState<ILoginType>({
     status: 0,
-    error: ''
+    error: '',
+    codeError: 0
   })
 
   const fetchUserInfo = async () => {
@@ -151,11 +153,16 @@ const Login: React.FC = () => {
   const _setErrorMessage = (response: any) => {
     const { data } = response
     const { message } = data
+    const errorCount = loginType.codeError + 1
 
     setLoginType({
       status: 1,
-      error: message
+      error: message,
+      codeError: errorCount > 3 ? 0 : errorCount
     })
+    if (type === 'mobile' && errorCount > 3) {
+      form.setFieldValue('slider', { status: false })
+    }
   }
 
   return (
@@ -303,19 +310,14 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: <FormattedMessage id='pages.login.captcha.required' defaultMessage='请输入验证码！' />
+                    message: <FormattedMessage id='pages.login.captcha.required' />
                   }
                 ]}
                 onGetCaptcha={async (phone) => {
                   await form.validateFields(['slider'])
-                  const sliderValue = form.getFieldValue('slider')
-                  debugger
-
-                  // const result = await sendLoginSmsCode(phone)
-                  // debugger
-                  // if (result.code === 200) {
-                  //   message.success('获取验证码成功！验证码为：1234')
-                  // }
+                  const { key, randomStr } = form.getFieldValue('slider')
+                  await sendLoginSmsCode(phone, key, randomStr)
+                  message.success(intl.formatMessage({ id: 'pages.login.phone.sms.success' }))
                 }}
               />
             </>

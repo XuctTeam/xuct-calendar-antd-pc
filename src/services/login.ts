@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 09:37:41
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-26 16:37:23
+ * @LastEditTime: 2023-03-03 10:21:14
  * @FilePath: \xuct-calendar-antd-pc\src\services\login.ts
  * @Description:
  *
@@ -10,8 +10,22 @@
  */
 import { ENCRYPTION_CODE } from '@/constants'
 import { encryption } from '@/utils'
-import { request } from 'umi'
 import qs from 'qs'
+import { request } from 'umi'
+
+/**
+ * 短信验证的publicKey
+ * @param phone
+ * @returns
+ */
+export const smsPublicKey = (randomStr: string) => {
+  return request<API.SmsPublicKey>('/ums/api/app/v1/sms/anno/publicKey', {
+    method: 'get',
+    params: {
+      randomStr
+    }
+  })
+}
 
 /**
  * 用户名密码登录
@@ -19,7 +33,7 @@ import qs from 'qs'
  * @param options
  * @returns
  */
-const usernameLogin = async (body: API.LoginParams, options?: { [key: string]: any }) => {
+const usernameLogin = (body: API.LoginParams, options?: { [key: string]: any }) => {
   if (body.type === 'account') return _loginByUsername(body, options)
   return _loginByPhone(body)
 }
@@ -29,10 +43,10 @@ const usernameLogin = async (body: API.LoginParams, options?: { [key: string]: a
  * @param phone
  * @returns
  */
-export const sendLoginSmsCode = (phone: string) => {
+export const sendLoginSmsCode = (phone: string, key: string, randomStr: string) => {
   return request<API.Response>('/ums/api/app/v1/sms/anno/login', {
     method: 'POST',
-    data: { phone, type: 0 }
+    data: { phone, key, randomStr, type: 0 }
   })
 }
 
@@ -54,19 +68,27 @@ const _loginByUsername = (body: API.LoginParams, options?: { [key: string]: any 
     username: user.username,
     password: user.password
   })
-  return request<API.LoginResult>(`/uaa/oauth2/token?grant_type=password&scope=server&code=${body.captcha?.captchaCode}&randomStr=${body.captcha?.captchaKey}`, {
+  return request<API.LoginResult>(
+    `/uaa/oauth2/token?grant_type=password&scope=server&code=${body.captcha?.captchaCode}&randomStr=${body.captcha?.captchaKey}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      skipErrorHandler: true,
+      data: dataObj,
+      ...(options || {})
+    }
+  )
+}
+
+const _loginByPhone = (body: API.LoginPhoneParam) => {
+  return request<API.LoginResult>(`/uaa/oauth2/token?grant_type=phone&scope=server&phone=${body.phone}&code=${body.captcha}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    skipErrorHandler: true,
-    data: dataObj,
-    ...(options || {})
+    skipErrorHandler: true
   })
 }
-
-const _loginByPhone = (body: API.LoginPhoneParam) => {
-  return request<API.LoginResult>(`/uaa/oauth2/token?grant_type=phone&scope=server&phone=${body.mobile}&code=${body.captcha?.captchaCode}`, {})
-}
-
 export { usernameLogin }

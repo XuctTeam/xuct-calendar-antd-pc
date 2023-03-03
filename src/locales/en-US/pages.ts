@@ -29,6 +29,7 @@ export default {
   'pages.login.captcha.placeholder': 'Verification Code',
   'pages.login.captcha.required': 'Please input verification code!',
   'pages.login.phoneLogin.getVerificationCode': 'Get Code',
+  'pages.login.phone.sms.success': 'Send SmsCode Success!',
   'pages.getCaptchaSecondText': 'sec(s)',
   'pages.login.rememberMe': 'Remember me',
   'pages.login.forgotPassword': 'Forgot Password ?',
@@ -86,5 +87,5 @@ export default {
   'pages.findpass.username.required': 'email or phone can not empty!',
   'pages.findpass.captcha.placeholder': 'please input captcha',
   'pages.findpass.captcha.required': 'Captcha can not empty!',
-  'pages.findpass.get.captcha.button': 'Get Captcha',
+  'pages.findpass.get.captcha.button': 'Get Captcha'
 }

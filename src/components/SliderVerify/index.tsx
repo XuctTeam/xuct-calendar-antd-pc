@@ -1,11 +1,24 @@
+/*
+ * @Author: Derek Xu
+ * @Date: 2023-02-28 13:25:33
+ * @LastEditors: Derek Xu
+ * @LastEditTime: 2023-03-03 13:55:06
+ * @FilePath: \xuct-calendar-antd-pc\src\components\SliderVerify\index.tsx
+ * @Description:
+ *
+ * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
+ */
+import { smsPublicKey } from '@/services/login'
 import { useSetState } from 'ahooks'
 import { FC, useEffect, useRef } from 'react'
 import ReactSliderVerify from 'react-slider-verify'
 import { FormattedMessage } from 'umi'
+import { v4 as uuidv4 } from 'uuid'
 
 interface SliderVerifyValue {
   status: boolean
   key: string
+  randomStr: string
 }
 
 interface SliderVerifyProps {
@@ -16,24 +29,39 @@ interface SliderVerifyProps {
 const SliderVerify: FC<SliderVerifyProps> = ({ value, onChange }) => {
   const [state, setState] = useSetState<SliderVerifyValue>({
     status: false,
-    key: ''
+    key: '',
+    randomStr: uuidv4()
   })
   const sliderRef = useRef<any>()
 
-  const onSuccess = () => {
-    const _state = {
+  const onSuccess = async () => {
+    let data
+    try {
+      data = await smsPublicKey(state.randomStr)
+    } catch (e) {
+      console.log(e)
+      sliderRef.current.reset()
+      return
+    }
+    const { key, randomStr } = data
+    const changeValue = {
       status: true,
-      key: '123123'
+      key: key,
+      randomStr: randomStr
     }
-    setState(_state)
     if (onChange) {
-      onChange(_state)
+      onChange(changeValue)
     }
+    setState(changeValue)
   }
 
   useEffect(() => {
+    /** form重置 */
     if (value && !value.status) {
-      debugger
+      setState({
+        key: '',
+        randomStr: uuidv4()
+      })
       sliderRef.current.reset()
     }
   }, [value])
