@@ -2,13 +2,12 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-03 18:27:41
+ * @LastEditTime: 2023-03-06 09:06:41
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-
 import '@/assets/css/bootstrap.min.css'
 import { RRule } from '@/constants'
 import { formatWeekly, getWeekDay, isChinese, lunarDay } from '@/utils/calendar'
@@ -24,7 +23,7 @@ import { Spin } from 'antd'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
 import dayjs from 'dayjs'
-import React, { Ref, useMemo } from 'react'
+import React, { Ref, useEffect, useState } from 'react'
 import { RRule as RRuleJs } from 'rrule'
 import { useIntl } from 'umi'
 
@@ -62,7 +61,7 @@ function Calendar(props: IInnerProps) {
     fullCalendarDateClick
   } = props
   const disableLunarView = !isChinese() || lunarView === '0'
-  //const [events, setEvents] = useState<any[]>([])
+  const [events, setEvents] = useState<any[]>([])
   const init = useIntl()
 
   const calendarOptions = {
@@ -99,9 +98,9 @@ function Calendar(props: IInnerProps) {
     selectMinDistance: 2
   }
 
-  // useEffect(() => {
-  //   //fillEvents()
-  // }, [calendars, components])
+  useEffect(() => {
+    fillEvents()
+  }, [calendars, components])
 
   const dayCellContent = (item: any) => {
     if (disableLunarView) {
@@ -179,8 +178,8 @@ function Calendar(props: IInnerProps) {
         //return notRepeatEvent(item)
       })
 
-    //setEvents(events)
-    innerRef.current.calendar.refetchEvents()
+    setEvents(events)
+    //innerRef.current.calendar.refetchEvents()
   }
 
   const notRepeatEvent = (component: CALENDAR.Component) => {
@@ -382,33 +381,33 @@ function Calendar(props: IInnerProps) {
     return { ...vent, dtstart: dtstartStr, duration: { day: 2 }, rrule }
   }
 
-  const events = useMemo(() => {
-    if (calendars.length === 0 || components.length === 0) return
-    const displayCalendars = calendars.filter((item) => item.display === 1)
-    const componentMap = new Map()
-    components.forEach((dayComp) => {
-      dayComp.components.forEach((comp) => {
-        const _calendar = displayCalendars.find((item) => item.calendarId === comp.calendarId)
-        if (!_calendar) return
-        componentMap.set(comp.id, { ...comp, color: `#${_calendar.color}` })
-      })
-    })
-    return Array.from(componentMap.values()).map((item: CALENDAR.Component) => {
-      if (item.repeatStatus !== '0') {
-        switch (item.repeatType) {
-          case RRule.DAILY.toLocaleUpperCase():
-            return repeatDailyEvent(item)
-          case RRule.WEEKLY.toLocaleUpperCase():
-          //return repeatWeekEvent(item)
-          case RRule.MONTHLY.toLocaleUpperCase():
-          //return repeatMonthlyEvent(item)
-          default:
-          //return repeatYearlyEvent(item)
-        }
-      }
-      return notRepeatEvent(item)
-    })
-  }, [calendars, components])
+  // const events = useMemo(() => {
+  //   if (calendars.length === 0 || components.length === 0) return
+  //   const displayCalendars = calendars.filter((item) => item.display === 1)
+  //   const componentMap = new Map()
+  //   components.forEach((dayComp) => {
+  //     dayComp.components.forEach((comp) => {
+  //       const _calendar = displayCalendars.find((item) => item.calendarId === comp.calendarId)
+  //       if (!_calendar) return
+  //       componentMap.set(comp.id, { ...comp, color: `#${_calendar.color}` })
+  //     })
+  //   })
+  //   return Array.from(componentMap.values()).map((item: CALENDAR.Component) => {
+  //     if (item.repeatStatus !== '0') {
+  //       switch (item.repeatType) {
+  //         case RRule.DAILY.toLocaleUpperCase():
+  //           return repeatDailyEvent(item)
+  //         case RRule.WEEKLY.toLocaleUpperCase():
+  //         //return repeatWeekEvent(item)
+  //         case RRule.MONTHLY.toLocaleUpperCase():
+  //         //return repeatMonthlyEvent(item)
+  //         default:
+  //         //return repeatYearlyEvent(item)
+  //       }
+  //     }
+  //     return notRepeatEvent(item)
+  //   })
+  // }, [calendars, components])
 
   return (
     <Spin spinning={loading} size='large' wrapperClassName=''>
@@ -435,6 +434,7 @@ function Calendar(props: IInnerProps) {
           }
         }}
         firstDay={Number.parseInt(dataView)}
+        //eventSources={[events]}
         events={events}
         dayMaxEventRows={true}
         eventClick={fullCalendarEventClick}

@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-02-16 18:56:02
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-25 19:41:01
+ * @LastEditTime: 2023-03-10 14:01:48
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Findpass\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -74,7 +74,7 @@ const Findpass: FC = () => {
               message: <FormattedMessage id={'pages.findpass.captcha.required'} />
             }
           ]}
-          onGetCaptcha={async () => {
+          onGetCaptcha={async (username) => {
             message.success('获取验证码成功！验证码为：1234')
           }}
         />
