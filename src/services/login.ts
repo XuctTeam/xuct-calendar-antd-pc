@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 09:37:41
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-03 10:21:14
+ * @LastEditTime: 2023-03-13 14:43:40
  * @FilePath: \xuct-calendar-antd-pc\src\services\login.ts
  * @Description:
  *
@@ -19,7 +19,7 @@ import { request } from 'umi'
  * @returns
  */
 export const smsPublicKey = (randomStr: string) => {
-  return request<API.SmsPublicKey>('/ums/api/app/v1/sms/anno/publicKey', {
+  return request<API.SmsPublicKey>('/ums/api/app/v1/anno/public/key', {
     method: 'get',
     params: {
       randomStr

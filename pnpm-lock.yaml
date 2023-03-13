@@ -33,10 +33,11 @@ specifiers:
   lodash: ^4.17.21
   qs: ^6.11.0
   querystring: ^0.2.1
+  rc-captcha-input: ^1.0.0
   react-slider-verify: ^0.2.1
   solarlunar-es: ^1.0.9
   typescript: ^4.1.2
-  umi: ^4.0.56
+  umi: ^4.0.57
   uuid: ^9.0.0
 
 dependencies:
@@ -65,6 +66,7 @@ dependencies:
   lodash: registry.npmmirror.com/lodash/4.17.21
   qs: registry.npmmirror.com/qs/6.11.1
   querystring: registry.npmmirror.com/querystring/0.2.1
+  rc-captcha-input: registry.npmmirror.com/rc-captcha-input/1.0.0
   react-slider-verify: registry.npmmirror.com/react-slider-verify/0.2.1
   solarlunar-es: registry.npmmirror.com/solarlunar-es/1.0.9
   umi: registry.npmmirror.com/umi/4.0.57_c6mc5dj2lvpczaqlkcypbolpey
@@ -9558,6 +9560,14 @@ packages:
       dom-align: registry.npmmirror.com/dom-align/1.12.4
       rc-util: registry.npmmirror.com/rc-util/5.28.0
       resize-observer-polyfill: registry.npmmirror.com/resize-observer-polyfill/1.5.1
+
+  registry.npmmirror.com/rc-captcha-input/1.0.0:
+    resolution: {integrity: sha512-KgfgvE3Ia6yoTQLvz0K55pBtLfrVvf0rBjLJ3ibgR6Be0g0Opr40B8t0CPIY8/JKGtPqwZX5gV0E2NcCDP3FPg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/rc-captcha-input/-/rc-captcha-input-1.0.0.tgz}
+    name: rc-captcha-input
+    version: 1.0.0
+    dependencies:
+      react: registry.npmmirror.com/react/17.0.2
+    dev: false
 
   registry.npmmirror.com/rc-cascader/3.9.1:
     resolution: {integrity: sha512-wMOQrCWobkaQz3zHEFB82RNBLDkL6tDucOf4VSKQ8Z6SiVBqIfqnEHaEiYvL9GMI3/zStVGqwvOFar/xyOm+xw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/rc-cascader/-/rc-cascader-3.9.1.tgz}
