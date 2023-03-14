@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 16:52:13
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-20 13:38:06
+ * @LastEditTime: 2023-03-14 16:18:45
  * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\PasswordForm.tsx
  * @Description:
  *
@@ -10,10 +10,10 @@
  */
 import { updatePassword } from '@/services/user'
 import stringUtils from '@/utils/stringutils'
-import { ModalForm, ProFormInstance, ProFormText } from '@ant-design/pro-components'
-import { message } from 'antd'
-import { useRef } from 'react'
-import { FormattedMessage, getIntl } from 'umi'
+import { ModalForm, ProFormText } from '@ant-design/pro-components'
+import { Form, message } from 'antd'
+import {} from 'antd/es/form/Form'
+import { FormattedMessage, getIntl, useIntl } from 'umi'
 
 interface IPageOption {
   open: boolean
@@ -22,20 +22,21 @@ interface IPageOption {
 
 const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
   const { open, setOpen } = props
-  const formRef = useRef<ProFormInstance>()
+  const [form] = Form.useForm()
+  const intl = useIntl()
 
   const isPasswordValidate = (value: any, callback: any, ty: number) => {
     if (!value) {
-      return callback(getIntl().formatMessage({ id: 'pages.modify.password.require' }))
+      return callback(intl.formatMessage({ id: 'pages.modify.password.require' }))
     }
     const result = stringUtils.checkPassowrd(value)
     if (!result) {
-      return callback(getIntl().formatMessage({ id: 'pages.modify.password.format' }))
+      return callback(intl.formatMessage({ id: 'pages.modify.password.format' }))
     }
     if (ty === 1) {
-      const password = formRef?.current?.getFieldValue('password')
+      const password = form.getFieldValue('password')
       if (value !== password) {
-        return callback(getIntl().formatMessage({ id: 'pages.modify.confirm.password.notequal' }))
+        return callback(intl.formatMessage({ id: 'pages.modify.confirm.password.notequal' }))
       }
     }
     return callback()
@@ -43,7 +44,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
 
   return (
     <ModalForm
-      formRef={formRef}
+      form={form}
       title={<FormattedMessage id='pages.modify.passowrd.title' />}
       open={open}
       onOpenChange={setOpen}
@@ -51,7 +52,7 @@ const ModifyPasswordModal: React.FC<IPageOption> = (props) => {
         const { password } = data
         await updatePassword(password)
         message.warning(getIntl().formatMessage({ id: 'pages.modify.passowrd.success' }))
-        formRef?.current?.resetFields()
+        form.resetFields()
         return true
       }}
       modalProps={{

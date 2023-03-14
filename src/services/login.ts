@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 09:37:41
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-13 14:43:40
+ * @LastEditTime: 2023-03-14 14:56:22
  * @FilePath: \xuct-calendar-antd-pc\src\services\login.ts
  * @Description:
  *
@@ -18,24 +18,13 @@ import { request } from 'umi'
  * @param phone
  * @returns
  */
-export const smsPublicKey = (randomStr: string) => {
-  return request<API.SmsPublicKey>('/ums/api/app/v1/anno/public/key', {
-    method: 'get',
+export const publicKey = (randomStr: string) => {
+  return request<API.PublicKey>('/ums/api/app/v1/anno/public/key', {
+    method: 'GET',
     params: {
       randomStr
     }
   })
-}
-
-/**
- * 用户名密码登录
- * @param body
- * @param options
- * @returns
- */
-const usernameLogin = (body: API.LoginParams, options?: { [key: string]: any }) => {
-  if (body.type === 'account') return _loginByUsername(body, options)
-  return _loginByPhone(body)
 }
 
 /**
@@ -48,6 +37,60 @@ export const sendLoginSmsCode = (phone: string, key: string, randomStr: string) 
     method: 'POST',
     data: { phone, key, randomStr, type: 0 }
   })
+}
+
+/**
+ * 发送找回密码信息
+ * @param phone
+ * @param key
+ * @param randomStr
+ * @returns
+ */
+export const sendFindPassSmsCode = (phone: string, key: string, randomStr: string) => {
+  return request<API.Response>('/ums/api/app/v1/sms/anno/forget', {
+    method: 'POST',
+    data: { phone, key, randomStr, type: 2 },
+    skipErrorHandler: true
+  })
+}
+
+/**
+ * 发送找回密码信息
+ * @param email
+ * @param key
+ * @param randomStr
+ * @returns
+ */
+export const sendFindPassEmailCode = (email: string, key: string, randomStr: string) => {
+  return request<API.Response>('/ums/api/app/v1/email/anno/forget', {
+    method: 'POST',
+    data: { email, key, randomStr, type: 2 },
+    skipErrorHandler: true
+  })
+}
+
+/**
+ * 校验用户
+ * @param username
+ * @param code
+ */
+export const findPassCheck = (username: string, code: string) => {
+  return request<API.Response>('/ums/api/app/v1/member/anno/forget/check', {
+    method: 'POST',
+    data: { username, code },
+    skipErrorHandler: true
+  })
+}
+
+/**
+ * 用户名密码登录
+ * @param body
+ * @param options
+ * @returns
+ */
+const usernameLogin = (body: API.LoginParams, options?: { [key: string]: any }) => {
+  if (body.type === 'account') return _loginByUsername(body, options)
+  return _loginByPhone(body)
 }
 
 /**

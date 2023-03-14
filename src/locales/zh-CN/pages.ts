@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-13 09:32:07
+ * @LastEditTime: 2023-03-14 18:14:34
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -38,10 +38,6 @@ export default {
   'pages.login.registerAccount': '注册账户',
   'pages.login.slider.tips': '请按住滑块，拖动到最右边',
   'pages.login.slider.required': '请把滑块拖动最右边！',
-
-  'pages.find.pass.validate.title': '验证码',
-  'pages.find.pass.validate.code.label': '随机码',
-  'pages.find.pass.validate.code.confirm.label': '确认码',
 
   'pages.loading.title': '加载中...',
   'pages.modal.commit.title': '提示',
@@ -91,5 +87,10 @@ export default {
   'pages.findpass.username.required': '邮箱或手机号不能为空！',
   'pages.findpass.captcha.placeholder': '请输入验证码',
   'pages.findpass.captcha.required': '验证码不能为空！',
-  'pages.findpass.get.captcha.button': '获取验证码'
+  'pages.findpass.get.captcha.button': '获取验证码',
+  'pages.find.pass.validate.title': '验证码',
+  'pages.find.pass.validate.code.label': '随机码',
+  'pages.find.pass.validate.code.confirm.label': '确认码',
+  'pages.find.pass.validate.error': '验证码不匹配!',
+  'pages.findpass.password.placeholder': '请输入密码'
 }

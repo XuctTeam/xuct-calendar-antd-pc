@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-13 18:09:49
+ * @LastEditTime: 2023-03-14 18:15:14
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\pages.ts
  * @Description:
  *
@@ -38,10 +38,6 @@ export default {
   'pages.login.registerAccount': 'Register Account',
   'pages.login.slider.tips': 'Hold down and drag to the far right',
   'pages.login.slider.required': 'Please complete the slide verification',
-
-  'pages.find.pass.validate.title': 'Validate Code',
-  'pages.find.pass.validate.code.label': 'Code',
-  'pages.find.pass.validate.code.confirm.label': 'Confirm Code',
 
   'pages.loading.title': 'Loading...',
   'pages.modal.commit.title': 'Confirm',
@@ -91,5 +87,10 @@ export default {
   'pages.findpass.username.required': 'email or phone can not empty!',
   'pages.findpass.captcha.placeholder': 'please input captcha',
   'pages.findpass.captcha.required': 'Captcha can not empty!',
-  'pages.findpass.get.captcha.button': 'Get Captcha'
+  'pages.findpass.get.captcha.button': 'Get Captcha',
+  'pages.find.pass.validate.title': 'Validate Code',
+  'pages.find.pass.validate.code.label': 'Code',
+  'pages.find.pass.validate.code.confirm.label': 'Confirm Code',
+  'pages.find.pass.validate.error': 'Code not equal!',
+  'pages.findpass.password.placeholder': 'please input password'
 }

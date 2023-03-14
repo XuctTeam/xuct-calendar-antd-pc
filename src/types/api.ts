@@ -2,14 +2,14 @@
  * @Author: Derek Xu
  * @Date: 2022-11-15 09:37:52
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-03 13:52:34
+ * @LastEditTime: 2023-03-14 10:22:06
  * @FilePath: \xuct-calendar-antd-pc\src\types\api.ts
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 declare namespace API {
-  type SmsPublicKey = {
+  type PublicKey = {
     key: string
     randomStr: string
   }

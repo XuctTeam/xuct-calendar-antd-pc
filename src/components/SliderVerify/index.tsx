@@ -2,13 +2,13 @@
  * @Author: Derek Xu
  * @Date: 2023-02-28 13:25:33
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-03 13:55:06
+ * @LastEditTime: 2023-03-14 10:21:33
  * @FilePath: \xuct-calendar-antd-pc\src\components\SliderVerify\index.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
-import { smsPublicKey } from '@/services/login'
+import { publicKey } from '@/services/login'
 import { useSetState } from 'ahooks'
 import { FC, useEffect, useRef } from 'react'
 import ReactSliderVerify from 'react-slider-verify'
@@ -37,7 +37,7 @@ const SliderVerify: FC<SliderVerifyProps> = ({ value, onChange }) => {
   const onSuccess = async () => {
     let data
     try {
-      data = await smsPublicKey(state.randomStr)
+      data = await publicKey(state.randomStr)
     } catch (e) {
       console.log(e)
       sliderRef.current.reset()

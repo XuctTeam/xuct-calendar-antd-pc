@@ -2,119 +2,68 @@
  * @Author: Derek Xu
  * @Date: 2023-02-16 18:56:02
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-13 18:16:24
+ * @LastEditTime: 2023-03-14 17:00:25
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Findpass\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { ProFormCaptcha, ProFormText } from '@ant-design/pro-components'
 import { useSetState } from 'ahooks'
-import { Button, Form, Layout, message, Modal, Space, Steps, theme } from 'antd'
+import { Button, Form, Layout, message, Steps, theme } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
-import Captcha from 'rc-captcha-input'
-import { FC, useMemo, useState } from 'react'
-import { FormattedMessage, Link, useIntl } from 'umi'
-
+import { FC, useState } from 'react'
+import { FormattedMessage, Link } from 'umi'
+import { CheckUserName, ResetPass } from './components'
 import styled from './index.less'
 
-interface IState {
-  code: string
-  validateCode: string | undefined
-  visialbe: boolean
+interface IUser {
+  userId: string
+  username: string
 }
 
 const Findpass: FC = () => {
   const { token } = theme.useToken()
-  const [current, setCurrent] = useState(0)
+  const [current, setCurrent] = useState(1)
   const [form] = Form.useForm()
-  const intl = useIntl()
-  const [state, setState] = useSetState<IState>({
-    code: '',
-    validateCode: undefined,
-    visialbe: false
+  const [resetForm] = Form.useForm()
+
+  const [user, setUser] = useSetState<IUser>({
+    username: '',
+    userId: ''
   })
 
   const next = async () => {
     if (current === 0) {
-      const res = await form.validateFields()
-      debugger
+      form.submit()
+      return
     }
-    setCurrent(current + 1)
+    if (current === 1) {
+      resetForm.submit()
+      return
+    }
   }
 
   const prev = () => {
     setCurrent(current - 1)
   }
 
-  const validateCodeChage = (validateCode: string) => {
-    setState({
-      validateCode
+  const gotoResetPass = (username: string, userId: string) => {
+    setUser({
+      username,
+      userId
     })
+    setCurrent(current + 1)
   }
 
-  const findPassView = useMemo(() => {
-    return (
-      <Form name='basic' form={form} autoComplete='off'>
-        <ProFormText
-          name='username'
-          fieldProps={{
-            size: 'large',
-            prefix: <UserOutlined className={'prefixIcon'} />
-          }}
-          placeholder={intl.formatMessage({ id: 'pages.findpass.username.placeholder' })}
-          rules={[
-            {
-              required: true,
-              message: <FormattedMessage id={'pages.findpass.username.required'} />
-            }
-          ]}
-        />
-
-        <ProFormCaptcha
-          fieldProps={{
-            size: 'large',
-            prefix: <LockOutlined className={'prefixIcon'} />
-          }}
-          captchaProps={{
-            size: 'large'
-          }}
-          placeholder={intl.formatMessage({ id: 'pages.findpass.captcha.placeholder' })}
-          captchaTextRender={(timing, count) => {
-            if (timing) {
-              return `${count} ${intl.formatMessage({ id: 'pages.findpass.get.captcha.button' })}`
-            }
-            return intl.formatMessage({ id: 'pages.findpass.get.captcha.button' })
-          }}
-          name='captcha'
-          phoneName='username'
-          rules={[
-            {
-              required: true,
-              message: <FormattedMessage id={'pages.findpass.captcha.required'} />
-            }
-          ]}
-          onGetCaptcha={async (username) => {
-            if (state.code !== '' && state.code === state.validateCode) {
-            }
-            setState({
-              visialbe: true
-            })
-            return Promise.reject()
-          }}
-        />
-      </Form>
-    )
-  }, [])
+  const gotoSuccess = () => {}
 
   const steps = [
     {
       title: <FormattedMessage id='pages.findpass.find.pass' />,
-      content: findPassView
+      content: <CheckUserName form={form} gotoResetPass={gotoResetPass} />
     },
     {
       title: <FormattedMessage id='pages.findpass.reset.pass' />,
-      content: 'Second-content'
+      content: <ResetPass form={resetForm} username={user.username} userId={user.userId} gotoSuccess={gotoSuccess} />
     },
     {
       title: <FormattedMessage id='pages.findpass.find.success' />,
@@ -175,27 +124,6 @@ const Findpass: FC = () => {
         </Content>
         <Footer className={styled.footer}>Footer</Footer>
       </Layout>
-      <Modal
-        title={<FormattedMessage id='pages.find.pass.validate.title' />}
-        open={state.visialbe}
-        destroyOnClose={true}
-        onCancel={() => setState({ visialbe: false })}
-      >
-        <Space direction='vertical' size='small' style={{ marginTop: '20px' }}>
-          <Space size='large'>
-            <span>
-              <FormattedMessage id='pages.find.pass.validate.code.label' /> :
-            </span>
-            <div>123123</div>
-          </Space>
-          <Space size='small'>
-            <span>
-              <FormattedMessage id='pages.find.pass.validate.code.confirm.label' /> :
-            </span>
-            <Captcha theme='box' value={state.validateCode} length={5} onChange={validateCodeChage} />
-          </Space>
-        </Space>
-      </Modal>
     </>
   )
 }
