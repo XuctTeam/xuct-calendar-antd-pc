@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-20 20:58:29
+ * @LastEditTime: 2023-03-15 13:12:13
  * @FilePath: \xuct-calendar-antd-pc\config\routes.ts
  * @Description:
  *
@@ -39,7 +39,7 @@ export default [
   {
     path: '/group',
     name: 'group',
-    Comment: './Group',
+    component: './Group',
     layout: false
   },
   

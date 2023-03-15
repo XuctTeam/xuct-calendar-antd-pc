@@ -2,33 +2,35 @@
  * @Author: Derek Xu
  * @Date: 2023-02-16 18:56:02
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-14 17:00:25
+ * @LastEditTime: 2023-03-15 11:30:51
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Findpass\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { useSetState } from 'ahooks'
-import { Button, Form, Layout, message, Steps, theme } from 'antd'
+import { Button, Form, Layout, Steps, theme } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
 import { FC, useState } from 'react'
-import { FormattedMessage, Link } from 'umi'
-import { CheckUserName, ResetPass } from './components'
+import { FormattedMessage, history, Link } from 'umi'
+import { CheckUserName, ResetPass, Success } from './components'
 import styled from './index.less'
 
 interface IUser {
   userId: string
   username: string
+  code: string
 }
 
 const Findpass: FC = () => {
   const { token } = theme.useToken()
-  const [current, setCurrent] = useState(1)
+  const [current, setCurrent] = useState(0)
   const [form] = Form.useForm()
   const [resetForm] = Form.useForm()
 
   const [user, setUser] = useSetState<IUser>({
     username: '',
-    userId: ''
+    userId: '',
+    code: ''
   })
 
   const next = async () => {
@@ -46,15 +48,18 @@ const Findpass: FC = () => {
     setCurrent(current - 1)
   }
 
-  const gotoResetPass = (username: string, userId: string) => {
+  const gotoResetPass = (username: string, userId: string, code: string) => {
     setUser({
       username,
-      userId
+      userId,
+      code
     })
     setCurrent(current + 1)
   }
 
-  const gotoSuccess = () => {}
+  const gotoSuccess = () => {
+    setCurrent(current + 1)
+  }
 
   const steps = [
     {
@@ -63,11 +68,11 @@ const Findpass: FC = () => {
     },
     {
       title: <FormattedMessage id='pages.findpass.reset.pass' />,
-      content: <ResetPass form={resetForm} username={user.username} userId={user.userId} gotoSuccess={gotoSuccess} />
+      content: <ResetPass form={resetForm} username={user.username} userId={user.userId} code={user.code} gotoSuccess={gotoSuccess} />
     },
     {
       title: <FormattedMessage id='pages.findpass.find.success' />,
-      content: 'Last-content'
+      content: <Success username={user.username} />
     }
   ]
 
@@ -110,11 +115,17 @@ const Findpass: FC = () => {
                 </Button>
               )}
               {current === steps.length - 1 && (
-                <Button type='primary' onClick={() => message.success('Processing complete!')}>
-                  Done
+                <Button
+                  type='primary'
+                  onClick={() => {
+                    history.push('/user/login')
+                    return
+                  }}
+                >
+                  <FormattedMessage id='pages.findpass.toLogin' />
                 </Button>
               )}
-              {current > 0 && (
+              {current > 0 && current !== steps.length - 1 && (
                 <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
                   <FormattedMessage id='pages.findpass.previous' />
                 </Button>

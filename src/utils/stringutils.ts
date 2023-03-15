@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 export default class stringUtils {
   /**
    * 判断字符串是否为空
@@ -38,5 +40,9 @@ export default class stringUtils {
    */
   static checkPassowrd(password: string) {
     return /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}$/.test(password)
+  }
+
+  static uuid() {
+    return uuidv4().replaceAll('-', '')
   }
 }

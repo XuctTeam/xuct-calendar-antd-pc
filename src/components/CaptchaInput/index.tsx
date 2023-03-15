@@ -2,18 +2,18 @@
  * @Author: Derek Xu
  * @Date: 2023-02-21 17:13:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-02-27 13:42:32
+ * @LastEditTime: 2023-03-15 09:36:38
  * @FilePath: \xuct-calendar-antd-pc\src\components\CaptchaInput\index.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
-import stringUtil from '@/utils/stringutils'
+
+import { default as stringUtil, default as stringUtils } from '@/utils/stringutils'
 import { SafetyCertificateOutlined } from '@ant-design/icons'
 import { Input } from 'antd'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useIntl } from 'umi'
-import { v4 as uuidv4 } from 'uuid'
 
 interface CaptchaInputValue {
   captchaCode?: string
@@ -32,7 +32,7 @@ const CaptchaInput: React.FC<CaptchaInputProps> = ({ value = {}, onChange }) => 
   const [captchaKey, setCaptchaKey] = useState<string>('')
 
   useEffect(() => {
-    setCaptchaKey(uuidv4())
+    setCaptchaKey(stringUtil.uuid())
   }, [])
 
   // 触发改变
@@ -52,7 +52,7 @@ const CaptchaInput: React.FC<CaptchaInputProps> = ({ value = {}, onChange }) => 
   }
 
   const imageClick = () => {
-    const key = uuidv4()
+    const key = stringUtils.uuid()
     setCaptchaKey(key)
     triggerChange({ captchaKey: key })
   }

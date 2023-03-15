@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-14 19:17:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-14 18:14:34
+ * @LastEditTime: 2023-03-15 11:35:57
  * @FilePath: \xuct-calendar-antd-pc\src\locales\zh-CN\pages.ts
  * @Description:
  *
@@ -92,5 +92,10 @@ export default {
   'pages.find.pass.validate.code.label': '随机码',
   'pages.find.pass.validate.code.confirm.label': '确认码',
   'pages.find.pass.validate.error': '验证码不匹配!',
-  'pages.findpass.password.placeholder': '请输入密码'
+  'pages.findpass.password.placeholder': '请输入密码',
+  'pages.findpass.confirm.password.placeholder': '请输入确认密码',
+  'pages.findpass.use.username': '正在使用',
+  'pages.findpass.use.reset.pass': '重置密码',
+  'pages.findpass.reset.succes': '重置密码成功!',
+  'pages.findpass.username': 'user name'
 }

@@ -2,18 +2,18 @@
  * @Author: Derek Xu
  * @Date: 2023-02-28 13:25:33
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-14 10:21:33
+ * @LastEditTime: 2023-03-15 09:36:59
  * @FilePath: \xuct-calendar-antd-pc\src\components\SliderVerify\index.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
 import { publicKey } from '@/services/login'
+import stringUtils from '@/utils/stringutils'
 import { useSetState } from 'ahooks'
 import { FC, useEffect, useRef } from 'react'
 import ReactSliderVerify from 'react-slider-verify'
 import { FormattedMessage } from 'umi'
-import { v4 as uuidv4 } from 'uuid'
 
 interface SliderVerifyValue {
   status: boolean
@@ -30,7 +30,7 @@ const SliderVerify: FC<SliderVerifyProps> = ({ value, onChange }) => {
   const [state, setState] = useSetState<SliderVerifyValue>({
     status: false,
     key: '',
-    randomStr: uuidv4()
+    randomStr: stringUtils.uuid()
   })
   const sliderRef = useRef<any>()
 
@@ -60,7 +60,7 @@ const SliderVerify: FC<SliderVerifyProps> = ({ value, onChange }) => {
     if (value && !value.status) {
       setState({
         key: '',
-        randomStr: uuidv4()
+        randomStr: stringUtils.uuid()
       })
       sliderRef.current.reset()
     }

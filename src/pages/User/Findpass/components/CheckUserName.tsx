@@ -2,18 +2,8 @@
  * @Author: Derek Xu
  * @Date: 2023-03-14 09:57:49
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-14 16:47:11
+ * @LastEditTime: 2023-03-15 09:55:11
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Findpass\components\CheckUserName.tsx
- * @Description:
- *
- * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
- */
-/*
- * @Author: Derek Xu
- * @Date: 2023-03-14 09:57:49
- * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-14 14:24:27
- * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Findpass\component\First.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
@@ -27,11 +17,10 @@ import { Alert, Form, FormInstance, message, Modal, Space } from 'antd'
 import Captcha from 'rc-captcha-input'
 import { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'umi'
-import { v4 as uuidv4 } from 'uuid'
 
 interface IProps {
   form: FormInstance<any>
-  gotoResetPass: (username: string, userId: string) => void
+  gotoResetPass: (username: string, userId: string, code: string) => void
 }
 
 interface IState {
@@ -78,7 +67,7 @@ export default function CheckUserName({ form, gotoResetPass }: IProps) {
 
   useEffect(() => {
     if (state.visable) {
-      _initCode(uuidv4())
+      _initCode(stringUtils.uuid())
     }
   }, [state.visable])
 
@@ -135,8 +124,8 @@ export default function CheckUserName({ form, gotoResetPass }: IProps) {
             }
             return
           }
-          debugger
-          gotoResetPass('123', '123')
+          const { memberId, code } = res
+          gotoResetPass(username, memberId, code)
         }}
       >
         {state.state === 1 && <LoginMessage content={state.message} />}

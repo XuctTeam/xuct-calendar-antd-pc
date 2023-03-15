@@ -2,22 +2,25 @@
  * @Author: Derek Xu
  * @Date: 2023-03-14 16:08:48
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-14 18:17:47
+ * @LastEditTime: 2023-03-15 10:28:21
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Findpass\components\ResetPass.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
+import { FormattedMessage } from '@/.umi/plugin-locale'
+import { findPassUpdate } from '@/services/login'
 import stringUtils from '@/utils/stringutils'
 import { LockOutlined } from '@ant-design/icons'
 import { ProFormText } from '@ant-design/pro-components'
-import { Form, FormInstance } from 'antd'
+import { Form, FormInstance, message } from 'antd'
 import { useIntl } from 'umi'
 
 interface IProps {
   form: FormInstance<any>
   username: string
   userId: string
+  code: string
   gotoSuccess: () => void
 }
 
@@ -27,7 +30,15 @@ const style: React.CSSProperties = {
   marginBottom: '20px'
 }
 
-export default function ResetPass({ form, userId, username }: IProps) {
+const formStyle: React.CSSProperties = {
+  width: '300px'
+}
+
+const spanStyle: React.CSSProperties = {
+  color: 'red'
+}
+
+export default function ResetPass({ form, userId, username, code, gotoSuccess }: IProps) {
   const intl = useIntl()
 
   const validateToNextPassword = (value: any, callback: any, ty: number) => {
@@ -48,8 +59,25 @@ export default function ResetPass({ form, userId, username }: IProps) {
   }
 
   return (
-    <Form autoComplete='off' form={form} onFinish={async (values) => {}}>
-      <div style={style}>正在使用 {username} 重置密码</div>
+    <Form
+      autoComplete='off'
+      form={form}
+      onFinish={async (values) => {
+        const { password } = values
+        await findPassUpdate(userId, password, code)
+        gotoSuccess()
+      }}
+      style={formStyle}
+    >
+      <div style={style}>
+        <span>
+          <FormattedMessage id='pages.findpass.use.username' />
+        </span>
+        <span style={spanStyle}>{username}</span>
+        <span>
+          <FormattedMessage id='pages.findpass.use.reset.pass' />
+        </span>
+      </div>
       <ProFormText.Password
         name='password'
         placeholder={intl.formatMessage({ id: 'pages.findpass.password.placeholder' })}
@@ -68,7 +96,7 @@ export default function ResetPass({ form, userId, username }: IProps) {
       />
       <ProFormText.Password
         name='confirm_password'
-        placeholder={intl.formatMessage({ id: 'pages.findpass.password.placeholder' })}
+        placeholder={intl.formatMessage({ id: 'pages.findpass.confirm.password.placeholder' })}
         fieldProps={{
           size: 'large',
           prefix: <LockOutlined className={'prefixIcon'} />

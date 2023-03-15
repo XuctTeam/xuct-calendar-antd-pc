@@ -9,58 +9,6 @@
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 declare namespace API {
-  type PublicKey = {
-    key: string
-    randomStr: string
-  }
-
-  type UserNameCatcha = {
-    captchaCode: string
-    captchaKey: string
-  }
-
-  type LoginParams = {
-    username?: string
-    password?: string
-    autoLogin?: boolean
-    type?: string
-    captcha?: UserNameCatcha
-  }
-
-  type LoginPhoneParam = {
-    autoLogin?: boolean
-    phone?: string
-    type?: string
-    captcha?: UserNameCatcha
-  }
-
-  type LoginResult = {
-    access_token: string
-    refresh_token: string
-  }
-
-  type RuleListItem = {
-    key?: number
-    disabled?: boolean
-    href?: string
-    avatar?: string
-    name?: string
-    owner?: string
-    desc?: string
-    callNo?: number
-    status?: number
-    updatedAt?: string
-    createdAt?: string
-    progress?: number
-  }
-
-  type RuleList = {
-    data?: RuleListItem[]
-    /** 列表的内容总数 */
-    total?: number
-    success?: boolean
-  }
-
   type FakeCaptcha = {
     code?: number
     status?: string
