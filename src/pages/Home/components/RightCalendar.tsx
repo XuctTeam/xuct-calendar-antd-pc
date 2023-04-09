@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-06 09:06:41
+ * @LastEditTime: 2023-04-09 23:47:28
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -160,26 +160,22 @@ function Calendar(props: IInnerProps) {
   }
 
   const convertToEvent = (components: CALENDAR.Component[]) => {
-    const events = components
-      .filter((item) => item.repeatStatus !== '0' && item.repeatType === 'DAILY')
-      .map((item: CALENDAR.Component) => {
-        if (item.repeatStatus !== '0') {
-          switch (item.repeatType) {
-            case RRule.DAILY.toLocaleUpperCase():
-              return repeatDailyEvent(item)
-            case RRule.WEEKLY.toLocaleUpperCase():
-            //return repeatWeekEvent(item)
-            case RRule.MONTHLY.toLocaleUpperCase():
-            //return repeatMonthlyEvent(item)
-            default:
-            //return repeatYearlyEvent(item)
-          }
+    const events = components.map((item: CALENDAR.Component) => {
+      if (item.repeatStatus !== '0') {
+        switch (item.repeatType) {
+          case RRule.DAILY.toLocaleUpperCase():
+            return repeatDailyEvent(item)
+          case RRule.WEEKLY.toLocaleUpperCase():
+            return repeatWeekEvent(item)
+          case RRule.MONTHLY.toLocaleUpperCase():
+            return repeatMonthlyEvent(item)
+          default:
+            return repeatYearlyEvent(item)
         }
-        //return notRepeatEvent(item)
-      })
-
+      }
+      return notRepeatEvent(item)
+    })
     setEvents(events)
-    //innerRef.current.calendar.refetchEvents()
   }
 
   const notRepeatEvent = (component: CALENDAR.Component) => {
@@ -207,18 +203,7 @@ function Calendar(props: IInnerProps) {
       interval: component.repeatInterval,
       until: dayjs(component.repeatUntil).format('YYYY-MM-DD')
     }
-    //const _vent = _packageRepeatEvent(vent, rrule, component.fullDay, component.dtstart, component.dtend)
-    const _vent = {
-      title: 'my recurring event',
-      rrule: {
-        freq: 'weekly',
-        interval: 2,
-        byweekday: ['mo', 'fr'],
-        dtstart: '2022-11-01T10:30:00', // will also accept '20120201T103000'
-        until: '2022-11-30' // will also accept '20120201'
-      }
-    }
-    return _vent
+    return _packageRepeatEvent(vent, rrule, component.fullDay, component.dtstart, component.dtend)
   }
 
   const repeatWeekEvent = (component: CALENDAR.Component) => {
@@ -381,34 +366,6 @@ function Calendar(props: IInnerProps) {
     return { ...vent, dtstart: dtstartStr, duration: { day: 2 }, rrule }
   }
 
-  // const events = useMemo(() => {
-  //   if (calendars.length === 0 || components.length === 0) return
-  //   const displayCalendars = calendars.filter((item) => item.display === 1)
-  //   const componentMap = new Map()
-  //   components.forEach((dayComp) => {
-  //     dayComp.components.forEach((comp) => {
-  //       const _calendar = displayCalendars.find((item) => item.calendarId === comp.calendarId)
-  //       if (!_calendar) return
-  //       componentMap.set(comp.id, { ...comp, color: `#${_calendar.color}` })
-  //     })
-  //   })
-  //   return Array.from(componentMap.values()).map((item: CALENDAR.Component) => {
-  //     if (item.repeatStatus !== '0') {
-  //       switch (item.repeatType) {
-  //         case RRule.DAILY.toLocaleUpperCase():
-  //           return repeatDailyEvent(item)
-  //         case RRule.WEEKLY.toLocaleUpperCase():
-  //         //return repeatWeekEvent(item)
-  //         case RRule.MONTHLY.toLocaleUpperCase():
-  //         //return repeatMonthlyEvent(item)
-  //         default:
-  //         //return repeatYearlyEvent(item)
-  //       }
-  //     }
-  //     return notRepeatEvent(item)
-  //   })
-  // }, [calendars, components])
-
   return (
     <Spin spinning={loading} size='large' wrapperClassName=''>
       <FullCalendar
@@ -434,7 +391,6 @@ function Calendar(props: IInnerProps) {
           }
         }}
         firstDay={Number.parseInt(dataView)}
-        //eventSources={[events]}
         events={events}
         dayMaxEventRows={true}
         eventClick={fullCalendarEventClick}

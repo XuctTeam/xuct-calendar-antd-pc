@@ -53,7 +53,7 @@ const MenuDropdown: FC<IPageOption> = () => {
             <IconFont type='page-icon-shezhi' />
             <div className={styles.action}>
               <span>
-                <FormattedMessage id='component.globalHeader.menu.setting' />
+                <FormattedMessage id='component.globalHeader.menu.setting' />{' '}
               </span>
               <span>
                 <FormattedMessage id='component.globalHeader.menu.setting.desc' />
@@ -61,7 +61,14 @@ const MenuDropdown: FC<IPageOption> = () => {
             </div>
           </li>
           <li className={styles.item}>
-            <Link target='_blank' to={'/group'} rel='opener'>
+            <Link
+              target='_blank'
+              to={'/group'}
+              rel='opener'
+              onClick={() => {
+                setSetate({ menuVisable: true })
+              }}
+            >
               <IconFont type='page-icon-zu5889' />
               <div className={styles.action}>
                 <span>

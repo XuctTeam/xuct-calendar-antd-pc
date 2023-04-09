@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-03 18:18:07
+ * @LastEditTime: 2023-04-09 23:36:12
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -267,7 +267,7 @@ const HomePage = () => {
             <FormattedMessage id='pages.component.button.add' />
           </Button>
           <ProCard hoverable bordered>
-            <Calendar fullscreen={false} value={dayjs(state.selectDay)} onSelect={antdCalendarSelect} dateCellRender={antdCalendarDateCellRender} />
+            <Calendar fullscreen={false} value={dayjs(state.selectDay)} onSelect={antdCalendarSelect} cellRender={antdCalendarDateCellRender} />
           </ProCard>
           <CalendarList
             loading={state.loading}
