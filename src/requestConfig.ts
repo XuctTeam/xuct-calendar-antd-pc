@@ -37,7 +37,7 @@ const codeMessage: any = {
   428: 'code.message.login.captcha.error',
   404: 'code.message.not.found',
   500: 'code.message.service.error',
-  502: 'code.message.getway.error',
+  502: 'code.message.gateway.error',
   503: 'code.message.server.maintain',
   504: 'code.message.gateway.timeout'
 }

@@ -22,15 +22,15 @@ interface IPageOption {
   loading: boolean
   calendars: CALENDAR.Calendar[]
   busEmitter: EventEmitter<Event.Action>
-  selectedCalendarChage: (calendarId: string, display: number) => void
+  selectedCalendarChange: (calendarId: string, display: number) => void
   calendarOnEdit: (id: string | undefined) => void
   refresh: () => void
 }
 
-const CalendarList: FC<IPageOption> = ({ loading, calendars, busEmitter, selectedCalendarChage, refresh, calendarOnEdit }) => {
+const CalendarList: FC<IPageOption> = ({ loading, calendars, busEmitter, selectedCalendarChange, refresh, calendarOnEdit }) => {
   const init = useIntl()
   const checkboxCheck = (id: string, checked: boolean) => {
-    selectedCalendarChage(id, !checked ? 0 : 1)
+    selectedCalendarChange(id, !checked ? 0 : 1)
   }
 
   const calendarOnDelete = (id: string) => {

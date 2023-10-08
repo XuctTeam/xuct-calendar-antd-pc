@@ -16,7 +16,7 @@ export default {
   'code.message.not.found': '请求参数错误',
   'code.message.token.expire': '登录已过期',
   'code.message.service.error': '服务器异常',
-  'code.message.getway.error': '网关错误',
+  'code.message.gateway.error': '网关错误',
   'code.message.server.maintain': '服务器暂时过载或维护。',
   'code.message.gateway.timeout': '网关超时',
   'code.message.network.eror': '网络异常',

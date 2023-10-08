@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 18:03:35
+ * @LastEditTime: 2023-10-08 18:46:56
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentEditForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -34,9 +34,9 @@ import { RepeatFormItem } from '../ui'
 import ComponentAttendChoose from './ComponentAttendChoose'
 
 interface IPageOption {
-  visable: boolean
+  visible: boolean
   calendars: CALENDAR.Calendar[]
-  setVisable: (open: any) => void
+  setVisible: (open: any) => void
   refresh: () => void
   groups?: GROUP.TreeMember[]
   busEmitter: EventEmitter<Event.Action>
@@ -45,11 +45,11 @@ interface IPageOption {
 interface State {
   initialValues: any
   repeatInitialValues: any
-  attendVisable: boolean
+  attendVisible: boolean
   attends?: CALENDAR.Attend[]
 }
 
-const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, refresh }: IPageOption) => {
+const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVisible: setVisible, refresh }: IPageOption) => {
   const formRef = useRef<ProFormInstance>()
   const init = useIntl()
   const repeatRef = useRef<any>()
@@ -61,7 +61,7 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
       alarmType: '0'
     },
     repeatInitialValues: undefined,
-    attendVisable: false,
+    attendVisible: false,
     attends: []
   })
 
@@ -131,7 +131,7 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
   busEmitter.useSubscription((values: Event.Action) => {
     const { action, data } = values
     if (!(action === 'event_edit' || action === 'event_create')) return
-    setVisable(true)
+    setVisible(true)
     switch (action) {
       case 'event_edit':
         _componentEdit(data)
@@ -225,7 +225,7 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
           destroyOnClose: true
         }}
         omitNil
-        onOpenChange={setVisable}
+        onOpenChange={setVisible}
         submitTimeout={2000}
         onFinish={async (values: any) => {
           const { repeatStatus, dtTime, calendar, alarmTimes, fullDay, ...comp } = values
@@ -289,7 +289,7 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
               id: !state.initialValues?.id ? 'pages.calendar.mananger.component.add.success' : 'pages.calendar.mananger.component.edit.success'
             })
           )
-          setVisable(false)
+          setVisible(false)
           refresh()
           return true
         }}
@@ -480,7 +480,7 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
           width='xl'
           name='memberIds'
           disabled
-          addonAfter={<a onClick={() => setState({ attendVisable: true })}>{<FormattedMessage id='pages.component.add.attend.add.button' />}</a>}
+          addonAfter={<a onClick={() => setState({ attendVisible: true })}>{<FormattedMessage id='pages.component.add.attend.add.button' />}</a>}
           label={<FormattedMessage id='pages.component.add.attend.label' />}
           placeholder={init.formatMessage({ id: 'pages.component.add.attend.placeholder' })}
         />
@@ -493,10 +493,10 @@ const ComponentForm = ({ calendars, visable, groups, busEmitter, setVisable, ref
         />
       </DrawerForm>
       <ComponentAttendChoose
-        visable={state.attendVisable}
-        setVisable={(e) =>
+        visible={state.attendVisible}
+        setVisible={(e) =>
           setState({
-            attendVisable: e
+            attendVisible: e
           })
         }
         groups={groups}

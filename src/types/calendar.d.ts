@@ -54,7 +54,7 @@ declare namespace CALENDAR {
     attendStatus: number
   }
 
-  type DayCompoent = {
+  type DayComponent = {
     day: string
     calendarId: string
     components: Array<Component>

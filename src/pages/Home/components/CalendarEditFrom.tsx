@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-07 18:10:24
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 16:10:25
+ * @LastEditTime: 2023-10-08 19:01:16
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\CalendarEditFrom.tsx
  * @Description:
  *
@@ -28,12 +28,12 @@ import { FormattedMessage, useIntl } from 'umi'
 
 interface IPageOption {
   id?: string
-  visable: boolean
+  visible: boolean
   refresh: () => void
-  setVisable: (modalVisit: boolean) => void
+  setVisible: (modalVisit: boolean) => void
 }
 
-const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable }) => {
+const CalendarEditFrom: FC<IPageOption> = ({ id, visible: visible, refresh, setVisible: setVisible }) => {
   const formRef = useRef<ProFormInstance>()
   const init = useIntl()
 
@@ -111,13 +111,13 @@ const CalendarEditFrom: FC<IPageOption> = ({ id, visable, refresh, setVisable })
       title={<FormattedMessage id='pages.calendar.add.title' />}
       formRef={formRef}
       autoFocusFirstInput
-      open={visable}
+      open={visible}
       preserve
       drawerProps={{
         destroyOnClose: true
       }}
       omitNil
-      onOpenChange={setVisable}
+      onOpenChange={setVisible}
       submitTimeout={2000}
       params={{ id }}
       request={async () => {

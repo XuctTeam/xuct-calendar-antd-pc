@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-17 08:34:15
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-04-09 23:36:12
+ * @LastEditTime: 2023-10-08 19:00:40
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\index.tsx
  * @Description:
  *
@@ -18,7 +18,7 @@ import { Badge, Button, Calendar } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useCallback, useEffect, useRef } from 'react'
-import { connect, FormattedMessage, useSelector } from 'umi'
+import { FormattedMessage, connect, useSelector } from 'umi'
 import { CalendarEditFrom, CalendarList, CalendarShareView, ComponentEditForm, ComponentView, RightCalendar } from './components'
 
 import styles from './index.less'
@@ -29,19 +29,19 @@ interface State {
   selectDay: any
   calendars: CALENDAR.Calendar[]
   marks: string[]
-  components: CALENDAR.DayCompoent[]
-  compVisable: boolean
-  calendarVisable: boolean
-  calendarShareVisable: boolean
-  attendChooseVisable: boolean
+  components: CALENDAR.DayComponent[]
+  compVisible: boolean
+  calendarVisible: boolean
+  calendarShareVisible: boolean
+  attendChooseVisible: boolean
   calendarId?: string
   groups: GROUP.TreeMember[]
 }
 
 const HomePage = () => {
-  const calenarRefContent = useRef<any>()
+  const calendarRefContent = useRef<any>()
   const calendarRef = React.createRef<any>()
-  const size = useSize(calenarRefContent)
+  const size = useSize(calendarRefContent)
   const busEmitter = useEventEmitter<any>()
 
   const [state, setState] = useSetState<State>({
@@ -52,10 +52,10 @@ const HomePage = () => {
     marks: [],
     components: [],
     groups: [],
-    compVisable: false,
-    calendarVisable: false,
-    calendarShareVisable: false,
-    attendChooseVisable: false,
+    compVisible: false,
+    calendarVisible: false,
+    calendarShareVisible: false,
+    attendChooseVisible: false,
     calendarId: undefined
   })
 
@@ -120,7 +120,7 @@ const HomePage = () => {
     })
   }
 
-  const fullCalendarDayChage = (ty: any) => {
+  const fullCalendarDayChange = (ty: any) => {
     const api = calendarRef.current.getApi()
     switch (ty) {
       case 0:
@@ -137,7 +137,7 @@ const HomePage = () => {
     setState({
       selectDay: day
     })
-    _dateChageLoadComponent(day, selecteDay)
+    _dateChangeLoadComponent(day, selecteDay)
   }
 
   /**
@@ -152,7 +152,7 @@ const HomePage = () => {
       selectDay: day
     })
     api.gotoDate(day)
-    _dateChageLoadComponent(day, selecteDay)
+    _dateChangeLoadComponent(day, selecteDay)
   }
 
   /**
@@ -160,7 +160,7 @@ const HomePage = () => {
    * @param calendarId
    * @param display
    */
-  const calendarChageDisplay = async (calendarId: string, display: number) => {
+  const calendarChangeDisplay = async (calendarId: string, display: number) => {
     updateDisplay(calendarId, display).catch((err) => {
       console.log(err)
     })
@@ -186,7 +186,7 @@ const HomePage = () => {
    * @param selecteDay
    * @returns
    */
-  const _dateChageLoadComponent = (day: string, selecteDay: string) => {
+  const _dateChangeLoadComponent = (day: string, selecteDay: string) => {
     const sameMonth = dayjs(selecteDay).isSame(day, 'month')
     if (sameMonth) return
     _queryComponent(state.calendars, dayjs(day).startOf('month').format('YYYY-MM-DD HH:mm:ss'), dayjs(day).endOf('month').format('YYYY-MM-DD HH:mm:ss'))
@@ -216,7 +216,7 @@ const HomePage = () => {
         })
       )
     })
-    let calendarComponents: Array<CALENDAR.DayCompoent> = []
+    let calendarComponents: Array<CALENDAR.DayComponent> = []
     Promise.all(
       pList.map((p) => {
         return p.catch((error) => error)
@@ -238,7 +238,7 @@ const HomePage = () => {
       })
   }
 
-  const _fillMarkDay = (components: Array<CALENDAR.DayCompoent>) => {
+  const _fillMarkDay = (components: Array<CALENDAR.DayComponent>) => {
     if (components.length === 0) return
     const daySet: Set<string> = new Set<string>([])
     components.forEach((comp) => {
@@ -263,7 +263,7 @@ const HomePage = () => {
     <>
       <Content className={styles.center}>
         <div className={styles.left}>
-          <Button type='primary' icon={<PlusOutlined />} block onClick={() => setState({ compVisable: true })}>
+          <Button type='primary' icon={<PlusOutlined />} block onClick={() => setState({ compVisible: true })}>
             <FormattedMessage id='pages.component.button.add' />
           </Button>
           <ProCard hoverable bordered>
@@ -272,15 +272,15 @@ const HomePage = () => {
           <CalendarList
             loading={state.loading}
             calendars={state.calendars}
-            selectedCalendarChage={calendarChageDisplay}
+            selectedCalendarChange={calendarChangeDisplay}
             refresh={refresh}
             busEmitter={busEmitter}
             calendarOnEdit={(calendarId: string | undefined) => {
-              setState({ calendarVisable: true, calendarId })
+              setState({ calendarVisible: true, calendarId })
             }}
           />
         </div>
-        <div className={styles.right} ref={calenarRefContent}>
+        <div className={styles.right} ref={calendarRefContent}>
           <div className={styles.calendar}>
             <RightCalendar
               loading={state.compLoading}
@@ -293,20 +293,20 @@ const HomePage = () => {
               calendars={state.calendars}
               components={state.components}
               fullCalendarDateClick={fullCalendarDateClick}
-              fullCalendarDayChage={fullCalendarDayChage}
+              fullCalendarDayChange={fullCalendarDayChange}
               fullCalendarLocal={fullCalendarLocal}
             />
           </div>
         </div>
       </Content>
       <CalendarEditFrom
-        visable={state.calendarVisable}
-        setVisable={(e) => {
+        visible={state.calendarVisible}
+        setVisible={(e) => {
           if (!e) {
-            setState({ calendarVisable: e, calendarId: undefined })
+            setState({ calendarVisible: e, calendarId: undefined })
             return
           }
-          setState({ calendarVisable: e })
+          setState({ calendarVisible: e })
         }}
         refresh={refresh}
         id={state.calendarId}
@@ -315,10 +315,10 @@ const HomePage = () => {
       <ComponentEditForm
         busEmitter={busEmitter}
         calendars={state.calendars}
-        visable={state.compVisable}
+        visible={state.compVisible}
         groups={state.groups}
-        setVisable={(e) => {
-          setState({ compVisable: e })
+        setVisible={(e) => {
+          setState({ compVisible: e })
         }}
         refresh={refresh}
       />

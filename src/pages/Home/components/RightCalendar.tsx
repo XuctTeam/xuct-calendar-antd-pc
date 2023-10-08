@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-23 09:39:43
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-04-09 23:47:28
+ * @LastEditTime: 2023-10-08 19:04:45
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RightCalendar.tsx
  * @Description:
  *
@@ -35,8 +35,8 @@ interface IPageOption {
   lunarView: string
   fullCalendarLocal: any
   calendars: CALENDAR.Calendar[]
-  components: CALENDAR.DayCompoent[]
-  fullCalendarDayChage: (ty: number) => void
+  components: CALENDAR.DayComponent[]
+  fullCalendarDayChange: (ty: number) => void
   fullCalendarDateClick: (data: any) => void
   busEmitter: EventEmitter<Event.Action>
 }
@@ -57,7 +57,7 @@ function Calendar(props: IInnerProps) {
     busEmitter,
     loading,
     innerRef,
-    fullCalendarDayChage,
+    fullCalendarDayChange,
     fullCalendarDateClick
   } = props
   const disableLunarView = !isChinese() || lunarView === '0'
@@ -379,15 +379,15 @@ function Calendar(props: IInnerProps) {
         customButtons={{
           customLeft: {
             text: '<',
-            click: () => fullCalendarDayChage(0)
+            click: () => fullCalendarDayChange(0)
           },
           customtoday: {
             text: init.formatMessage({ id: 'pages.calendar.today.button' }),
-            click: () => fullCalendarDayChage(2)
+            click: () => fullCalendarDayChange(2)
           },
           customRight: {
             text: '>',
-            click: () => fullCalendarDayChage(1)
+            click: () => fullCalendarDayChange(1)
           }
         }}
         firstDay={Number.parseInt(dataView)}

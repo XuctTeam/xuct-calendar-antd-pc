@@ -16,7 +16,7 @@ export default {
   'code.message.not.found': 'Not Found',
   'code.message.token.expire': 'Token is expire',
   'code.message.service.error': 'Serve Error',
-  'code.message.getway.error': 'Gateway Error',
+  'code.message.gateway.error': 'Gateway Error',
   'code.message.server.maintain': '服务器暂时过载或维护。',
   'code.message.gateway.timeout': 'Connect TimeOut',
   'code.message.network.eror': 'Network Error',

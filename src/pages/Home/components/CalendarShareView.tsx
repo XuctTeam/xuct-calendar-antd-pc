@@ -23,7 +23,7 @@ interface IPageOption {
 }
 
 interface State {
-  visable: boolean
+  visible: boolean
   title: string
   shortUrl: string
 }
@@ -32,7 +32,7 @@ const CalendarShareView: FC<IPageOption> = ({ busEmitter }) => {
   const init = useIntl()
 
   const [state, setState] = useSetState<State>({
-    visable: false,
+    visible: false,
     title: '',
     shortUrl: ''
   })
@@ -43,7 +43,7 @@ const CalendarShareView: FC<IPageOption> = ({ busEmitter }) => {
     const { calendarId } = data
     console.log(calendarId)
     setState({
-      visable: true
+      visible: true
     })
     _initData(calendarId)
   })
@@ -70,8 +70,8 @@ const CalendarShareView: FC<IPageOption> = ({ busEmitter }) => {
   return (
     <Modal
       title={init.formatMessage({ id: 'pages.calendar.share.title' }) + `${state.title}`}
-      open={state.visable}
-      onCancel={() => setState({ visable: false })}
+      open={state.visible}
+      onCancel={() => setState({ visible: false })}
       footer={null}
     >
       <Divider>

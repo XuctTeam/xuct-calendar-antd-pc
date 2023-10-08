@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-27 09:00:08
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-29 17:46:14
+ * @LastEditTime: 2023-10-08 19:03:30
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentView.tsx
  * @Description:
  *
@@ -12,7 +12,7 @@ import { deleteComponent, getComponentById, queryComponentMembers } from '@/serv
 import { DiffOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { useSetState } from 'ahooks'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
-import { Button, Col, Divider, message, Modal, Row, Select, Spin } from 'antd'
+import { Button, Col, Divider, Modal, Row, Select, Spin, message } from 'antd'
 import dayjs from 'dayjs'
 import { FC } from 'react'
 import { FormattedMessage, useIntl, useModel } from 'umi'
@@ -48,7 +48,7 @@ interface State {
   alarmTimes: string
   attends: CALENDAR.Attend[]
   attendStatus: number
-  visable: boolean
+  visible: boolean
   left: number
   top: number
 }
@@ -81,7 +81,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
     alarmTimes: '',
     attends: [],
     attendStatus: 0,
-    visable: false,
+    visible: false,
     left: 0,
     top: 0
   })
@@ -175,7 +175,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
       id,
       left: x + 480 > clientWidth ? clientWidth - 480 : x,
       top: y + h > clientHeight ? clientHeight - h : y,
-      visable: true
+      visible: true
     })
   }
 
@@ -193,9 +193,9 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
 
   const editEvent = () => {
     setState({
-      visable: false
+      visible: false
     })
-    const { loading, top, left, visable, ...comp } = state
+    const { loading, top, left, visible: visible, ...comp } = state
     busEmitter.emit({
       action: 'event_edit',
       data: {
@@ -208,7 +208,7 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
     await deleteComponent(state.id)
     message.success(init.formatMessage({ id: 'pages.component.view.delete.success' }))
     setState({
-      visable: false
+      visible: false
     })
     refresh()
   }
@@ -217,8 +217,8 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
     <Modal
       title={init.formatMessage({ id: 'pages.component.view.title' })}
       style={{ position: 'absolute', top: state.top + 'px', left: state.left + 'px', zIndex: 999 }}
-      open={state.visable}
-      onCancel={() => setState({ visable: false })}
+      open={state.visible}
+      onCancel={() => setState({ visible: false })}
       width={460}
       mask={false}
       destroyOnClose={true}

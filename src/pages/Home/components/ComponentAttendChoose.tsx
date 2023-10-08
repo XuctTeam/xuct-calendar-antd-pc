@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-01-06 17:26:57
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-19 17:49:14
+ * @LastEditTime: 2023-10-08 19:02:11
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentAttendChoose.tsx
  * @Description:
  *
@@ -16,8 +16,8 @@ import React, { useEffect } from 'react'
 import styles from './ComponentAttendChoose.less'
 
 interface IPageOption {
-  visable: boolean
-  setVisable: (visable: boolean) => void
+  visible: boolean
+  setVisible: (visible: boolean) => void
   groups?: GROUP.TreeMember[]
   attends?: CALENDAR.Attend[]
   attendChooseSet: (attends: CALENDAR.Attend[]) => void
@@ -29,7 +29,7 @@ interface State {
   allMembers: Map<string, GROUP.GroupMember>
 }
 
-const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendChooseSet }: IPageOption) => {
+const ComponentAttendChoose = ({ visible: visible, setVisible: setVisible, groups, attends, attendChooseSet }: IPageOption) => {
   const [state, setState] = useSetState<State>({
     treeData: [],
     checkedKeys: [],
@@ -37,7 +37,7 @@ const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendCho
   })
 
   useEffect(() => {
-    if (!visable) {
+    if (!visible) {
       setState({
         checkedKeys: [],
         allMembers: new Map<string, GROUP.GroupMember>()
@@ -45,7 +45,7 @@ const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendCho
       return
     }
     _init()
-  }, [visable, attends])
+  }, [visible, attends])
 
   const _init = () => {
     if (!groups || groups?.length === 0) return
@@ -97,7 +97,7 @@ const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendCho
     })
   }
 
-  const cleaAll = () => {
+  const cleanAll = () => {
     const _newMemberMaps = new Map<string, GROUP.GroupMember>()
     Array.from(state.allMembers.values()).forEach((item) => {
       const _m = { ...item, checked: false }
@@ -112,7 +112,7 @@ const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendCho
   const okSelected = () => {
     const memberIds = (state.checkedKeys as string[]).filter((i) => i.valueOf).map((item) => item.split('M')[1])
     if (memberIds.length === 0) {
-      setVisable(false)
+      setVisible(false)
       return
     }
     const attends: CALENDAR.Attend[] = []
@@ -130,14 +130,14 @@ const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendCho
       })
     })
     attendChooseSet(attends)
-    setVisable(false)
+    setVisible(false)
   }
 
   return (
     <Modal
       title={<FormattedMessage id='pages.component.add.attend.add.form.title' />}
-      open={visable}
-      onCancel={() => setVisable(false)}
+      open={visible}
+      onCancel={() => setVisible(false)}
       width={1000}
       style={{ zIndex: 9999 }}
       destroyOnClose
@@ -162,7 +162,7 @@ const ComponentAttendChoose = ({ visable, setVisable, groups, attends, attendCho
                 size='small'
                 type='link'
                 onClick={() => {
-                  cleaAll()
+                  cleanAll()
                 }}
               >
                 <FormattedMessage id='pages.component.add.attend.add.form.clean' />

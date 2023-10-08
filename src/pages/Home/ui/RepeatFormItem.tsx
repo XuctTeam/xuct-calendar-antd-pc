@@ -2,18 +2,18 @@
  * @Author: Derek Xu
  * @Date: 2022-12-22 11:30:19
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-04 14:00:04
- * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\RepeatFormItem.tsx
+ * @LastEditTime: 2023-10-08 19:05:06
+ * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\ui\RepeatFormItem.tsx
  * @Description:
  *
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
-import { FormattedMessage, useIntl } from 'umi'
-import { InputNumber, Select, SelectProps, Space } from 'antd'
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
-import dayjs from 'dayjs'
 import { dayWeekInMonth, isChinese } from '@/utils/calendar'
 import { useSetState } from 'ahooks'
+import { InputNumber, Select, SelectProps, Space } from 'antd'
+import dayjs from 'dayjs'
+import { forwardRef, useEffect, useImperativeHandle } from 'react'
+import { FormattedMessage, useIntl } from 'umi'
 import styles from './RepeatFormItem.less'
 
 interface IPageOption {
@@ -87,7 +87,7 @@ const RepeatFormItem = forwardRef<any, IPageOption>(({ ...props }, ref) => {
   }))
 
   const initData = (values: any) => {
-    const { repeatType, repeatInterval, repeatByday, repeatBymonth, repeatBymonthday } = values
+    const { repeatType, repeatInterval, repeatByday } = values
     const initValues: any = {
       repeatType,
       repeatInterval,
