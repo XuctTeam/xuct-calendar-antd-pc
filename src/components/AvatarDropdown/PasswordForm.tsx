@@ -9,7 +9,7 @@
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { updatePassword } from '@/services/user'
-import stringUtils from '@/utils/stringutils'
+import stringUtils from '@/utils/strUtils'
 import { ModalForm, ProFormText } from '@ant-design/pro-components'
 import { Form, message } from 'antd'
 import {} from 'antd/es/form/Form'

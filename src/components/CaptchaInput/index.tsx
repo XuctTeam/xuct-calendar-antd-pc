@@ -9,7 +9,7 @@
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
 
-import { default as stringUtil, default as stringUtils } from '@/utils/stringutils'
+import { default as stringUtil, default as stringUtils } from '@/utils/strUtils'
 import { SafetyCertificateOutlined } from '@ant-design/icons'
 import { Input } from 'antd'
 import React, { useCallback, useEffect, useState } from 'react'

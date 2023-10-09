@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-01-29 16:33:09
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-03 15:39:29
+ * @LastEditTime: 2023-10-09 13:29:21
  * @FilePath: \xuct-calendar-antd-pc\src\components\MenuDropdown\index.tsx
  * @Description:
  *
@@ -13,14 +13,14 @@ import { useSetState } from 'ahooks'
 import { Popover } from 'antd'
 import { FC } from 'react'
 import { FormattedMessage, Link } from 'umi'
-import styles from './index.less'
 import SettingForm from './SettingForm'
+import styles from './index.less'
 
 interface IPageOption {}
 
 interface State {
-  visable: boolean
-  menuVisable: boolean
+  visible: boolean
+  menuVisible: boolean
 }
 
 const IconFont = createFromIconfontCN({
@@ -28,18 +28,18 @@ const IconFont = createFromIconfontCN({
 })
 
 const MenuDropdown: FC<IPageOption> = () => {
-  const [state, setSetate] = useSetState<State>({
-    visable: false,
-    menuVisable: false
+  const [state, setState] = useSetState<State>({
+    visible: false,
+    menuVisible: false
   })
 
   const itemClick = (key: string) => {
     //message.info(`Click on item ${key}`)
     switch (key) {
       case '1':
-        setSetate({
-          visable: true,
-          menuVisable: false
+        setState({
+          visible: true,
+          menuVisible: false
         })
         break
     }
@@ -66,7 +66,7 @@ const MenuDropdown: FC<IPageOption> = () => {
               to={'/group'}
               rel='opener'
               onClick={() => {
-                setSetate({ menuVisable: true })
+                setState({ menuVisible: true })
               }}
             >
               <IconFont type='page-icon-zu5889' />
@@ -92,27 +92,27 @@ const MenuDropdown: FC<IPageOption> = () => {
         placement='bottomRight'
         trigger='click'
         content={menu}
-        open={state.menuVisable}
+        open={state.menuVisible}
         arrow={false}
         onOpenChange={(e) => {
-          setSetate({ menuVisable: e })
+          setState({ menuVisible: e })
         }}
       >
         <div className={styles.menu}>
           <AppstoreAddOutlined
             onClick={() =>
-              setSetate({
-                menuVisable: !state.menuVisable
+              setState({
+                menuVisible: !state.menuVisible
               })
             }
           />
         </div>
       </Popover>
       <SettingForm
-        open={state.visable}
+        open={state.visible}
         setOpen={() => {
-          setSetate({
-            visable: false
+          setState({
+            visible: false
           })
         }}
       ></SettingForm>

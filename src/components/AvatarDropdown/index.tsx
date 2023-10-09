@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 14:07:32
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-03 16:32:24
+ * @LastEditTime: 2023-10-09 13:31:19
  * @FilePath: \xuct-calendar-antd-pc\src\components\AvatarDropdown\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -39,14 +39,13 @@ const Name = () => {
       lineHeight: '48px',
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
-      color: '#fff',
       [`@media only screen and (max-width: ${token.screenMD}px)`]: {
         display: 'none'
       }
     }
   })
 
-  return <span className={`${nameClassName} anticon`}>{currentUser?.member.name}</span>
+  return <span className={`${nameClassName}`}>{currentUser?.member.name}</span>
 }
 
 const AvatarLogo = () => {
@@ -83,7 +82,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
       cursor: 'pointer',
       borderRadius: token.borderRadius,
       '&:hover': {
-        backgroundColor: '#252a3d'
+        backgroundColor: 'rgba(0, 0, 0, 0.04)'
       }
     }
   })

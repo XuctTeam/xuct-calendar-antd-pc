@@ -9,7 +9,7 @@
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
 import { publicKey } from '@/services/login'
-import stringUtils from '@/utils/stringutils'
+import stringUtils from '@/utils/strUtils'
 import { useSetState } from 'ahooks'
 import { FC, useEffect, useRef } from 'react'
 import ReactSliderVerify from 'react-slider-verify'

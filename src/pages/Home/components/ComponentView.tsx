@@ -215,7 +215,6 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
 
   return (
     <Modal
-      title={init.formatMessage({ id: 'pages.component.view.title' })}
       style={{ position: 'absolute', top: state.top + 'px', left: state.left + 'px', zIndex: 999 }}
       open={state.visible}
       onCancel={() => setState({ visible: false })}
@@ -223,7 +222,6 @@ const ComponentView: FC<IPageOption> = ({ refresh, busEmitter }) => {
       mask={false}
       destroyOnClose={true}
       footer={null}
-      transitionName=''
     >
       <Spin spinning={state.loading}>
         <div className={styles.container}>

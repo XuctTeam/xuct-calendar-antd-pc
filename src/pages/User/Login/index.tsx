@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2023-02-22 09:10:44
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-03 11:14:25
+ * @LastEditTime: 2023-10-09 13:36:15
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Login\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -20,7 +20,7 @@ import Footer from '@/components/Footer'
 import SliderVerify from '@/components/SliderVerify'
 import { AUTHORIZATION } from '@/constants'
 import { sendLoginSmsCode, usernameLogin } from '@/services/login'
-import stringUtil from '@/utils/stringutils'
+import stringUtils from '@/utils/strUtils'
 import { AlipayCircleOutlined, LockOutlined, MobileOutlined, TaobaoCircleOutlined, UserOutlined, WeiboCircleOutlined } from '@ant-design/icons'
 import { LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css'
@@ -123,7 +123,7 @@ const Login: React.FC = () => {
     return userInfo
   }
 
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: any) => {
     try {
       // 登录
       const msg = await usernameLogin({ ...values, type })
@@ -180,7 +180,7 @@ const Login: React.FC = () => {
           actions={[<FormattedMessage key='loginWith' id='pages.login.loginWith' defaultMessage='其他登录方式' />, <ActionIcons key='icons' />]}
           onFinish={async (values) => {
             resetErrorMessage()
-            await handleSubmit(values as API.LoginParams)
+            await handleSubmit(values)
           }}
         >
           <Tabs
@@ -236,7 +236,7 @@ const Login: React.FC = () => {
                     validateTrigger: 'onBlur',
                     validator: async (rule, value) => {
                       console.log(rule)
-                      if (!value || stringUtil.isEmpty(value.captchaCode)) {
+                      if (!value || stringUtils.isEmpty(value.captchaCode)) {
                         throw new Error(intl.formatMessage({ id: 'pages.login.img.captcha.required' }))
                       }
                     }

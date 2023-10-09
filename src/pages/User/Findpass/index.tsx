@@ -2,16 +2,16 @@
  * @Author: Derek Xu
  * @Date: 2023-02-16 18:56:02
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-15 11:30:51
+ * @LastEditTime: 2023-10-09 14:21:55
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Findpass\index.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 import { useSetState } from 'ahooks'
-import { Button, Form, Layout, Steps, theme } from 'antd'
+import { Button, Form, Image, Layout, Steps, theme } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
 import { FC, useState } from 'react'
-import { FormattedMessage, history, Link } from 'umi'
+import { FormattedMessage, Link, history } from 'umi'
 import { CheckUserName, ResetPass, Success } from './components'
 import styled from './index.less'
 
@@ -63,15 +63,15 @@ const Findpass: FC = () => {
 
   const steps = [
     {
-      title: <FormattedMessage id='pages.findpass.find.pass' />,
+      title: <FormattedMessage id='pages.findPass.find.pass' />,
       content: <CheckUserName form={form} gotoResetPass={gotoResetPass} />
     },
     {
-      title: <FormattedMessage id='pages.findpass.reset.pass' />,
+      title: <FormattedMessage id='pages.findPass.reset.pass' />,
       content: <ResetPass form={resetForm} username={user.username} userId={user.userId} code={user.code} gotoSuccess={gotoSuccess} />
     },
     {
-      title: <FormattedMessage id='pages.findpass.find.success' />,
+      title: <FormattedMessage id='pages.findPass.find.success' />,
       content: <Success username={user.username} />
     }
   ]
@@ -97,10 +97,12 @@ const Findpass: FC = () => {
     <>
       <Layout className={styled.wrapper}>
         <Header className={styled.header}>
-          <div>werwer</div>
           <div>
+            <Image preview={false} width={30} src='/logo.png' />
+          </div>
+          <div className={styled.login}>
             <Link to='/user/login'>
-              <FormattedMessage id='pages.findpass.toLogin' />
+              <FormattedMessage id='pages.findPass.toLogin' />
             </Link>
           </div>
         </Header>
@@ -111,7 +113,7 @@ const Findpass: FC = () => {
             <div className={styled.buttons}>
               {current < steps.length - 1 && (
                 <Button type='primary' danger onClick={() => next()}>
-                  <FormattedMessage id='pages.findpass.next' />
+                  <FormattedMessage id='pages.findPass.next' />
                 </Button>
               )}
               {current === steps.length - 1 && (
@@ -122,12 +124,12 @@ const Findpass: FC = () => {
                     return
                   }}
                 >
-                  <FormattedMessage id='pages.findpass.toLogin' />
+                  <FormattedMessage id='pages.findPass.toLogin' />
                 </Button>
               )}
               {current > 0 && current !== steps.length - 1 && (
                 <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-                  <FormattedMessage id='pages.findpass.previous' />
+                  <FormattedMessage id='pages.findPass.previous' />
                 </Button>
               )}
             </div>

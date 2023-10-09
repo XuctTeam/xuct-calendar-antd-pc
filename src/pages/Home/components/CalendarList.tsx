@@ -12,7 +12,7 @@ import { deleteCalendar } from '@/services/calendar'
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { ProCard } from '@ant-design/pro-components'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
-import { Button, Empty, message, Modal, Spin } from 'antd'
+import { Button, Empty, Modal, Spin, message } from 'antd'
 import { FC } from 'react'
 import { FormattedMessage, getIntl, useIntl } from 'umi'
 import styles from '../index.less'
@@ -57,7 +57,7 @@ const CalendarList: FC<IPageOption> = ({ loading, calendars, busEmitter, selecte
   const _deleteCalendar = (calendarId: string) => {
     deleteCalendar(calendarId)
       .then(() => {
-        message.success(getIntl().formatMessage({ id: 'pages.calendar.mananger.delete.success' }))
+        message.success(getIntl().formatMessage({ id: 'pages.calendar.manager.delete.success' }))
         refresh()
       })
       .catch((err) => {

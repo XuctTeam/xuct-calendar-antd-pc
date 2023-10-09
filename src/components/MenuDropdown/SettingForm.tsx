@@ -13,7 +13,7 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { Modal, Select, Switch } from 'antd'
 import dayjs from 'dayjs'
 import { FC } from 'react'
-import { connect, FormattedMessage, getLocale, setLocale, useSelector } from 'umi'
+import { FormattedMessage, connect, getLocale, setLocale, useSelector } from 'umi'
 import styles from './SettingForm.less'
 
 interface IPageOption {
@@ -44,7 +44,7 @@ const SettingForm: FC<IPageOption> = ({ open, setOpen, dispatch }) => {
     dayjs.updateLocale(getDayJsLocal(), { weekStart: Number.parseInt(value) })
 
     dispatch({
-      type: 'system/onChageDataView',
+      type: 'system/onChangeDataView',
       payload: { dataView: value } //传递参数
     })
   }

@@ -10,10 +10,10 @@
  */
 import { FormattedMessage } from '@/.umi/plugin-locale'
 import { findPassUpdate } from '@/services/login'
-import stringUtils from '@/utils/stringutils'
+import stringUtils from '@/utils/strUtils'
 import { LockOutlined } from '@ant-design/icons'
 import { ProFormText } from '@ant-design/pro-components'
-import { Form, FormInstance, message } from 'antd'
+import { Form, FormInstance } from 'antd'
 import { useIntl } from 'umi'
 
 interface IProps {
@@ -71,16 +71,16 @@ export default function ResetPass({ form, userId, username, code, gotoSuccess }:
     >
       <div style={style}>
         <span>
-          <FormattedMessage id='pages.findpass.use.username' />
+          <FormattedMessage id='pages.findPass.use.username' />
         </span>
         <span style={spanStyle}>{username}</span>
         <span>
-          <FormattedMessage id='pages.findpass.use.reset.pass' />
+          <FormattedMessage id='pages.findPass.use.reset.pass' />
         </span>
       </div>
       <ProFormText.Password
         name='password'
-        placeholder={intl.formatMessage({ id: 'pages.findpass.password.placeholder' })}
+        placeholder={intl.formatMessage({ id: 'pages.findPass.password.placeholder' })}
         fieldProps={{
           size: 'large',
           prefix: <LockOutlined className={'prefixIcon'} />
@@ -96,7 +96,7 @@ export default function ResetPass({ form, userId, username, code, gotoSuccess }:
       />
       <ProFormText.Password
         name='confirm_password'
-        placeholder={intl.formatMessage({ id: 'pages.findpass.confirm.password.placeholder' })}
+        placeholder={intl.formatMessage({ id: 'pages.findPass.confirm.password.placeholder' })}
         fieldProps={{
           size: 'large',
           prefix: <LockOutlined className={'prefixIcon'} />

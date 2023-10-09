@@ -380,7 +380,7 @@ export const formatSameDayTime = (fullDay: number, dtstart: Date, dtend: Date): 
 export const formateSameDayDuration = (fullDay: number, dtstart: Date, dtend: Date): string => {
   const init = getIntl()
   const minText = init.formatMessage({ id: 'pages.component.repeat.min' })
-  if (fullDay === 1) return init.formatMessage({ id: 'pages.compoennt.repeat.full.day' })
+  if (fullDay === 1) return init.formatMessage({ id: 'pages.component.repeat.full.day' })
   let days = dayjs(dtend)
   let daye = dayjs(dtstart)
   const day1 = days.format('YYYY-MM-DD') + Space + days.hour() + ':' + days.minute() + ':00'

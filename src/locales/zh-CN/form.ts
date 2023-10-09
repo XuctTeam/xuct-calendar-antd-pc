@@ -70,7 +70,8 @@ export default {
   'pages.person.center.week.monday': '周一',
   'pages.person.center.week.sunday': '周日',
 
-  'pages.component.add.title': '事件编辑',
+  'pages.component.add.title': '事件新增',
+  'pages.component.edit.title': '事件编辑',
   'pages.component.add.summary.label': '标题',
   'pages.component.add.summary.placeholder': '请输入标题',
   'pages.component.add.summary.require': '标题不能为空',

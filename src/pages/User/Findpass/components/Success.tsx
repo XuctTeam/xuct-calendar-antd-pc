@@ -39,11 +39,11 @@ export default function Success({ username }: IState) {
       <Space style={spaceStyle}>
         <CheckCircleTwoTone twoToneColor='#52c41a' />
         <span>
-          <FormattedMessage id={'pages.findpass.reset.succes'} />
+          <FormattedMessage id={'pages.findPass.reset.succes'} />
         </span>
       </Space>
       <div style={descStyle}>
-        <FormattedMessage id={'pages.findpass.username'} />: {username}
+        <FormattedMessage id={'pages.findPass.username'} />: {username}
       </div>
     </Space>
   )

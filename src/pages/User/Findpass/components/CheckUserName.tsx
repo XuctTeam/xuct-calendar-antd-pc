@@ -2,18 +2,18 @@
  * @Author: Derek Xu
  * @Date: 2023-03-14 09:57:49
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-03-15 09:55:11
+ * @LastEditTime: 2023-10-09 14:36:34
  * @FilePath: \xuct-calendar-antd-pc\src\pages\User\Findpass\components\CheckUserName.tsx
  * @Description:
  *
  * Copyright (c) 2023 by 楚恬商行, All Rights Reserved.
  */
 import { findPassCheck, publicKey, sendFindPassEmailCode, sendFindPassSmsCode } from '@/services/login'
-import stringUtils from '@/utils/stringutils'
+import stringUtils from '@/utils/strUtils'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { ProFormCaptcha, ProFormText } from '@ant-design/pro-components'
 import { useSetState } from 'ahooks'
-import { Alert, Form, FormInstance, message, Modal, Space } from 'antd'
+import { Alert, Form, FormInstance, Modal, Space, message } from 'antd'
 import Captcha from 'rc-captcha-input'
 import { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'umi'
@@ -26,7 +26,7 @@ interface IProps {
 interface IState {
   state: number
   message: string
-  visable: boolean
+  visible: boolean
   code: string
   validateCode: string
   randomStr: string
@@ -58,7 +58,7 @@ export default function CheckUserName({ form, gotoResetPass }: IProps) {
   const [state, setState] = useSetState<IState>({
     state: 0,
     message: '',
-    visable: false,
+    visible: false,
     code: '',
     validateCode: '',
     randomStr: '',
@@ -66,22 +66,22 @@ export default function CheckUserName({ form, gotoResetPass }: IProps) {
   })
 
   useEffect(() => {
-    if (state.visable) {
+    if (state.visible) {
       _initCode(stringUtils.uuid())
     }
-  }, [state.visable])
+  }, [state.visible])
 
   const onOk = () => {
     if (state.code !== state.validateCode) {
       setState({
-        visable: false,
+        visible: false,
         state: 1,
         message: intl.formatMessage({ id: 'pages.find.pass.validate.error' })
       })
       return
     }
     setState({
-      visable: false,
+      visible: false,
       state: 0,
       message: '',
       validate: true
@@ -135,11 +135,11 @@ export default function CheckUserName({ form, gotoResetPass }: IProps) {
             size: 'large',
             prefix: <UserOutlined className={'prefixIcon'} />
           }}
-          placeholder={intl.formatMessage({ id: 'pages.findpass.username.placeholder' })}
+          placeholder={intl.formatMessage({ id: 'pages.findPass.username.placeholder' })}
           rules={[
             {
               required: true,
-              message: <FormattedMessage id={'pages.findpass.username.required'} />
+              message: <FormattedMessage id={'pages.findPass.username.required'} />
             }
           ]}
         />
@@ -152,35 +152,36 @@ export default function CheckUserName({ form, gotoResetPass }: IProps) {
           captchaProps={{
             size: 'large'
           }}
-          placeholder={intl.formatMessage({ id: 'pages.findpass.captcha.placeholder' })}
+          placeholder={intl.formatMessage({ id: 'pages.findPass.captcha.placeholder' })}
           captchaTextRender={(timing, count) => {
             if (timing) {
-              return `${count} ${intl.formatMessage({ id: 'pages.findpass.get.captcha.button' })}`
+              return `${count} ${intl.formatMessage({ id: 'pages.findPass.get.captcha.button' })}`
             }
-            return intl.formatMessage({ id: 'pages.findpass.get.captcha.button' })
+            return intl.formatMessage({ id: 'pages.findPass.get.captcha.button' })
           }}
           name='captcha'
           phoneName='username'
           rules={[
             {
               required: true,
-              message: <FormattedMessage id={'pages.findpass.captcha.required'} />
+              message: <FormattedMessage id={'pages.findPass.captcha.required'} />
             }
           ]}
           onGetCaptcha={async (username) => {
             if (!state.validate) {
-              setState({ visable: true })
+              setState({ visible: true })
               return Promise.reject()
             }
             if (stringUtils.checkEmail(username)) {
               await sendFindPassEmailCode(username, state.code, state.randomStr).catch((err: any) => {
+                let message = intl.formatMessage({ id: 'code.message.service.error' })
                 if (err.name === 'BizError') {
-                  const { message } = err.info
-                  setState({
-                    state: 1,
-                    message
-                  })
+                  message = err.info.message
                 }
+                setState({
+                  state: 1,
+                  message
+                })
                 return Promise.reject(err)
               })
               message.success(intl.formatMessage({ id: 'pages.login.phone.sms.success' }))
@@ -202,12 +203,12 @@ export default function CheckUserName({ form, gotoResetPass }: IProps) {
       </Form>
       <Modal
         title={<FormattedMessage id='pages.find.pass.validate.title' />}
-        open={state.visable}
+        open={state.visible}
         onOk={onOk}
         destroyOnClose={true}
         onCancel={() => {
           setState({
-            visable: false
+            visible: false
           })
         }}
       >

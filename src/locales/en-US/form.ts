@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-11-24 10:34:23
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-01-20 10:11:19
+ * @LastEditTime: 2023-10-09 10:32:41
  * @FilePath: \xuct-calendar-antd-pc\src\locales\en-US\form.ts
  * @Description:
  *
@@ -69,7 +69,8 @@ export default {
   'pages.person.center.week.monday': 'Mon',
   'pages.person.center.week.sunday': 'Sun',
 
-  'pages.component.add.title': 'EventEdit',
+  'pages.component.add.title': 'EventAdd',
+  'pages.component.edit.title': 'EventEdit',
   'pages.component.add.summary.label': 'Summary',
   'pages.component.add.summary.placeholder': 'Please Input Summary',
   'pages.component.add.summary.require': 'Summary is required',

@@ -149,7 +149,7 @@ const CalendarEditFrom: FC<IPageOption> = ({ id, visible: visible, refresh, setV
       onFinish={async (values: any) => {
         try {
           await saveOrUpdate(values)
-          message.success(init.formatMessage({ id: !id ? 'pages.calendar.mananger.add.success' : 'pages.calendar.mananger.edit.success' }))
+          message.success(init.formatMessage({ id: !id ? 'pages.calendar.manager.add.success' : 'pages.calendar.manager.edit.success' }))
           refresh()
         } catch (err) {
           console.log(err)

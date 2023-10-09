@@ -2,7 +2,7 @@
  * @Author: Derek Xu
  * @Date: 2022-12-20 09:04:06
  * @LastEditors: Derek Xu
- * @LastEditTime: 2023-10-08 18:46:56
+ * @LastEditTime: 2023-10-09 10:36:50
  * @FilePath: \xuct-calendar-antd-pc\src\pages\Home\components\ComponentEditForm.tsx
  * @Description:
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
@@ -26,7 +26,7 @@ import {
 } from '@ant-design/pro-components'
 import { useSetState } from 'ahooks'
 import { EventEmitter } from 'ahooks/lib/useEventEmitter'
-import { message, SelectProps } from 'antd'
+import { SelectProps, message } from 'antd'
 import dayjs from 'dayjs'
 import { useEffect, useRef } from 'react'
 import { FormattedMessage, useIntl } from 'umi'
@@ -47,9 +47,10 @@ interface State {
   repeatInitialValues: any
   attendVisible: boolean
   attends?: CALENDAR.Attend[]
+  add: boolean
 }
 
-const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVisible: setVisible, refresh }: IPageOption) => {
+const ComponentForm = ({ calendars, visible: visible, groups, busEmitter, setVisible: setVisible, refresh }: IPageOption) => {
   const formRef = useRef<ProFormInstance>()
   const init = useIntl()
   const repeatRef = useRef<any>()
@@ -62,7 +63,8 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
     },
     repeatInitialValues: undefined,
     attendVisible: false,
-    attends: []
+    attends: [],
+    add: true
   })
 
   const calendarItems: SelectProps['options'] = calendars.map((item) => {
@@ -92,7 +94,7 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
     }
   ]
 
-  const alramTimeItem: SelectProps['options'] = [
+  const alarmTimeItem: SelectProps['options'] = [
     {
       value: '15',
       label: `${init.formatMessage({ id: 'pages.component.add.alarm.select.label' }) + '15' + init.formatMessage({ id: 'pages.component.repeat.min' })}`
@@ -114,8 +116,9 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
   ]
 
   useEffect(() => {
-    if (!visable) {
+    if (!visible) {
       setState({
+        add: true,
         initialValues: {
           repeatStatus: '0',
           alarmType: '0'
@@ -124,7 +127,7 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
         attends: []
       })
     }
-  }, [visable])
+  }, [visible])
 
   const attendChooseSet = () => {}
 
@@ -134,6 +137,9 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
     setVisible(true)
     switch (action) {
       case 'event_edit':
+        setState({
+          add: false
+        })
         _componentEdit(data)
         break
       case 'event_create':
@@ -215,10 +221,10 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
         alarmType: string
         alarmTime: string
       }>
-        title={<FormattedMessage id='pages.component.add.title' />}
+        title={state.add ? <FormattedMessage id='pages.component.add.title' /> : <FormattedMessage id='pages.component.edit.title' />}
         formRef={formRef}
         autoFocusFirstInput
-        open={visable}
+        open={visible}
         preserve
         initialValues={state.initialValues}
         drawerProps={{
@@ -286,7 +292,7 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
           }
           message.success(
             init.formatMessage({
-              id: !state.initialValues?.id ? 'pages.calendar.mananger.component.add.success' : 'pages.calendar.mananger.component.edit.success'
+              id: !state.initialValues?.id ? 'pages.calendar.manager.component.add.success' : 'pages.calendar.manager.component.edit.success'
             })
           )
           setVisible(false)
@@ -307,7 +313,7 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
           label={<FormattedMessage id='pages.component.add.calendar.label' />}
           options={calendarItems}
           fieldProps={{
-            optionItemRender(item) {
+            optionItemRender(item: any) {
               return <span style={{ color: `#${item.color}` }}>{item.label}</span>
             },
             onChange(val) {
@@ -332,7 +338,7 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
         <ProForm.Group>
           <ProFormSwitch
             name='fullDay'
-            label={init.formatMessage({ id: 'pages.compoennt.repeat.full.day' })}
+            label={init.formatMessage({ id: 'pages.component.repeat.full.day' })}
             fieldProps={{
               checkedChildren: <CheckOutlined />,
               unCheckedChildren: <CloseOutlined />
@@ -464,7 +470,7 @@ const ComponentForm = ({ calendars, visible: visable, groups, busEmitter, setVis
                   name='alarmTimes'
                   width='md'
                   label={<FormattedMessage id='pages.component.add.alarm.time.label' />}
-                  options={alramTimeItem}
+                  options={alarmTimeItem}
                   placeholder='Please select a country'
                   rules={[{ required: true, message: init.formatMessage({ id: 'pages.component.add.alarm.time.rquire' }) }]}
                   fieldProps={{

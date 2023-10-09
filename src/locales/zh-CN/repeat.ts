@@ -9,7 +9,7 @@
  * Copyright (c) 2022 by 楚恬商行, All Rights Reserved.
  */
 export default {
-  'pages.compoennt.repeat.full.day': '全天',
+  'pages.component.repeat.full.day': '全天',
   'pages.component.add.repeat.everyday': '每天',
   'pages.component.add.repeat.everyweek': '每周',
   'pages.component.repeat.week.mo.fr': '每周一至五',
